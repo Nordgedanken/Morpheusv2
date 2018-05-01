@@ -31,6 +31,7 @@ var args []string
 var cli *gomatrix.Client
 var windowHeight = 600
 var windowWidth = 950
+var window *widgets.QMainWindow
 
 // Start prepares the Main QT Window and opens it
 func Start(argsArg []string) error {
@@ -48,6 +49,15 @@ func Start(argsArg []string) error {
 
 	go pkg.Do(initApp)
 
+	go pkg.Do(func() {
+		mainUIS := mainUI.NewMainUI(windowWidth, windowHeight, window)
+		SetNewWindow(mainUIS, window)
+	})
+
+	go pkg.Do(func() {
+		widgets.QApplication_Exec()
+	})
+
 	return nil
 }
 
@@ -60,7 +70,7 @@ func initApp() {
 	app.SetApplicationVersion("0.1.0")
 	appIcon := gui.NewQIcon5(":/qml/resources/logos/MorpheusBig.png")
 	app.SetWindowIcon(appIcon)
-	window := widgets.NewQMainWindow(nil, 0)
+	window = widgets.NewQMainWindow(nil, 0)
 	app.SetActiveWindow(window)
 
 	desktopApp := app.Desktop()
@@ -76,10 +86,6 @@ func initApp() {
 		pkg.Stop()
 	})
 
-	widgets.QApplication_Exec()
-
-	mainUIS := mainUI.NewMainUI(windowWidth, windowHeight, window)
-	SetNewWindow(mainUIS, window)
 }
 
 // SetNewWindow loads the new UI into the QMainWindow
