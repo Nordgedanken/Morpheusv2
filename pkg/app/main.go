@@ -70,4 +70,8 @@ func initApp() {
 	window.Resize2(windowWidth, windowHeight)
 	window.Move2(windowX, windowY)
 
+	app.ConnectQuit(func() {
+		pkg.Stop()
+	})
+
 }

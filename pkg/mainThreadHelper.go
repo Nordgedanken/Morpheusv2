@@ -17,6 +17,7 @@ package pkg
 import "sync"
 
 var wg sync.WaitGroup
+var stop bool
 
 // Main runs the main SDL service loop.
 // The binary's main.main must call sdl.Main() to run this loop.
@@ -26,12 +27,19 @@ func Main() {
 	for f := range mainfunc {
 		wg.Add(1)
 		f()
+		if stop {
+			break
+		}
 	}
 	wg.Wait()
 }
 
 // queue of work to run in main thread.
 var mainfunc = make(chan func())
+
+func Stop() {
+	stop = true
+}
 
 // Do runs f on the main thread.
 func Do(f func()) {
