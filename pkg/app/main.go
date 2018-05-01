@@ -16,6 +16,7 @@ package app
 
 import (
 	"github.com/Nordgedanken/Morpheusv2/pkg"
+	"github.com/matrix-org/gomatrix"
 	"github.com/shibukawa/configdir"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
@@ -26,6 +27,9 @@ import (
 )
 
 var args []string
+var cli *gomatrix.Client
+var windowHeight = 600
+var windowWidth = 950
 
 // Start prepares the Main QT Window and opens it
 func Start(argsArg []string) error {
@@ -58,9 +62,6 @@ func initApp() {
 	window := widgets.NewQMainWindow(nil, 0)
 	app.SetActiveWindow(window)
 
-	windowHeight := 600
-	windowWidth := 950
-
 	desktopApp := app.Desktop()
 	primaryScreen := desktopApp.PrimaryScreen()
 	screen := desktopApp.Screen(primaryScreen)
@@ -74,4 +75,15 @@ func initApp() {
 		pkg.Stop()
 	})
 
+}
+
+func SetNewWindow(ui ui, window widgets.QMainWindow) error {
+	ui.SetCli(cli)
+	uiErr := ui.NewUI()
+	if uiErr != nil {
+		return uiErr
+	}
+	ui.GetWidget().Resize2(windowWidth, windowHeight)
+	window.SetCentralWidget(ui.GetWidget())
+	return nil
 }

@@ -9,6 +9,12 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/matrix-org/gomatrix"
+  packages = ["."]
+  revision = "a7fc80c8060c2544fe5d4dae465b584f8e9b4e27"
+
+[[projects]]
+  branch = "master"
   name = "github.com/shibukawa/configdir"
   packages = ["."]
   revision = "e180dbdc8da04c4fa04272e875ce64949f38bd3e"
@@ -28,6 +34,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "9eae52af7d8c49e9a27a1863ba05582acb167fd5a5ce5bf23b6eb9288a20d0c2"
+  inputs-digest = "c22db96d1e74b32e9427a6f762b2be5797dcc8426407dc4769795fe6ca7296be"
   solver-name = "gps-cdcl"
   solver-version = 1
