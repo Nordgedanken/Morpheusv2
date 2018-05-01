@@ -22,6 +22,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var cfgFile string
+
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "Morpheusv2",
@@ -46,4 +48,5 @@ func Execute() {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+	os.Exit(0)
 }

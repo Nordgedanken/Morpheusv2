@@ -1,7 +1,7 @@
 {
   "name": "Morpheusv2",
   "maintainer": "MTRNord <info@nordgedanken.de>",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "arch": "amd64",
   "files": [
     {
@@ -50,7 +50,7 @@
       "description":"A Matrix client written in Go-QT ",
       "generic-name":"Matrix Client",
       "exec":"/usr/bin/Morpheusv2.sh",
-      "icon":"pkg/qml/resources/logos/MorpheusBig.png",
+      "icon":"qml/resources/logos/MorpheusBig.png",
       "type":"Application",
       "keywords":"matrix;Morpheusv2",
       "startup-notify": false,

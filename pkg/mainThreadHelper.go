@@ -27,7 +27,7 @@ func Main() {
 // queue of work to run in main thread.
 var mainfunc = make(chan func())
 
-// Do runs f on the main thread.
+// do runs f on the main thread.
 func Do(f func()) {
 	done := make(chan bool, 1)
 	mainfunc <- func() {
