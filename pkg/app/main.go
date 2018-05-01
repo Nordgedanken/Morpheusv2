@@ -55,20 +55,19 @@ func initApp() {
 	app.SetApplicationVersion("0.1.0")
 	appIcon := gui.NewQIcon5(":/qml/resources/logos/MorpheusBig.png")
 	app.SetWindowIcon(appIcon)
-
 	window := widgets.NewQMainWindow(nil, 0)
+	app.SetActiveWindow(window)
 
 	windowHeight := 600
 	windowWidth := 950
 
-	desktopApp := widgets.QApplication_Desktop()
+	desktopApp := app.Desktop()
 	primaryScreen := desktopApp.PrimaryScreen()
 	screen := desktopApp.Screen(primaryScreen)
 	windowX := (screen.Width() - windowHeight) / 2
 	windowY := (screen.Height() - windowWidth) / 2
 
 	window.Resize2(windowWidth, windowHeight)
-	window.Show()
-
 	window.Move2(windowX, windowY)
+
 }
