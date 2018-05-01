@@ -45,7 +45,7 @@ jobs:
       - run:
           name: Debug QT Src
           working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
-          command: ls -la /home/user/work/src/github.com/therecipe/ && ls -la vendor/github.com/therecipe/qt/
+          command: ls -la /home/user/work/src/github.com/therecipe/
       - run:
           name: Copy QT
           working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
