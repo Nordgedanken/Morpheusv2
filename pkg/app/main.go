@@ -24,6 +24,7 @@ import (
 	"path/filepath"
 )
 
+// Start prepares the Main QT Window and opens it
 func Start(args []string) error {
 	log.Println("Starting Morpheus v2")
 
