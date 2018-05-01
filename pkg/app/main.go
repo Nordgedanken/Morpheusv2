@@ -82,6 +82,7 @@ func initApp() {
 	SetNewWindow(mainUIS, window)
 }
 
+// SetNewWindow loads the new UI into the QMainWindow
 func SetNewWindow(ui ui, window *widgets.QMainWindow) error {
 	ui.SetCli(cli)
 	uiErr := ui.NewUI()
