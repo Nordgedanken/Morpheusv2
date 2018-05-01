@@ -39,9 +39,17 @@ jobs:
           working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
           command: apt-get update -y -qq && apt-get install apt -y -qq && add-apt-repository ppa:ubuntu-toolchain-r/test -y && apt-get update -y -qq && apt-get -y -qq install gcc-5 g++-5 && rm -f /usr/bin/gcc && ln -s /usr/bin/gcc-5 /usr/bin/gcc && rm -f /usr/bin/g++ && ln -s /usr/bin/g++-5 /usr/bin/g++
       - run:
+          name: Debug QT Src
+          working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
+          command: ls -la vendor/github.com/therecipe/ && ls -la vendor/github.com/therecipe/qt/
+      - run:
           name: Copy QT
           working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
           command: cp -RfT /home/user/work/src/github.com/therecipe/ vendor/github.com/therecipe/
+      - run:
+          name: Debug QT Src
+          working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
+          command: ls -la vendor/github.com/therecipe/ && ls -la vendor/github.com/therecipe/qt/
       - run:
           name: Run Build
           working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/

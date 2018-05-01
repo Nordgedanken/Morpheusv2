@@ -24,7 +24,3 @@
 [[constraint]]
   branch = "master"
   name = "github.com/shibukawa/configdir"
-
-[[constraint]]
-  branch = "master"
-  name = "github.com/therecipe/qt"
