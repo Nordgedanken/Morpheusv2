@@ -92,7 +92,7 @@ jobs:
       - run:
           name: Run Build
           working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
-          command: /home/user/work/bin/qtdeploy build windows
+          command: /home/user/work/bin/qtdeploy build windows_64_static
       - store_artifacts:
           path: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/deploy/windows/Morpheusv2.exe
           destination: Morpheusv2.exe
