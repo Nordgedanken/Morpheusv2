@@ -93,6 +93,10 @@ jobs:
           name: Run Build
           working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
           command: /home/user/work/bin/qtdeploy build windows
+      - run:
+          name: Debug output
+          working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
+          command: ls -la deploy/windows/
       - store_artifacts:
           path: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/deploy/windows/Morpheusv2.exe
           destination: Morpheusv2.exe
