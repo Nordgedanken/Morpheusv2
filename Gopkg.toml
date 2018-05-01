@@ -21,7 +21,7 @@
 #  version = "2.4.0"
 
 
-ignored = ["github.com/therecipe/qt"]
+ignored = ["github.com/therecipe/qt/*"]
 
 [[constraint]]
   branch = "master"
