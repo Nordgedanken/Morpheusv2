@@ -20,6 +20,10 @@ jobs:
       - run:
           name: Get Go Dependencies
           working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
+          command: ln -s vendor/github.com/therecipe /home/user/work/src/github.com/github.com/therecipe
+      - run:
+          name: Get Go Dependencies
+          working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
           command: dep ensure
       - persist_to_workspace:
           # Must be an absolute path, or relative path from working_directory
