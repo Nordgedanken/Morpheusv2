@@ -37,6 +37,7 @@ func Main() {
 // queue of work to run in main thread.
 var mainfunc = make(chan func())
 
+// Stop stops the main loop
 func Stop() {
 	stop = true
 }
