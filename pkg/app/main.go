@@ -15,6 +15,7 @@
 package app
 
 import (
+	"github.com/Nordgedanken/Morpheusv2/pkg"
 	"github.com/shibukawa/configdir"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
@@ -24,8 +25,11 @@ import (
 	"path/filepath"
 )
 
+var args []string
+
 // Start prepares the Main QT Window and opens it
-func Start(args []string) error {
+func Start(argsArg []string) error {
+	args = argsArg
 	log.Println("Starting Morpheus v2")
 
 	// Init Logs and folders
@@ -37,6 +41,12 @@ func Start(args []string) error {
 		}
 	}
 
+	pkg.Do(initApp)
+
+	return nil
+}
+
+func initApp() {
 	app := widgets.NewQApplication(len(args), args)
 
 	app.SetAttribute(core.Qt__AA_UseHighDpiPixmaps, true)
@@ -60,6 +70,4 @@ func Start(args []string) error {
 	window.Show()
 
 	window.Move2(windowX, windowY)
-
-	return nil
 }
