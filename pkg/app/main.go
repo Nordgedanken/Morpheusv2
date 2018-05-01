@@ -41,12 +41,13 @@ func Start(argsArg []string) error {
 		}
 	}
 
-	pkg.Do(initApp)
+	go pkg.Do(initApp)
 
 	return nil
 }
 
 func initApp() {
+	log.Println("Create QApp")
 	app := widgets.NewQApplication(len(args), args)
 
 	app.SetAttribute(core.Qt__AA_UseHighDpiPixmaps, true)
