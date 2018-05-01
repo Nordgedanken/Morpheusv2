@@ -39,25 +39,9 @@ jobs:
           working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
           command: apt-get update -y -qq && apt-get install apt -y -qq && add-apt-repository ppa:ubuntu-toolchain-r/test -y && apt-get update -y -qq && apt-get -y -qq install gcc-5 g++-5 && rm -f /usr/bin/gcc && ln -s /usr/bin/gcc-5 /usr/bin/gcc && rm -f /usr/bin/g++ && ln -s /usr/bin/g++-5 /usr/bin/g++
       - run:
-          name: Remove Vendor QT
-          working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
-          command: rm -Rf vendor/github.com/therecipe/
-      - run:
-          name: Debug QT Src
-          working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
-          command: ls -la /home/user/work/src/github.com/therecipe/
-      - run:
-          name: Copy QT
-          working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
-          command: cp -RfT /home/user/work/src/github.com/therecipe/ vendor/github.com/therecipe/
-      - run:
-          name: Debug QT Src
-          working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
-          command: ls -la /home/user/work/src/github.com/therecipe/ && ls -la vendor/github.com/therecipe/qt/
-      - run:
           name: Run Build
           working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
-          command: $GOPATH/bin/qtdeploy build linux
+          command: /home/user/work/bin/qtdeploy build desktop
       - run:
           name: Prepare Deb Generating
           working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
@@ -84,10 +68,6 @@ jobs:
           # Must be absolute path or relative path from working_directory
           at: /home/user/work/
       - run:
-          name: Copy QT
-          working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
-          command: cp -RfT /home/user/work/src/github.com/therecipe/ vendor/github.com/therecipe/
-      - run:
           name: Generate additional binding files
           working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
           command: $GOPATH/bin/qtrcc desktop && $GOPATH/bin/qtmoc desktop
@@ -104,13 +84,9 @@ jobs:
           # Must be absolute path or relative path from working_directory
           at: /home/user/work/
       - run:
-          name: Copy QT
-          working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
-          command: cp -RfT /home/user/work/src/github.com/therecipe/ vendor/github.com/therecipe/
-      - run:
           name: Run Build
           working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
-          command: $GOPATH/bin/qtdeploy build windows
+          command: /home/user/work/bin/qtdeploy build windows
       - store_artifacts:
           path: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/deploy/windows/Morpheusv2.exe
           destination: Morpheusv2.exe
