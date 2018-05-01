@@ -16,6 +16,7 @@ package app
 
 import (
 	"github.com/Nordgedanken/Morpheusv2/pkg"
+	"github.com/Nordgedanken/Morpheusv2/pkg/mainUI"
 	"github.com/matrix-org/gomatrix"
 	"github.com/shibukawa/configdir"
 	"github.com/therecipe/qt/core"
@@ -76,9 +77,12 @@ func initApp() {
 	})
 
 	widgets.QApplication_Exec()
+
+	mainUIS := mainUI.NewMainUI(windowWidth, windowHeight, window)
+	SetNewWindow(mainUIS, window)
 }
 
-func SetNewWindow(ui ui, window widgets.QMainWindow) error {
+func SetNewWindow(ui ui, window *widgets.QMainWindow) error {
 	ui.SetCli(cli)
 	uiErr := ui.NewUI()
 	if uiErr != nil {
