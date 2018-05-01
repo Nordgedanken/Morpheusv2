@@ -1,0 +1,109 @@
+version: 2
+jobs:
+  prepare:
+    docker:
+      - image: therecipe/qt:linux
+    steps:
+      - run:
+          name: Get checkout script
+          command: apt-get update -qq && apt-get install -y -qq wget curl && mkdir -p .circleci && wget https://raw.githubusercontent.com/Nordgedanken/Morpheusv2/develop/.circleci/checkout.sh -O .circleci/checkout.sh && chmod +x .circleci/checkout.sh
+      - run:
+          name: Checkout Morpheusv2
+          command: bash .circleci/checkout.sh
+      - run:
+          name: Set PATH to correct value
+          command: echo 'export PATH=/usr/local/go/bin:/usr/local/go_workspace/bin:~/.go_workspace/bin:/home/user/work/bin:$GOBIN:$PATH' >> $BASH_ENV
+      - run:
+          name: Get Dep
+          working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
+          command: curl -L -s https://github.com/golang/dep/releases/download/v0.4.1/dep-linux-amd64 -o $GOPATH/bin/dep && chmod +x $GOPATH/bin/dep
+      - run:
+          name: Get Go Dependencies
+          working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
+          command: dep ensure
+      - persist_to_workspace:
+          # Must be an absolute path, or relative path from working_directory
+          root: /home/user/work/
+          # Must be relative path from root
+          paths:
+            - src/
+  build_linux:
+    docker:
+      - image: therecipe/qt:linux
+    steps:
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: /home/user/work/
+      - run:
+          name: Update Build Deps
+          working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
+          command: apt-get update -y -qq && apt-get install apt -y -qq && add-apt-repository ppa:ubuntu-toolchain-r/test -y && apt-get update -y -qq && apt-get -y -qq install gcc-5 g++-5 && rm -f /usr/bin/gcc && ln -s /usr/bin/gcc-5 /usr/bin/gcc && rm -f /usr/bin/g++ && ln -s /usr/bin/g++-5 /usr/bin/g++
+      - run:
+          name: Run Build
+          working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
+          command: $GOPATH/bin/qtdeploy build linux
+      - run:
+          name: Prepare Deb Generating
+          working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
+          command: apt-get update -qq && apt-get install -y -qq wget && wget -q -O - --no-check-certificate https://raw.githubusercontent.com/mh-cbon/latest/master/install.sh | GH=mh-cbon/go-bin-deb sh -xe && apt-get update -qq && apt-get install build-essential lintian -y -qq
+      - run:
+          name: Deb Generating
+          working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
+          command: mkdir debian && go-bin-deb generate -o debian
+      - run:
+          name: Generate tar.gz
+          working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
+          command: tar -czf Morpheusv2.tar.gz deploy/linux/
+      - store_artifacts:
+          path: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/debian/
+          destination: debian
+      - store_artifacts:
+          path: /home/user/work/src/github.com/Nordgedanken/Morpheus/Morpheusv2.tar.gz
+          destination: Morpheusv2.tar.gz
+  lint:
+    docker:
+      - image: therecipe/qt:linux
+    steps:
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: /home/user/work/
+      - run:
+          name: Generate additional binding files
+          working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
+          command: $GOPATH/bin/qtrcc desktop && $GOPATH/bin/qtmoc desktop
+      - run:
+          name: Run Lint
+          working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
+          command: chmod +x scripts/lint.sh && scripts/lint.sh
+          no_output_timeout: 1200
+  build_win_static:
+    docker:
+      - image: therecipe/qt:windows_64_static
+    steps:
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: /home/user/work/
+      - run:
+          name: Run Build
+          working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
+          command: $GOPATH/bin/qtdeploy build windows
+      - store_artifacts:
+          path: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/deploy/windows/Morpheusv2.exe
+          destination: Morpheusv2.exe
+workflows:
+  version: 2
+  build-test:
+    jobs:
+      - prepare
+      - build_linux:
+          requires:
+            - prepare
+      - build_win_static:
+          requires:
+            - prepare
+      - lint:
+          requires:
+            - prepare
+notify:
+  webhooks:
+    - url: https://riot.nordgedanken.de:4051/services/hooks/Y2lyY2xlY2lfc2VydmljZQ

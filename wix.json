@@ -1,0 +1,44 @@
+{
+  "product": "Morpheusv2",
+  "company": "Nordgedanken",
+  "license": "LICENSE",
+  "upgrade-code": "07ea6b62-c4cd-4154-9120-a159f90d4e96",
+  "files": {
+    "guid": "f872c0e3-2cf5-4bee-a961-7a8bf145cf89",
+    "items": [
+      "Morpheusv2.exe"
+    ]
+  },
+  "env": {
+    "guid": "417a48b3-e40b-4909-8e70-34de45576a29",
+    "vars": [
+      {
+        "name": "PATH",
+        "value": "[INSTALLDIR]",
+        "permanent": "no",
+        "system": "no",
+        "action": "set",
+        "part": "last"
+      }
+    ]
+  },
+  "shortcuts": {
+    "guid": "6743f868-7229-4caa-9064-d05ee7fca370",
+    "items": [
+      {
+        "name": "Morpheusv2",
+        "description": "A Matrix client written in Go-QT",
+        "target": "[INSTALLDIR]\\Morpheusv2.exe",
+        "wdir": "INSTALLDIR",
+        "arguments": "",
+        "icon": "morpheus.ico"
+      }
+    ]
+  },
+  "choco": {
+    "description": "A Matrix client written in Go-QT",
+    "project-url": "https://github.com/Nordgedanken/Morpheusv2",
+    "tags": "matrix chat go client",
+    "license-url": "https://github.com/Nordgedanken/Morpheusv2/blob/master/LICENSE"
+  }
+}
