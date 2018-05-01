@@ -21,10 +21,6 @@ jobs:
           name: Get Go Dependencies
           working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
           command: dep ensure
-      - run:
-          name: Get Go Dependencies
-          working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
-          command: cp -RfT /home/user/work/src/github.com/therecipe/ vendor/github.com/therecipe/
       - persist_to_workspace:
           # Must be an absolute path, or relative path from working_directory
           root: /home/user/work/
@@ -42,6 +38,10 @@ jobs:
           name: Update Build Deps
           working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
           command: apt-get update -y -qq && apt-get install apt -y -qq && add-apt-repository ppa:ubuntu-toolchain-r/test -y && apt-get update -y -qq && apt-get -y -qq install gcc-5 g++-5 && rm -f /usr/bin/gcc && ln -s /usr/bin/gcc-5 /usr/bin/gcc && rm -f /usr/bin/g++ && ln -s /usr/bin/g++-5 /usr/bin/g++
+      - run:
+          name: Copy QT
+          working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
+          command: cp -RfT /home/user/work/src/github.com/therecipe/ vendor/github.com/therecipe/
       - run:
           name: Run Build
           working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
@@ -72,6 +72,10 @@ jobs:
           # Must be absolute path or relative path from working_directory
           at: /home/user/work/
       - run:
+          name: Copy QT
+          working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
+          command: cp -RfT /home/user/work/src/github.com/therecipe/ vendor/github.com/therecipe/
+      - run:
           name: Generate additional binding files
           working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
           command: $GOPATH/bin/qtrcc desktop && $GOPATH/bin/qtmoc desktop
@@ -87,6 +91,10 @@ jobs:
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
           at: /home/user/work/
+      - run:
+          name: Copy QT
+          working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
+          command: cp -RfT /home/user/work/src/github.com/therecipe/ vendor/github.com/therecipe/
       - run:
           name: Run Build
           working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/

@@ -1,0 +1,22 @@
+{
+  "Vendor": true,
+  "Cyclo": 12,
+  "Deadline": "5m",
+  "Enable": [
+    "vetshadow",
+    "deadcode",
+    "gocyclo",
+    "golint",
+    "varcheck",
+    "structcheck",
+    "ineffassign",
+    "gas",
+    "misspell",
+    "unparam",
+    "errcheck",
+    "vet",
+    "megacheck",
+    "goconst",
+    "maligned"
+  ]
+}
