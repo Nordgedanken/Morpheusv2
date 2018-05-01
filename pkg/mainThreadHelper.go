@@ -14,14 +14,20 @@
 
 package pkg
 
+import "sync"
+
+var wg sync.WaitGroup
+
 // Main runs the main SDL service loop.
 // The binary's main.main must call sdl.Main() to run this loop.
 // Main does not return. If the binary needs to do other work, it
 // must do it in separate goroutines.
 func Main() {
 	for f := range mainfunc {
+		wg.Add(1)
 		f()
 	}
+	wg.Wait()
 }
 
 // queue of work to run in main thread.
@@ -35,4 +41,5 @@ func Do(f func()) {
 		done <- true
 	}
 	<-done
+	wg.Done()
 }

@@ -27,13 +27,13 @@ func init() {
 
 func main() {
 	go pkg.Do(cmd.Execute)
-	go func() {
+	/*go func() {
 		for {
 			pkg.Do(noop)
 		}
-	}()
+	}()*/
 
 	pkg.Main()
 }
 
-func noop() {}
+/*func noop() {}*/
