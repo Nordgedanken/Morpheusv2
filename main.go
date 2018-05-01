@@ -23,14 +23,17 @@ import (
 	"syscall"
 )
 
+var c = make(chan os.Signal, 2)
+
 // Arrange that main.main runs on main thread.
 func init() {
 	runtime.LockOSThread()
 }
 
 func main() {
-	c := make(chan os.Signal, 2)
-	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+	go pkg.Do(func() {
+		signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+	})
 	go func() {
 		<-c
 		pkg.Stop()
