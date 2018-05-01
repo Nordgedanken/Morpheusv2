@@ -75,6 +75,7 @@ func initApp() {
 		pkg.Stop()
 	})
 
+	widgets.QApplication_Exec()
 }
 
 func SetNewWindow(ui ui, window widgets.QMainWindow) error {
@@ -85,5 +86,6 @@ func SetNewWindow(ui ui, window widgets.QMainWindow) error {
 	}
 	ui.GetWidget().Resize2(windowWidth, windowHeight)
 	window.SetCentralWidget(ui.GetWidget())
+	window.Show()
 	return nil
 }
