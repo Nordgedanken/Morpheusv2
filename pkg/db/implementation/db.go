@@ -2,9 +2,8 @@ package implementation
 
 import (
 	"database/sql"
-	// Go-sqlite3 side effect import needed to use SQLite3 databases
 	"fmt"
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/mattn/go-sqlite3" // Go-sqlite3 side effect import needed to use SQLite3 databases
 	"github.com/shibukawa/configdir"
 	"log"
 	"path/filepath"
