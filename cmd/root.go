@@ -19,7 +19,7 @@ import (
 	"os"
 
 	"github.com/Nordgedanken/Morpheusv2/pkg/app"
-	sqlite "github.com/Nordgedanken/Morpheusv2/pkg/db/sqlite"
+	"github.com/Nordgedanken/Morpheusv2/pkg/db/sqlite"
 	"github.com/Nordgedanken/Morpheusv2/pkg/util"
 	"github.com/shibukawa/configdir"
 	"github.com/spf13/cobra"
