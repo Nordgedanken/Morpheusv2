@@ -18,7 +18,8 @@ type Room interface {
 	// Handled using global "own User"
 	//SetCli(cli *gomatrix.Client)
 	SetRoomID(id string)
-	SetRoomAliases(aliases map[int64]string)
+	GetRoomID() string
+	GetRoomAliases() map[int64]string
 	GetName() (string, error)
 	GetAvatar() (string, error)
 	GetTopic() (string, error)
