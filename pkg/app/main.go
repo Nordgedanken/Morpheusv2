@@ -17,13 +17,10 @@ package app
 import (
 	"github.com/Nordgedanken/Morpheusv2/pkg/mainUI"
 	"github.com/matrix-org/gomatrix"
-	"github.com/shibukawa/configdir"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/widgets"
 	"log"
-	"os"
-	"path/filepath"
 )
 
 var args []string
@@ -38,13 +35,13 @@ func Start(argsArg []string) error {
 	log.Println("Starting Morpheus v2")
 
 	// Init Logs and folders
-	configDirs := configdir.New("Nordgedanken", "Morpheus")
+	/*configDirs := configdir.New("Nordgedanken", "Morpheusv2")
 	if _, StatErr := os.Stat(filepath.ToSlash(configDirs.QueryFolders(configdir.Global)[0].Path) + "/log/"); os.IsNotExist(StatErr) {
 		MkdirErr := os.MkdirAll(filepath.ToSlash(configDirs.QueryFolders(configdir.Global)[0].Path)+"/log/", 0700)
 		if MkdirErr != nil {
 			return MkdirErr
 		}
-	}
+	}*/
 
 	initApp()
 

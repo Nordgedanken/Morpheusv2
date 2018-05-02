@@ -19,19 +19,21 @@ import (
 	"os"
 
 	"github.com/Nordgedanken/Morpheusv2/pkg/app"
+	dbImpl "github.com/Nordgedanken/Morpheusv2/pkg/db/implementation"
 	"github.com/spf13/cobra"
+	"log"
 )
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "Morpheusv2",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Use: "Morpheusv2",
+	PreRun: func(cmd *cobra.Command, args []string) {
+		dbImpl.Init()
+		log.Println("DB Set Up")
+	},
+	// TODO add descriptions
+	Short: "",
+	Long:  ``,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	RunE: func(cmd *cobra.Command, args []string) error {
