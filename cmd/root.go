@@ -19,7 +19,8 @@ import (
 	"os"
 
 	"github.com/Nordgedanken/Morpheusv2/pkg/app"
-	dbImpl "github.com/Nordgedanken/Morpheusv2/pkg/db/sqlite"
+	sqlite "github.com/Nordgedanken/Morpheusv2/pkg/db/sqlite"
+	"github.com/Nordgedanken/Morpheusv2/pkg/util"
 	"github.com/shibukawa/configdir"
 	"github.com/spf13/cobra"
 	"io"
@@ -59,7 +60,8 @@ var rootCmd = &cobra.Command{
 		log.SetOutput(mw)
 
 		// dbImpl.Init() generates the needed tables if needed before the app starts
-		err = dbImpl.Init()
+		util.DB = &sqlite.SQLite{}
+		err = util.DB.Init()
 		if err != nil {
 			return err
 		}
