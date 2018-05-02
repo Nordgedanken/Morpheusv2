@@ -21,12 +21,18 @@ jobs:
           name: Get Go Dependencies
           working_directory: /home/user/work/src/github.com/Nordgedanken/Morpheusv2/
           command: dep ensure
+      - run:
+          name: Setup Code Climate test-reporter
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
       - persist_to_workspace:
           # Must be an absolute path, or relative path from working_directory
           root: /home/user/work/
           # Must be relative path from root
           paths:
             - src/
+            - ./cc-test-reporter
   build_linux:
     docker:
       - image: therecipe/qt:linux

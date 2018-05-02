@@ -9,6 +9,12 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/matrix-org/gomatrix"
+  packages = ["."]
+  revision = "a7fc80c8060c2544fe5d4dae465b584f8e9b4e27"
+
+[[projects]]
+  branch = "master"
   name = "github.com/shibukawa/configdir"
   packages = ["."]
   revision = "e180dbdc8da04c4fa04272e875ce64949f38bd3e"

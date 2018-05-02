@@ -19,19 +19,57 @@ import (
 	"os"
 
 	"github.com/Nordgedanken/Morpheusv2/pkg/app"
+	dbImpl "github.com/Nordgedanken/Morpheusv2/pkg/db/implementation"
+	"github.com/shibukawa/configdir"
 	"github.com/spf13/cobra"
+	"io"
+	"log"
+	"path/filepath"
 )
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "Morpheusv2",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+	Use: "Morpheusv2",
+	PreRunE: func(cmd *cobra.Command, args []string) error {
+		// Init Logs and folders
+		// configdir.New gets the Config Paths that are available on this system
+		configDirs := configdir.New("Nordgedanken", "Morpheusv2")
+		// path holds the global configdir of the system with the log folder appended
+		path := filepath.ToSlash(configDirs.QueryFolders(configdir.Global)[0].Path + "/log/")
+		logFilePath := filepath.ToSlash(path + "main.log")
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+		// This checks if the directory is missing and if that's the case to generate the directory
+		if _, StatErr := os.Stat(path); os.IsNotExist(StatErr) {
+			MkdirErr := os.MkdirAll(path, os.ModeDir)
+			if MkdirErr != nil {
+				return MkdirErr
+			}
+		}
+
+		// os.OpenFile opens the file where the log is supposed to be written to
+		logFile, err := os.OpenFile(logFilePath, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
+		if err != nil {
+			return err
+		}
+
+		// MultiWriter makes it possible to print log to both log File and console
+		mw := io.MultiWriter(os.Stdout, logFile)
+
+		// SetOutput tells the log where to write to
+		log.SetOutput(mw)
+
+		// dbImpl.Init() generates the needed tables if needed before the app starts
+		err = dbImpl.Init()
+		if err != nil {
+			return err
+		}
+
+		log.Println("DB Set Up")
+		return nil
+	},
+	// TODO add descriptions
+	Short: "",
+	Long:  ``,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	RunE: func(cmd *cobra.Command, args []string) error {
