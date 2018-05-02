@@ -8,6 +8,7 @@ import (
 	"github.com/therecipe/qt/widgets"
 )
 
+// MainUI defines the data for the main ui (that one with the chats)
 type MainUI struct {
 	widget       *widgets.QWidget
 	cli          *gomatrix.Client
@@ -26,14 +27,17 @@ func NewMainUI(windowWidth, windowHeight int, window *widgets.QMainWindow) (main
 	return
 }
 
+// MainUI.SetCli sets the gomatrix Client for the MainUI
 func (m *MainUI) SetCli(cli *gomatrix.Client) {
 	m.cli = cli
 }
 
+// MainUI.GetWidget returns the QWidget of the MainUI
 func (m *MainUI) GetWidget() (widget *widgets.QWidget) {
 	return m.widget
 }
 
+// MainUI.NewUI prepares the new UI
 func (m *MainUI) NewUI() error {
 	m.widget = widgets.NewQWidget(nil, 0)
 
