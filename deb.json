@@ -50,7 +50,7 @@
       "description":"A Matrix client written in Go-QT ",
       "generic-name":"Matrix Client",
       "exec":"/usr/bin/Morpheusv2.sh",
-      "icon":"pkg/qml/resources/logos/MorpheusBig.png",
+      "icon":"qml/resources/logos/MorpheusBig.png",
       "type":"Application",
       "keywords":"matrix;Morpheusv2",
       "startup-notify": false,
