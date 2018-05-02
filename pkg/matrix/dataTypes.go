@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+// User defines a Interface to allow multiple User type Implementations
 type User interface {
 	SetCli(cli *gomatrix.Client)
 	SetMXID(id string)
@@ -12,6 +13,7 @@ type User interface {
 	GetAvatar(roomID string) (string, error)
 }
 
+// Room defines a Interface to allow multiple Room type Implementations
 type Room interface {
 	// Handled using global "own User"
 	//SetCli(cli *gomatrix.Client)
@@ -23,6 +25,7 @@ type Room interface {
 	GetMessages() (map[string]Message, error)
 }
 
+// Message defines a Interface to allow multiple Message type Implementations
 type Message interface {
 	// Handled using global "own User"
 	//SetCli(cli *gomatrix.Client)
