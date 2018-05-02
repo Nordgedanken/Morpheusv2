@@ -12,6 +12,7 @@ import (
 var db *sql.DB
 
 // Init prepares the DB by opening it and creating the required tables if needed
+// TODO: Make part of the interface
 func Init() (err error) {
 	log.Println("Start setting up DB")
 	var openErr error
