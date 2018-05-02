@@ -7,7 +7,6 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/shibukawa/configdir"
 	"log"
-	"os"
 	"path/filepath"
 )
 
@@ -21,14 +20,6 @@ func Init() (err error) {
 	// Open the data.db file. It will be created if it doesn't exist.
 	configDirs := configdir.New("Nordgedanken", "Morpheusv2")
 	filePath := filepath.ToSlash(configDirs.QueryFolders(configdir.Global)[0].Path)
-
-	if _, StatErr := os.Stat(filePath); os.IsNotExist(StatErr) {
-		MkdirErr := os.MkdirAll(filePath, os.ModeDir)
-		if MkdirErr != nil {
-			err = MkdirErr
-			return
-		}
-	}
 
 	log.Println("DBFilePath: ", filePath+"/data.db")
 	db, openErr = sql.Open("sqlite3", filePath+"/data.db")
