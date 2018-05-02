@@ -16,7 +16,6 @@ package main
 
 import (
 	"github.com/Nordgedanken/Morpheusv2/cmd"
-	"github.com/Nordgedanken/Morpheusv2/pkg"
 	"os"
 	"os/signal"
 	"syscall"
@@ -24,21 +23,11 @@ import (
 
 var c = make(chan os.Signal, 2)
 
-// Arrange that main.main runs on main thread.
-/*func init() {
-	runtime.LockOSThread()
-}*/
-
 func main() {
-	go pkg.Do(func() {
-		signal.Notify(c, os.Interrupt, syscall.SIGTERM)
-	})
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 	go func() {
 		<-c
-		pkg.Stop()
 		os.Exit(1)
 	}()
-	go pkg.Do(cmd.Execute)
-
-	pkg.Main()
+	cmd.Execute()
 }

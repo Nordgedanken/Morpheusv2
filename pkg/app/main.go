@@ -15,7 +15,6 @@
 package app
 
 import (
-	"github.com/Nordgedanken/Morpheusv2/pkg"
 	"github.com/Nordgedanken/Morpheusv2/pkg/mainUI"
 	"github.com/matrix-org/gomatrix"
 	"github.com/shibukawa/configdir"
@@ -47,16 +46,12 @@ func Start(argsArg []string) error {
 		}
 	}
 
-	go pkg.Do(initApp)
+	initApp()
 
-	go pkg.Do(func() {
-		mainUIS := mainUI.NewMainUI(windowWidth, windowHeight, window)
-		SetNewWindow(mainUIS, window)
-	})
+	mainUIS := mainUI.NewMainUI(windowWidth, windowHeight, window)
+	SetNewWindow(mainUIS, window)
 
-	go pkg.Do(func() {
-		widgets.QApplication_Exec()
-	})
+	widgets.QApplication_Exec()
 
 	return nil
 }
@@ -83,7 +78,7 @@ func initApp() {
 	window.Move2(windowX, windowY)
 
 	app.ConnectQuit(func() {
-		pkg.Stop()
+		log.Println("Morpheus closed")
 	})
 
 }
