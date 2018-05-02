@@ -10,7 +10,6 @@ import (
 )
 
 // Init prepares the DB by opening it and creating the required tables if needed
-// TODO: Make part of the interface
 func (s *SQLite) Init() (err error) {
 	log.Println("Start setting up DB")
 	var openErr error
