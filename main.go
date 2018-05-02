@@ -19,16 +19,15 @@ import (
 	"github.com/Nordgedanken/Morpheusv2/pkg"
 	"os"
 	"os/signal"
-	"runtime"
 	"syscall"
 )
 
 var c = make(chan os.Signal, 2)
 
 // Arrange that main.main runs on main thread.
-func init() {
+/*func init() {
 	runtime.LockOSThread()
-}
+}*/
 
 func main() {
 	go pkg.Do(func() {
