@@ -59,8 +59,54 @@ func (s *SQLite) SaveRoom(Room matrix.Room) error {
 	return tx.Commit()
 }
 
+// GetRooms returns all Rooms from the Database
 func (s *SQLite) GetRooms() (rooms []matrix.Room, err error) {
-	return nil, nil
+	if s.db == nil {
+		s.db = s.Open()
+	}
+
+	rows, err := s.db.Query("SELECT id, room_aliases, room_name, room_avatar, room_topic, room_messages FROM rooms")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var roomID string
+		var roomAliases string
+		var roomName string
+		var roomAvatar string
+		var roomTopic string
+		var roomMessages string
+		err = rows.Scan(&roomID, &roomAliases, &roomName, &roomAvatar, &roomTopic, &roomMessages)
+		if err != nil {
+			return nil, err
+		}
+
+		// TODO replace with implementation
+		roomI := matrix.Room{}
+		roomI.SetRoomID(roomID)
+		var aliases []string
+		err := json.Unmarshal([]byte(roomAliases), &aliases)
+		if err != nil {
+			return nil, err
+		}
+		roomI.SetRoomAliases(aliases)
+		roomI.SetName(roomName)
+		roomI.SetAvatar(roomAvatar)
+		roomI.SetTopic(roomTopic)
+		var messages []matrix.Message
+		err = json.Unmarshal([]byte(roomMessages), &messages)
+		if err != nil {
+			return nil, err
+		}
+		roomI.SetMessages(messages)
+
+		rooms = append(rooms, roomI)
+	}
+
+	// get any error encountered during iteration
+	return rooms, rows.Err()
 }
 
 func (s *SQLite) GetRoom(roomID string) (room matrix.Room, err error) {
