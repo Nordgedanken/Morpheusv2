@@ -67,7 +67,7 @@ func (s *SQLite) GetRooms() (rooms []matrix.Room, err error) {
 
 	rows, err := s.db.Query("SELECT id, room_aliases, room_name, room_avatar, room_topic, room_messages FROM rooms")
 	if err != nil {
-		return nil, err
+		return
 	}
 	defer rows.Close()
 
@@ -80,16 +80,16 @@ func (s *SQLite) GetRooms() (rooms []matrix.Room, err error) {
 		var roomMessages string
 		err = rows.Scan(&roomID, &roomAliases, &roomName, &roomAvatar, &roomTopic, &roomMessages)
 		if err != nil {
-			return nil, err
+			return
 		}
 
 		// TODO replace with implementation
 		roomI := matrix.Room{}
 		roomI.SetRoomID(roomID)
 		var aliases []string
-		err := json.Unmarshal([]byte(roomAliases), &aliases)
+		err = json.Unmarshal([]byte(roomAliases), &aliases)
 		if err != nil {
-			return nil, err
+			return
 		}
 		roomI.SetRoomAliases(aliases)
 		roomI.SetName(roomName)
@@ -98,7 +98,7 @@ func (s *SQLite) GetRooms() (rooms []matrix.Room, err error) {
 		var messages []matrix.Message
 		err = json.Unmarshal([]byte(roomMessages), &messages)
 		if err != nil {
-			return nil, err
+			return
 		}
 		roomI.SetMessages(messages)
 
@@ -106,9 +106,53 @@ func (s *SQLite) GetRooms() (rooms []matrix.Room, err error) {
 	}
 
 	// get any error encountered during iteration
-	return rooms, rows.Err()
+	err = rows.Err()
+	return
 }
 
-func (s *SQLite) GetRoom(roomID string) (room matrix.Room, err error) {
-	return nil, nil
+// GetRoom returns the Room where the id matches the roomID
+func (s *SQLite) GetRoom(roomID string) (roomR matrix.Room, err error) {
+	if s.db == nil {
+		s.db = s.Open()
+	}
+
+	stmt, err := s.db.Prepare(`SELECT room_aliases, room_name, room_avatar, room_topic, room_messages FROM rooms WHERE id=$1`)
+	if err != nil {
+		return
+	}
+	defer stmt.Close()
+
+	row := stmt.QueryRow(roomID)
+
+	var roomAliases string
+	var roomName string
+	var roomAvatar string
+	var roomTopic string
+	var roomMessages string
+	err = row.Scan(&roomAliases, &roomName, &roomAvatar, &roomTopic, &roomMessages)
+	if err != nil {
+		return
+	}
+
+	// TODO replace with implementation
+	roomI := matrix.Room{}
+	roomI.SetRoomID(roomID)
+	var aliases []string
+	err = json.Unmarshal([]byte(roomAliases), &aliases)
+	if err != nil {
+		return
+	}
+	roomI.SetRoomAliases(aliases)
+	roomI.SetName(roomName)
+	roomI.SetAvatar(roomAvatar)
+	roomI.SetTopic(roomTopic)
+	var messages []matrix.Message
+	err = json.Unmarshal([]byte(roomMessages), &messages)
+	if err != nil {
+		return
+	}
+	roomI.SetMessages(messages)
+
+	roomR = roomI
+	return
 }
