@@ -1,8 +1,7 @@
 package sqlite
 
 import (
-	"bytes"
-	"encoding/binary"
+	"encoding/json"
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix"
 )
 
@@ -24,17 +23,11 @@ func (s *SQLite) SaveRoom(Room matrix.Room) error {
 	defer stmt.Close()
 
 	aliases := Room.GetRoomAliases()
-	i := 0
-	var aliasesBuffer bytes.Buffer
-	for _, v := range aliases {
-		if i == 0 {
-			aliasesBuffer.WriteString(v)
-			i++
-		} else {
-			aliasesBuffer.WriteString("," + v)
-		}
+	aliasesBytes, err := json.Marshal(aliases)
+	if err != nil {
+		return err
 	}
-	aliasesS := aliasesBuffer.String()
+	aliasesS := string(aliasesBytes)
 	roomID := Room.GetRoomID()
 	name, err := Room.GetName()
 	if err != nil {
@@ -49,22 +42,15 @@ func (s *SQLite) SaveRoom(Room matrix.Room) error {
 		return err
 	}
 
-	// TODO This looks very fragile. REDO
 	messages, err := Room.GetMessages()
 	if err != nil {
 		return err
 	}
-	var messagesBuffer bytes.Buffer
-	for _, v := range messages {
-		if i == 0 {
-			binary.Write(&messagesBuffer, binary.BigEndian, v)
-			i++
-		} else {
-			messagesBuffer.WriteString(",")
-			binary.Write(&messagesBuffer, binary.BigEndian, v)
-		}
+	messagesBytes, err := json.Marshal(messages)
+	if err != nil {
+		return err
 	}
-	messagesS := messagesBuffer.String()
+	messagesS := string(messagesBytes)
 
 	_, err = stmt.Exec(aliasesS, roomID, name, avatar, topic, messagesS)
 	if err != nil {

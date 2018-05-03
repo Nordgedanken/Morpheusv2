@@ -11,6 +11,8 @@ type User interface {
 	SetMXID(id string)
 	GetDisplayName(roomID string) (string, error)
 	GetAvatar(roomID string) (string, error)
+
+	//Implement  MarshalJSON() (b []byte, e error) as in http://gregtrowbridge.com/golang-json-serialization-with-interfaces/ to support json
 }
 
 // Room defines a Interface to allow multiple Room type Implementations
@@ -19,11 +21,13 @@ type Room interface {
 	//SetCli(cli *gomatrix.Client)
 	SetRoomID(id string)
 	GetRoomID() string
-	GetRoomAliases() map[int64]string
+	GetRoomAliases() []string
 	GetName() (string, error)
 	GetAvatar() (string, error)
 	GetTopic() (string, error)
-	GetMessages() (map[string]Message, error)
+	GetMessages() ([]Message, error)
+
+	//Implement  MarshalJSON() (b []byte, e error) as in http://gregtrowbridge.com/golang-json-serialization-with-interfaces/ to support json
 }
 
 // Message defines a Interface to allow multiple Message type Implementations
@@ -36,4 +40,6 @@ type Message interface {
 	SetMessage(message string)
 	SetTimestamp(ts *time.Time)
 	Show() error
+
+	//Implement  MarshalJSON() (b []byte, e error) as in http://gregtrowbridge.com/golang-json-serialization-with-interfaces/ to support json
 }
