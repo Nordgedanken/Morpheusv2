@@ -25,13 +25,15 @@ type Room interface {
 	SetAvatar(string)
 	SetTopic(string)
 	SetMessages([]Message)
+	SetMessageIDS([]string)
 
 	GetRoomID() string
 	GetRoomAliases() []string
 	GetName() (string, error)
 	GetAvatar() (string, error)
 	GetTopic() (string, error)
-	GetMessages() ([]Message, error)
+	GetMessages([]Message)
+	GetMessageIDS() ([]string, error)
 
 	//Implement  MarshalJSON() (b []byte, e error) as in http://gregtrowbridge.com/golang-json-serialization-with-interfaces/ to support json
 }
