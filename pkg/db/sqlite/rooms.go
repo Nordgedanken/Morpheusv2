@@ -59,7 +59,7 @@ func (s *SQLite) SaveRoom(Room matrix.Room) error {
 	return tx.Commit()
 }
 
-func (s *SQLite) GetRooms() (rooms map[string]matrix.Room, err error) {
+func (s *SQLite) GetRooms() (rooms []matrix.Room, err error) {
 	return nil, nil
 }
 
