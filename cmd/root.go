@@ -48,7 +48,7 @@ var rootCmd = &cobra.Command{
 		}
 
 		// os.OpenFile opens the file where the log is supposed to be written to
-		logFile, err := os.OpenFile(logFilePath, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
+		logFile, err := os.OpenFile(logFilePath, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0600)
 		if err != nil {
 			return err
 		}
