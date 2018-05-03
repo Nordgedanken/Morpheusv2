@@ -17,7 +17,7 @@ func (s *SQLite) SaveRoom(Room matrix.Room) error {
 		return err
 	}
 
-	stmt, err := tx.Prepare("INSERT INTO rooms (room_aliases, room_id, room_name, room_avatar, room_topic, room_messages) VALUES (?, ?, ?, ?, ?, ?)")
+	stmt, err := tx.Prepare("INSERT INTO rooms (room_aliases, id, room_name, room_avatar, room_topic, room_messages) VALUES (?, ?, ?, ?, ?, ?)")
 	if err != nil {
 		return err
 	}
