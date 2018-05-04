@@ -51,6 +51,13 @@ type Message interface {
 	SetAuthorMXID(mxid string)
 	SetMessage(message string)
 	SetTimestamp(ts *time.Time)
+
+	GetEventID() (id string)
+	GetEvent() (event *gomatrix.Event)
+	GetAuthorMXID() (mxid string)
+	GetMessage() (message string)
+	GetTimestamp() (ts *time.Time)
+
 	Show() error
 
 	//Implement  MarshalJSON() (b []byte, e error) as in http://gregtrowbridge.com/golang-json-serialization-with-interfaces/ to support json
