@@ -143,12 +143,12 @@ func (s *SQLite) GetRoom(roomID string) (roomR matrix.Room, err error) {
 	roomI.SetName(roomName)
 	roomI.SetAvatar(roomAvatar)
 	roomI.SetTopic(roomTopic)
-	var messages []string
-	err = json.Unmarshal([]byte(roomMessages), &messages)
+	var messageIDs []string
+	err = json.Unmarshal([]byte(roomMessages), &messageIDs)
 	if err != nil {
 		return
 	}
-	roomI.SetMessageIDS(messages)
+	roomI.SetMessageIDS(messageIDs)
 	// TODO Convert IDs to messages slice using another call or from the beginning on using a JOIN
 	roomI.SetMessages(messages)
 

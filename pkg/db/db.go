@@ -20,6 +20,6 @@ type DB interface {
 	GetCurrentUser() (userR matrix.User, err error)
 
 	SaveMessage(message matrix.Message) error
-	GetMessages(eventIDs []string) (users []matrix.Message, err error)
+	GetMessages(eventIDs []string) (messages []matrix.Message, err error)
 	GetMessage(eventID string) (matrix.Message, error)
 }

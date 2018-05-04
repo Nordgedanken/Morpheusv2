@@ -1,6 +1,11 @@
 package sqlite
 
-import "github.com/Nordgedanken/Morpheusv2/pkg/matrix"
+import (
+	"encoding/json"
+	"github.com/Nordgedanken/Morpheusv2/pkg/matrix"
+	"github.com/matrix-org/gomatrix"
+	"time"
+)
 
 // SaveMessage saves message Events to the DB
 func (s *SQLite) SaveMessage(message matrix.Message) error {
@@ -33,8 +38,48 @@ func (s *SQLite) SaveMessage(message matrix.Message) error {
 	return tx.Commit()
 }
 
-func (s *SQLite) GetMessages(eventIDs []string) (users []matrix.Message, err error) {
-	return nil, nil
+// GetMessages returns all Messages from the Database
+func (s *SQLite) GetMessages(eventIDs []string) (messages []matrix.Message, err error) {
+	if s.db == nil {
+		s.db = s.Open()
+	}
+
+	rows, err := s.db.Query("SELECT id, author_id, message, timestamp, pure_event FROM messages")
+	if err != nil {
+		return
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var eventID string
+		var authorID string
+		var messageS string
+		var timestamp time.Time
+		var pureEvent string
+		err = rows.Scan(&eventID, &authorID, &messageS, &timestamp, &pureEvent)
+		if err != nil {
+			return
+		}
+
+		// TODO replace with implementation
+		messageI := matrix.Message{}
+		messageI.SetEventID(eventID)
+		messageI.SetAuthorMXID(authorID)
+		messageI.SetMessage(messageS)
+		messageI.SetTimestamp(&timestamp)
+		var gomatrixEvent gomatrix.Event
+		err = json.Unmarshal([]byte(pureEvent), &gomatrixEvent)
+		if err != nil {
+			return
+		}
+		messageI.SetEvent(&gomatrixEvent)
+
+		messages = append(messages, messageI)
+	}
+
+	// get any error encountered during iteration
+	err = rows.Err()
+	return
 }
 
 func (s *SQLite) GetMessage(eventID string) (matrix.Message, error) {
