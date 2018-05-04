@@ -9,6 +9,8 @@ import (
 type User interface {
 	SetCli(cli *gomatrix.Client)
 	SetMXID(id string)
+
+	GetMXID() string
 	GetDisplayName(roomID string) (string, error)
 	GetAvatar(roomID string) (string, error)
 
