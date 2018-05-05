@@ -26,7 +26,7 @@ type DB interface {
 
 	SaveRoom(Room matrix.Room) error
 	GetRooms() (rooms []matrix.Room, err error)
-	GetRoom(roomID string) (room matrix.Room, err error)
+	GetRoom(roomID string) (roomR matrix.Room, err error)
 
 	SaveUser(user matrix.User) error
 	GetUsers() ([]matrix.User, error)
@@ -35,5 +35,5 @@ type DB interface {
 
 	SaveMessage(message matrix.Message) error
 	GetMessages(eventIDs []string) (messages []matrix.Message, err error)
-	GetMessage(eventID string) (matrix.Message, error)
+	GetMessage(eventID string) (messageR matrix.Message, err error)
 }

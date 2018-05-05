@@ -96,6 +96,41 @@ func (s *SQLite) GetMessages(eventIDs []string) (messages []matrix.Message, err 
 	return
 }
 
-func (s *SQLite) GetMessage(eventID string) (matrix.Message, error) {
-	return nil, nil
+func (s *SQLite) GetMessage(eventID string) (messageR matrix.Message, err error) {
+	if s.db == nil {
+		s.db = s.Open()
+	}
+
+	stmt, err := s.db.Prepare(`SELECT author_id, message, timestamp, pure_event FROM messages WHERE id=$1`)
+	if err != nil {
+		return
+	}
+	defer stmt.Close()
+
+	row := stmt.QueryRow(eventID)
+
+	var authorID string
+	var messageS string
+	var timestamp time.Time
+	var pureEvent string
+	err = row.Scan(&authorID, &messageS, &timestamp, &pureEvent)
+	if err != nil {
+		return
+	}
+
+	// TODO replace with implementation
+	messageI := matrix.Message{}
+	messageI.SetEventID(eventID)
+	messageI.SetAuthorMXID(authorID)
+	messageI.SetMessage(messageS)
+	messageI.SetTimestamp(&timestamp)
+	var gomatrixEvent gomatrix.Event
+	err = json.Unmarshal([]byte(pureEvent), &gomatrixEvent)
+	if err != nil {
+		return
+	}
+	messageI.SetEvent(&gomatrixEvent)
+
+	messageR = messageI
+	return
 }
