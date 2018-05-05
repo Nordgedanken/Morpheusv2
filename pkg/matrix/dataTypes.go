@@ -24,11 +24,12 @@ type User interface {
 	SetCli(cli *gomatrix.Client)
 	SetMXID(id string)
 	SetDisplayName(roomID string, name string)
-	SetAvatar(roomID string, avatar string)
+	SetAvatar(roomID string, avatar []byte)
 
 	GetMXID() string
 	GetDisplayName(roomID string) (string, error)
-	GetAvatar(roomID string) (string, error)
+	GetAvatar(roomID string) ([]byte, error)
+	GetCli() (cli *gomatrix.Client)
 
 	//Implement  MarshalJSON() (b []byte, e error) as in http://gregtrowbridge.com/golang-json-serialization-with-interfaces/ to support json
 }

@@ -78,7 +78,7 @@ func (r *Room) GetName() (string, error) {
 			Name string `json:"name"`
 		}
 		resp := &RespRoomName{}
-		err := util.Client.StateEvent(r.id, "m.room.name", "", resp)
+		err := util.User.GetCli().StateEvent(r.id, "m.room.name", "", resp)
 		if err != nil {
 			return "", err
 		}
@@ -91,7 +91,7 @@ func (r *Room) GetName() (string, error) {
 func (r *Room) GetAvatar() ([]byte, error) {
 	if r.avatar == nil {
 		resp := &gomatrix.Event{}
-		err := util.Client.StateEvent(r.id, "m.room.avatar", "", resp)
+		err := util.User.GetCli().StateEvent(r.id, "m.room.avatar", "", resp)
 		if err != nil {
 			return nil, err
 		}
@@ -107,8 +107,8 @@ func (r *Room) GetAvatar() ([]byte, error) {
 		split := strings.Split(url, "/")
 		servername := strings.TrimPrefix(split[0], "mxc://")
 		mediaID := split[1]
-		mediaURL := util.Client.BuildBaseURL("_matrix/media/r0/download", servername, mediaID)
-		avatar, err = util.Client.MakeRequest("GET", mediaURL, nil, nil)
+		mediaURL := util.User.GetCli().BuildBaseURL("_matrix/media/r0/download", servername, mediaID)
+		avatar, err = util.User.GetCli().MakeRequest("GET", mediaURL, nil, nil)
 		if err != nil {
 			return nil, err
 		}
@@ -121,7 +121,7 @@ func (r *Room) GetAvatar() ([]byte, error) {
 func (r *Room) GetTopic() (string, error) {
 	if r.topic == "" {
 		resp := &gomatrix.Event{}
-		err := util.Client.StateEvent(r.id, "m.room.topic", "", resp)
+		err := util.User.GetCli().StateEvent(r.id, "m.room.topic", "", resp)
 		if err != nil {
 			return "", err
 		}

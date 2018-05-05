@@ -14,35 +14,111 @@
 
 package users
 
-import "github.com/matrix-org/gomatrix"
+import (
+	"github.com/Nordgedanken/Morpheusv2/pkg/util"
+	"github.com/matrix-org/gomatrix"
+	"strings"
+)
 
+// User holds the needed User data and allows to work with that. It gets normally loaded from the cache
 type User struct {
+	cli                *gomatrix.Client
+	mxid               string
+	defaultDisplayName string
+	displayName        map[string]string
+	defaultAvatar      []byte
+	avatar             map[string][]byte
 }
 
+// SetCli adds the gomatrix.Client to the current User. This only happens if the User is the current User aka the one that logged into the client.
 func (u *User) SetCli(cli *gomatrix.Client) {
-
+	u.cli = cli
 }
 
+// SetMXID adds the mxid to the current User
 func (u *User) SetMXID(id string) {
-
+	u.mxid = id
 }
 
+// SetDisplayName adds the displayName to the current User
 func (u *User) SetDisplayName(roomID string, name string) {
-
+	if roomID == "" {
+		u.defaultDisplayName = name
+	} else {
+		if u.displayName == nil {
+			u.displayName = make(map[string]string)
+		}
+		u.displayName[roomID] = name
+	}
 }
 
-func (u *User) SetAvatar(roomID string, avatar string) {
-
+// SetAvatar adds the avatar to the current User
+func (u *User) SetAvatar(roomID string, avatar []byte) {
+	if roomID == "" {
+		u.defaultAvatar = avatar
+	} else {
+		if u.avatar == nil {
+			u.avatar = make(map[string][]byte)
+		}
+		u.avatar[roomID] = avatar
+	}
 }
 
+// GetMXID returns the mxid from the current User
 func (u *User) GetMXID() string {
-	return ""
+	return u.mxid
 }
 
+// GetDisplayName returns the displayName from the current User
 func (u *User) GetDisplayName(roomID string) (string, error) {
-	return "", nil
+	if roomID == "" {
+		if u.defaultDisplayName == "" {
+			resp, err := util.User.GetCli().GetDisplayName(u.mxid)
+			if err != nil {
+				return "", err
+			}
+			u.defaultDisplayName = resp.DisplayName
+		}
+		return u.defaultDisplayName, nil
+	} else {
+		// TODO get Membership Event from Room instead returning default directly
+		if u.displayName[roomID] == "" {
+			return u.defaultDisplayName, nil
+		}
+		return u.displayName[roomID], nil
+	}
 }
 
-func (u *User) GetAvatar(roomID string) (string, error) {
-	return "", nil
+// GetAvatar returns the avatar from the current User
+func (u *User) GetAvatar(roomID string) ([]byte, error) {
+	if roomID == "" {
+		if u.defaultAvatar == nil {
+			urlPath := util.User.GetCli().BuildURL("profile", u.mxid, "avatar_url")
+			s := struct {
+				AvatarURL string `json:"avatar_url"`
+			}{}
+
+			_, err := util.User.GetCli().MakeRequest("GET", urlPath, nil, &s)
+			if err != nil {
+				return nil, err
+			}
+
+			split := strings.Split(s.AvatarURL, "/")
+			servername := strings.TrimPrefix(split[0], "mxc://")
+			mediaID := split[1]
+			mediaURL := util.User.GetCli().BuildBaseURL("_matrix/media/r0/download", servername, mediaID)
+			avatar, err := util.User.GetCli().MakeRequest("GET", mediaURL, nil, nil)
+			if err != nil {
+				return nil, err
+			}
+			u.defaultAvatar = avatar
+		}
+		return u.defaultAvatar, nil
+	} else {
+		// TODO get Membership Event from Room instead returning default directly
+		if u.avatar[roomID] == nil {
+			return u.defaultAvatar, nil
+		}
+		return u.avatar[roomID], nil
+	}
 }

@@ -16,11 +16,11 @@ package util
 
 import (
 	"github.com/Nordgedanken/Morpheusv2/pkg/db"
-	"github.com/matrix-org/gomatrix"
+	"github.com/Nordgedanken/Morpheusv2/pkg/matrix"
 )
 
 // DB holds the main pointer to the Database
 var DB db.DB
 
-// Client holds the Current User as a gomatrix.CLient
-var Client *gomatrix.Client
+// User holds the Current User
+var User matrix.User
