@@ -40,15 +40,15 @@ func Start(argsArg []string) error {
 	initApp()
 
 	_, err := util.DB.GetCurrentUser()
-	// We special case ErrNoRows becuase this is expected to happen if user is missing
+	// We special case ErrNoRows because this is expected to happen if user is missing
 	if err == sql.ErrNoRows {
 		loginUIs := loginUI.NewLoginUI(windowWidth, windowHeight, window)
-		go SetNewWindow(loginUIs, window)
+		SetNewWindow(loginUIs, window)
 	} else if err != nil {
 		return err
 	} else {
 		mainUIs := mainUI.NewMainUI(windowWidth, windowHeight, window)
-		go SetNewWindow(mainUIs, window)
+		SetNewWindow(mainUIs, window)
 	}
 
 	widgets.QApplication_Exec()
