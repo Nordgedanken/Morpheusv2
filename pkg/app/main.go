@@ -15,6 +15,7 @@
 package app
 
 import (
+	"database/sql"
 	"github.com/Nordgedanken/Morpheusv2/pkg/loginUI"
 	"github.com/Nordgedanken/Morpheusv2/pkg/mainUI"
 	"github.com/Nordgedanken/Morpheusv2/pkg/util"
@@ -39,7 +40,7 @@ func Start(argsArg []string) error {
 	initApp()
 
 	user, err := util.DB.GetCurrentUser()
-	if err != nil {
+	if err != nil && err != sql.ErrNoRows {
 		return err
 	}
 	if user == nil {
