@@ -39,13 +39,13 @@ func Start(argsArg []string) error {
 
 	initApp()
 
-	user, err := util.DB.GetCurrentUser()
-	if err != nil && err != sql.ErrNoRows {
-		return err
-	}
-	if user == nil {
+	_, err := util.DB.GetCurrentUser()
+	// We special case ErrNoRows becuase this is expected to happen if user is missing
+	if err != sql.ErrNoRows {
 		loginUIs := loginUI.NewLoginUI(windowWidth, windowHeight, window)
 		go SetNewWindow(loginUIs, window)
+	} else if err != nil {
+		return err
 	} else {
 		mainUIs := mainUI.NewMainUI(windowWidth, windowHeight, window)
 		go SetNewWindow(mainUIs, window)
