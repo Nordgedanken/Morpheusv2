@@ -40,7 +40,7 @@ func (s *SQLite) Init() (err error) {
 	}
 
 	log.Println("Creating DB Tables if needed")
-	createTables := `CREATE TABLE IF NOT EXISTS users (id varchar not null primary key, display_name text, avatar text);
+	createTables := `CREATE TABLE IF NOT EXISTS users (id varchar not null primary key, display_name text, avatar text, access_token text, own integer);
 					CREATE TABLE IF NOT EXISTS messages (id varchar not null primary key, author_id varchar, message text, timestamp datetime, pure_event text);
 					CREATE TABLE IF NOT EXISTS rooms (id varchar not null primary key, room_aliases text, room_name text, room_avatar text, room_topic text, room_messages text);
 					`

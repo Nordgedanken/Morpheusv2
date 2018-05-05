@@ -60,21 +60,19 @@ func (s *SQLite) GetCurrentUser() (userR matrix.User, err error) {
 		s.db = s.Open()
 	}
 
-	// TODO Get from a file which user is current and accessToken
-	var mxid string
-	var accessToken string
-
-	stmt, err := s.db.Prepare(`SELECT display_name, avatar FROM users WHERE id=$1`)
+	stmt, err := s.db.Prepare(`SELECT id, display_name, avatar, access_token FROM users WHERE own=1`)
 	if err != nil {
 		return
 	}
 	defer stmt.Close()
 
-	row := stmt.QueryRow(mxid)
+	row := stmt.QueryRow()
 
+	var mxid string
 	var displayName string
 	var avatar string
-	err = row.Scan(&displayName, &avatar)
+	var accessToken string
+	err = row.Scan(&mxid, &displayName, &avatar, &accessToken)
 	if err != nil {
 		return
 	}
