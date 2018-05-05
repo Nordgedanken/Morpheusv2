@@ -65,7 +65,7 @@ func initApp() {
 	window.Resize2(windowWidth, windowHeight)
 	window.Move2(windowX, windowY)
 
-	app.ConnectQuit(func() {
+	window.ConnectCloseEvent(func(event *gui.QCloseEvent) {
 		log.Println("Morpheus closed")
 	})
 
