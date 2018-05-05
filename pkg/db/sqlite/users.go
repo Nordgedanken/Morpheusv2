@@ -16,6 +16,7 @@ package sqlite
 
 import (
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix"
+	"github.com/Nordgedanken/Morpheusv2/pkg/matrix/users"
 	"github.com/matrix-org/gomatrix"
 	"strings"
 )
@@ -54,7 +55,7 @@ func (s *SQLite) SaveUser(user matrix.User) error {
 }
 
 // GetUsers returns all Users of the Database
-func (s *SQLite) GetUsers() (users []matrix.User, err error) {
+func (s *SQLite) GetUsers() (usersR []matrix.User, err error) {
 	if s.db == nil {
 		s.db = s.Open()
 	}
@@ -74,13 +75,12 @@ func (s *SQLite) GetUsers() (users []matrix.User, err error) {
 			return
 		}
 
-		// TODO replace with implementation
-		userI := matrix.User{}
+		userI := &users.User{}
 		userI.SetMXID(mxid)
 		userI.SetDisplayName("", displayName)
 		userI.SetAvatar("", avatar)
 
-		users = append(users, userI)
+		usersR = append(usersR, userI)
 	}
 
 	// get any error encountered during iteration
@@ -113,8 +113,7 @@ func (s *SQLite) GetCurrentUser() (userR matrix.User, err error) {
 		return
 	}
 
-	// TODO replace with implementation
-	userI := matrix.User{}
+	userI := &users.User{}
 	userI.SetMXID(mxid)
 	userI.SetDisplayName("", displayName)
 	userI.SetAvatar("", avatar)
@@ -152,8 +151,7 @@ func (s *SQLite) GetUser(userID string) (userR matrix.User, err error) {
 		return
 	}
 
-	// TODO replace with implementation
-	userI := matrix.User{}
+	userI := &users.User{}
 	userI.SetMXID(userID)
 	userI.SetDisplayName("", displayName)
 	userI.SetAvatar("", avatar)

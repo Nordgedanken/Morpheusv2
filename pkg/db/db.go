@@ -29,7 +29,7 @@ type DB interface {
 	GetRoom(roomID string) (roomR matrix.Room, err error)
 
 	SaveUser(user matrix.User) error
-	GetUsers() ([]matrix.User, error)
+	GetUsers() (usersR []matrix.User, err error)
 	GetUser(userID string) (userR matrix.User, err error)
 	GetCurrentUser() (userR matrix.User, err error)
 
