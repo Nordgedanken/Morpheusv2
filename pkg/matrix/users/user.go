@@ -80,13 +80,12 @@ func (u *User) GetDisplayName(roomID string) (string, error) {
 			u.defaultDisplayName = resp.DisplayName
 		}
 		return u.defaultDisplayName, nil
-	} else {
-		// TODO get Membership Event from Room instead returning default directly
-		if u.displayName[roomID] == "" {
-			return u.defaultDisplayName, nil
-		}
-		return u.displayName[roomID], nil
 	}
+	// TODO get Membership Event from Room instead returning default directly
+	if u.displayName[roomID] == "" {
+		return u.defaultDisplayName, nil
+	}
+	return u.displayName[roomID], nil
 }
 
 // GetAvatar returns the avatar from the current User
@@ -114,13 +113,12 @@ func (u *User) GetAvatar(roomID string) ([]byte, error) {
 			u.defaultAvatar = avatar
 		}
 		return u.defaultAvatar, nil
-	} else {
-		// TODO get Membership Event from Room instead returning default directly
-		if u.avatar[roomID] == nil {
-			return u.defaultAvatar, nil
-		}
-		return u.avatar[roomID], nil
 	}
+	// TODO get Membership Event from Room instead returning default directly
+	if u.avatar[roomID] == nil {
+		return u.defaultAvatar, nil
+	}
+	return u.avatar[roomID], nil
 }
 
 // GetCli returns the gomatrix.Client from the current User
