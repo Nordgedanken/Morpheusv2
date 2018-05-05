@@ -53,6 +53,7 @@ func (s *SQLite) SaveMessage(message matrix.Message) error {
 	return tx.Commit()
 }
 
+// GetMessage returns the Message where the id matches the eventID
 func (s *SQLite) GetMessage(eventID string) (messageR matrix.Message, err error) {
 	if s.db == nil {
 		s.db = s.Open()

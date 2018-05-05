@@ -16,6 +16,7 @@ package sqlite
 
 import "database/sql"
 
+// SQLite implements a SQLite database for the db.DB interface
 type SQLite struct {
 	db *sql.DB
 }
