@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package mainUI
+package loginUI
 
 import (
 	"github.com/matrix-org/gomatrix"
@@ -22,8 +22,8 @@ import (
 	"github.com/therecipe/qt/widgets"
 )
 
-// MainUI defines the data for the main ui (that one with the chats)
-type MainUI struct {
+// LoginUI defines the data for the login ui
+type LoginUI struct {
 	widget       *widgets.QWidget
 	cli          *gomatrix.Client
 	window       *widgets.QMainWindow
@@ -31,9 +31,9 @@ type MainUI struct {
 	windowHeight int
 }
 
-// NewMainUI gives you a MainUI struct with prefilled data
-func NewMainUI(windowWidth, windowHeight int, window *widgets.QMainWindow) (mainUI *MainUI) {
-	mainUI = &MainUI{
+// NewLoginUI gives you a MainUI struct with profiled data
+func NewLoginUI(windowWidth, windowHeight int, window *widgets.QMainWindow) (loginUI *LoginUI) {
+	loginUI = &LoginUI{
 		windowWidth:  windowWidth,
 		windowHeight: windowHeight,
 		window:       window,
@@ -41,22 +41,22 @@ func NewMainUI(windowWidth, windowHeight int, window *widgets.QMainWindow) (main
 	return
 }
 
-// SetCli sets the gomatrix Client for the MainUI
-func (m *MainUI) SetCli(cli *gomatrix.Client) {
+// SetCli sets the gomatrix Client for the LoginUI
+func (m *LoginUI) SetCli(cli *gomatrix.Client) {
 	m.cli = cli
 }
 
-// GetWidget returns the QWidget of the MainUI
-func (m *MainUI) GetWidget() (widget *widgets.QWidget) {
+// GetWidget returns the QWidget of the LoginUI
+func (m *LoginUI) GetWidget() (widget *widgets.QWidget) {
 	return m.widget
 }
 
 // NewUI prepares the new UI
-func (m *MainUI) NewUI() error {
+func (m *LoginUI) NewUI() error {
 	m.widget = widgets.NewQWidget(nil, 0)
 
 	var loader = uitools.NewQUiLoader(nil)
-	var file = core.NewQFile2(":/qml/ui/chat.ui")
+	var file = core.NewQFile2(":/qml/ui/login.ui")
 
 	file.Open(core.QIODevice__ReadOnly)
 	mainWidget := loader.Load(file, m.widget)

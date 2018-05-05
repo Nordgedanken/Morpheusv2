@@ -15,7 +15,10 @@
 package app
 
 import (
+	"database/sql"
+	"github.com/Nordgedanken/Morpheusv2/pkg/loginUI"
 	"github.com/Nordgedanken/Morpheusv2/pkg/mainUI"
+	"github.com/Nordgedanken/Morpheusv2/pkg/util"
 	"github.com/matrix-org/gomatrix"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
@@ -36,11 +39,20 @@ func Start(argsArg []string) error {
 
 	initApp()
 
-	mainUIS := mainUI.NewMainUI(windowWidth, windowHeight, window)
-	SetNewWindow(mainUIS, window)
+	_, err := util.DB.GetCurrentUser()
+	// We special case ErrNoRows because this is expected to happen if user is missing
+	if err == sql.ErrNoRows {
+		loginUIs := loginUI.NewLoginUI(windowWidth, windowHeight, window)
+		SetNewWindow(loginUIs, window)
+	} else if err != nil {
+		return err
+	} else {
+		mainUIs := mainUI.NewMainUI(windowWidth, windowHeight, window)
+		SetNewWindow(mainUIs, window)
+	}
 
 	widgets.QApplication_Exec()
-
+  
 	return nil
 }
 
@@ -65,7 +77,7 @@ func initApp() {
 	window.Resize2(windowWidth, windowHeight)
 	window.Move2(windowX, windowY)
 
-	app.ConnectQuit(func() {
+	window.ConnectCloseEvent(func(event *gui.QCloseEvent) {
 		log.Println("Morpheus closed")
 	})
 

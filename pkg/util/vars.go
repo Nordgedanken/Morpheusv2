@@ -12,26 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package db
+package util
 
 import (
-	"database/sql"
+	"github.com/Nordgedanken/Morpheusv2/pkg/db"
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix"
 )
 
-// DB defines a Interface to allow multiple DB Implementations
-type DB interface {
-	Init() error
-	Open() *sql.DB
+// DB holds the main pointer to the Database
+var DB db.DB
 
-	SaveRoom(Room matrix.Room) error
-	GetRooms() (roomsR []matrix.Room, err error)
-	GetRoom(roomID string) (roomR matrix.Room, err error)
-
-	SaveUser(user matrix.User) error
-	GetUser(userID string) (userR matrix.User, err error)
-	GetCurrentUser() (userR matrix.User, err error)
-
-	SaveMessage(message matrix.Message) error
-	GetMessage(eventID string) (messageR matrix.Message, err error)
-}
+// User holds the Current User
+var User matrix.User
