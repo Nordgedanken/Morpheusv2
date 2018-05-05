@@ -17,6 +17,7 @@ package sqlite
 import (
 	"encoding/json"
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix"
+	"github.com/Nordgedanken/Morpheusv2/pkg/matrix/rooms"
 )
 
 // SaveRoom saves a Room into the sqlite DB
@@ -69,7 +70,7 @@ func (s *SQLite) SaveRoom(Room matrix.Room) error {
 }
 
 // GetRooms returns all Rooms from the Database
-func (s *SQLite) GetRooms() (rooms []matrix.Room, err error) {
+func (s *SQLite) GetRooms() (roomsR []matrix.Room, err error) {
 	if s.db == nil {
 		s.db = s.Open()
 	}
@@ -92,8 +93,7 @@ func (s *SQLite) GetRooms() (rooms []matrix.Room, err error) {
 			return
 		}
 
-		// TODO replace with implementation
-		roomI := matrix.Room{}
+		roomI := &rooms.Room{}
 		roomI.SetRoomID(roomID)
 		var aliases []string
 		err = json.Unmarshal([]byte(roomAliases), &aliases)
@@ -113,7 +113,7 @@ func (s *SQLite) GetRooms() (rooms []matrix.Room, err error) {
 		// TODO Convert IDs to messages slice using another call or from the beginning on using a JOIN
 		roomI.SetMessages(messages)
 
-		rooms = append(rooms, roomI)
+		roomsR = append(roomsR, roomI)
 	}
 
 	// get any error encountered during iteration
@@ -145,8 +145,7 @@ func (s *SQLite) GetRoom(roomID string) (roomR matrix.Room, err error) {
 		return
 	}
 
-	// TODO replace with implementation
-	roomI := matrix.Room{}
+	roomI := &rooms.Room{}
 	roomI.SetRoomID(roomID)
 	var aliases []string
 	err = json.Unmarshal([]byte(roomAliases), &aliases)

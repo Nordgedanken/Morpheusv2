@@ -25,7 +25,7 @@ type DB interface {
 	Open() *sql.DB
 
 	SaveRoom(Room matrix.Room) error
-	GetRooms() (rooms []matrix.Room, err error)
+	GetRooms() (roomsR []matrix.Room, err error)
 	GetRoom(roomID string) (roomR matrix.Room, err error)
 
 	SaveUser(user matrix.User) error
