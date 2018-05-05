@@ -15,7 +15,9 @@
 package app
 
 import (
+	"github.com/Nordgedanken/Morpheusv2/pkg/loginUI"
 	"github.com/Nordgedanken/Morpheusv2/pkg/mainUI"
+	"github.com/Nordgedanken/Morpheusv2/pkg/util"
 	"github.com/matrix-org/gomatrix"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
@@ -36,8 +38,17 @@ func Start(argsArg []string) error {
 
 	initApp()
 
-	mainUIS := mainUI.NewMainUI(windowWidth, windowHeight, window)
-	SetNewWindow(mainUIS, window)
+	user, err := util.DB.GetCurrentUser()
+	if err != nil {
+		return err
+	}
+	if user == nil {
+		loginUIs := loginUI.NewLoginUI(windowWidth, windowHeight, window)
+		go SetNewWindow(loginUIs, window)
+	} else {
+		mainUIs := mainUI.NewMainUI(windowWidth, windowHeight, window)
+		go SetNewWindow(mainUIs, window)
+	}
 
 	widgets.QApplication_Exec()
 
