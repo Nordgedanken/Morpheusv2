@@ -52,7 +52,7 @@ func Start(argsArg []string) error {
 	}
 
 	widgets.QApplication_Exec()
-
+  
 	return nil
 }
 

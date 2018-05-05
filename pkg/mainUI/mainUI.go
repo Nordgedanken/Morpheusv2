@@ -31,7 +31,7 @@ type MainUI struct {
 	windowHeight int
 }
 
-// NewMainUI gives you a MainUI struct with profiled data
+// NewMainUI gives you a MainUI struct with prefilled data
 func NewMainUI(windowWidth, windowHeight int, window *widgets.QMainWindow) (mainUI *MainUI) {
 	mainUI = &MainUI{
 		windowWidth:  windowWidth,
