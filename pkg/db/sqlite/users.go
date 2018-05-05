@@ -54,40 +54,6 @@ func (s *SQLite) SaveUser(user matrix.User) error {
 	return tx.Commit()
 }
 
-// GetUsers returns all Users of the Database
-func (s *SQLite) GetUsers() (usersR []matrix.User, err error) {
-	if s.db == nil {
-		s.db = s.Open()
-	}
-
-	rows, err := s.db.Query("SELECT id, display_name, avatar FROM users")
-	if err != nil {
-		return
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var mxid string
-		var displayName string
-		var avatar string
-		err = rows.Scan(&mxid, &displayName, &avatar)
-		if err != nil {
-			return
-		}
-
-		userI := &users.User{}
-		userI.SetMXID(mxid)
-		userI.SetDisplayName("", displayName)
-		userI.SetAvatar("", avatar)
-
-		usersR = append(usersR, userI)
-	}
-
-	// get any error encountered during iteration
-	err = rows.Err()
-	return
-}
-
 // GetCurrentUser returns the current user including a ready gomatrix client
 func (s *SQLite) GetCurrentUser() (userR matrix.User, err error) {
 	if s.db == nil {

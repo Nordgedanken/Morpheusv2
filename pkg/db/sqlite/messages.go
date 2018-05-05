@@ -53,49 +53,6 @@ func (s *SQLite) SaveMessage(message matrix.Message) error {
 	return tx.Commit()
 }
 
-// GetMessages returns all Messages from the Database
-func (s *SQLite) GetMessages(eventIDs []string) (messagesR []matrix.Message, err error) {
-	if s.db == nil {
-		s.db = s.Open()
-	}
-
-	rows, err := s.db.Query("SELECT id, author_id, message, timestamp, pure_event FROM messages")
-	if err != nil {
-		return
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var eventID string
-		var authorID string
-		var messageS string
-		var timestamp time.Time
-		var pureEvent string
-		err = rows.Scan(&eventID, &authorID, &messageS, &timestamp, &pureEvent)
-		if err != nil {
-			return
-		}
-
-		messageI := &messages.Message{}
-		messageI.SetEventID(eventID)
-		messageI.SetAuthorMXID(authorID)
-		messageI.SetMessage(messageS)
-		messageI.SetTimestamp(&timestamp)
-		var gomatrixEvent gomatrix.Event
-		err = json.Unmarshal([]byte(pureEvent), &gomatrixEvent)
-		if err != nil {
-			return
-		}
-		messageI.SetEvent(&gomatrixEvent)
-
-		messagesR = append(messagesR, messageI)
-	}
-
-	// get any error encountered during iteration
-	err = rows.Err()
-	return
-}
-
 func (s *SQLite) GetMessage(eventID string) (messageR matrix.Message, err error) {
 	if s.db == nil {
 		s.db = s.Open()
