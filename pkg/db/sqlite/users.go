@@ -46,7 +46,7 @@ func (s *SQLite) SaveUser(user matrix.User) error {
 		return err
 	}
 	mxid := user.GetMXID()
-	_, err = stmt.Exec(mxid, displayName, avatar)
+	_, err = stmt.Exec(mxid, displayName, string(avatar))
 	if err != nil {
 		return err
 	}
@@ -80,7 +80,7 @@ func (s *SQLite) GetCurrentUser() (userR matrix.User, err error) {
 	userI := &users.User{}
 	userI.SetMXID(mxid)
 	userI.SetDisplayName("", displayName)
-	userI.SetAvatar("", avatar)
+	userI.SetAvatar("", []byte(avatar))
 
 	splitUser := strings.Split(mxid, ":")
 	domain := strings.TrimPrefix(mxid, splitUser[0]+":")
@@ -118,7 +118,7 @@ func (s *SQLite) GetUser(userID string) (userR matrix.User, err error) {
 	userI := &users.User{}
 	userI.SetMXID(userID)
 	userI.SetDisplayName("", displayName)
-	userI.SetAvatar("", avatar)
+	userI.SetAvatar("", []byte(avatar))
 
 	userR = userI
 	return

@@ -122,3 +122,8 @@ func (u *User) GetAvatar(roomID string) ([]byte, error) {
 		return u.avatar[roomID], nil
 	}
 }
+
+// GetCli returns the gomatrix.Client from the current User
+func (u *User) GetCli() *gomatrix.Client {
+	return u.cli
+}
