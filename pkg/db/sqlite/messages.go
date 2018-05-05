@@ -17,6 +17,7 @@ package sqlite
 import (
 	"encoding/json"
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix"
+	"github.com/Nordgedanken/Morpheusv2/pkg/matrix/messages"
 	"github.com/matrix-org/gomatrix"
 	"time"
 )
@@ -53,7 +54,7 @@ func (s *SQLite) SaveMessage(message matrix.Message) error {
 }
 
 // GetMessages returns all Messages from the Database
-func (s *SQLite) GetMessages(eventIDs []string) (messages []matrix.Message, err error) {
+func (s *SQLite) GetMessages(eventIDs []string) (messagesR []matrix.Message, err error) {
 	if s.db == nil {
 		s.db = s.Open()
 	}
@@ -75,8 +76,7 @@ func (s *SQLite) GetMessages(eventIDs []string) (messages []matrix.Message, err 
 			return
 		}
 
-		// TODO replace with implementation
-		messageI := matrix.Message{}
+		messageI := &messages.Message{}
 		messageI.SetEventID(eventID)
 		messageI.SetAuthorMXID(authorID)
 		messageI.SetMessage(messageS)
@@ -88,7 +88,7 @@ func (s *SQLite) GetMessages(eventIDs []string) (messages []matrix.Message, err 
 		}
 		messageI.SetEvent(&gomatrixEvent)
 
-		messages = append(messages, messageI)
+		messagesR = append(messagesR, messageI)
 	}
 
 	// get any error encountered during iteration
@@ -118,8 +118,7 @@ func (s *SQLite) GetMessage(eventID string) (messageR matrix.Message, err error)
 		return
 	}
 
-	// TODO replace with implementation
-	messageI := matrix.Message{}
+	messageI := &messages.Message{}
 	messageI.SetEventID(eventID)
 	messageI.SetAuthorMXID(authorID)
 	messageI.SetMessage(messageS)
