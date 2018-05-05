@@ -57,12 +57,16 @@ func (s *SQLite) SaveRoom(Room matrix.Room) error {
 		return err
 	}
 
-	messageIDs, err := Room.GetMessageIDS()
+	messages := Room.GetMessages()
 	if err != nil {
 		return err
 	}
+	var messageIDs []string
+	for _, v := range messages {
+		messageIDs = append(messageIDs, v.GetEventID())
+	}
 
-	_, err = stmt.Exec(aliasesS, roomID, name, avatar, topic, messageIDs)
+	_, err = stmt.Exec(aliasesS, roomID, name, string(avatar), topic, messageIDs)
 	if err != nil {
 		return err
 	}
@@ -102,14 +106,13 @@ func (s *SQLite) GetRooms() (roomsR []matrix.Room, err error) {
 		}
 		roomI.SetRoomAliases(aliases)
 		roomI.SetName(roomName)
-		roomI.SetAvatar(roomAvatar)
+		roomI.SetAvatar([]byte(roomAvatar))
 		roomI.SetTopic(roomTopic)
 		var messageIDs []string
 		err = json.Unmarshal([]byte(roomMessages), &messageIDs)
 		if err != nil {
 			return
 		}
-		roomI.SetMessageIDS(messageIDs)
 		// TODO Convert IDs to messages slice using another call or from the beginning on using a JOIN
 		//roomI.SetMessages(messages)
 
@@ -154,14 +157,13 @@ func (s *SQLite) GetRoom(roomID string) (roomR matrix.Room, err error) {
 	}
 	roomI.SetRoomAliases(aliases)
 	roomI.SetName(roomName)
-	roomI.SetAvatar(roomAvatar)
+	roomI.SetAvatar([]byte(roomAvatar))
 	roomI.SetTopic(roomTopic)
 	var messageIDs []string
 	err = json.Unmarshal([]byte(roomMessages), &messageIDs)
 	if err != nil {
 		return
 	}
-	roomI.SetMessageIDS(messageIDs)
 	// TODO Convert IDs to messages slice using another call or from the beginning on using a JOIN
 	//roomI.SetMessages(messages)
 

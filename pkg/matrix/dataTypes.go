@@ -38,20 +38,18 @@ type Room interface {
 	// Handled using global "own User"
 	//SetCli(cli *gomatrix.Client)
 	SetRoomID(id string)
-	SetRoomAliases([]string)
-	SetName(string)
-	SetAvatar(string)
-	SetTopic(string)
-	SetMessages([]Message)
-	SetMessageIDS([]string)
+	SetRoomAliases(aliases []string)
+	SetName(name string)
+	SetAvatar(avatar []byte)
+	SetTopic(topic string)
+	SetMessages(messages []Message)
 
 	GetRoomID() string
 	GetRoomAliases() []string
 	GetName() (string, error)
-	GetAvatar() (string, error)
+	GetAvatar() ([]byte, error)
 	GetTopic() (string, error)
 	GetMessages() []Message
-	GetMessageIDS() ([]string, error)
 
 	//Implement  MarshalJSON() (b []byte, e error) as in http://gregtrowbridge.com/golang-json-serialization-with-interfaces/ to support json
 }

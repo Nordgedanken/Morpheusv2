@@ -14,60 +14,132 @@
 
 package rooms
 
-import "github.com/Nordgedanken/Morpheusv2/pkg/matrix"
+import (
+	"github.com/Nordgedanken/Morpheusv2/pkg/matrix"
+	"github.com/Nordgedanken/Morpheusv2/pkg/util"
+	"github.com/matrix-org/gomatrix"
+	"strings"
+)
 
+// Room holds the needed Room data and allows to work with that. It gets normally loaded from the cache
 type Room struct {
+	id       string
+	aliases  []string
+	name     string
+	avatar   []byte
+	topic    string
+	messages []matrix.Message
 }
 
+// SetRoomID adds the roomID to the current Room
 func (r *Room) SetRoomID(id string) {
-
+	r.id = id
 }
 
-func (r *Room) SetRoomAliases([]string) {
-
+// SetRoomAliases adds the aliases to the current Room
+func (r *Room) SetRoomAliases(aliases []string) {
+	r.aliases = aliases
 }
 
-func (r *Room) SetName(string) {
-
-}
-func (r *Room) SetAvatar(string) {
-
-}
-func (r *Room) SetTopic(string) {
-
-}
-func (r *Room) SetMessages([]matrix.Message) {
-
+// SetName adds the name to the current Room
+func (r *Room) SetName(name string) {
+	r.name = name
 }
 
-func (r *Room) SetMessageIDS([]string) {
-
+// SetAvatar adds the avatar to the current Room
+func (r *Room) SetAvatar(avatar []byte) {
+	r.avatar = avatar
 }
 
+// SetTopic adds the topic to the current Room
+func (r *Room) SetTopic(topic string) {
+	r.topic = topic
+}
+
+// SetMessages adds the messages to the current Room
+func (r *Room) SetMessages(messages []matrix.Message) {
+	r.messages = messages
+}
+
+// GetRoomID returns the room ID from the current Room
 func (r *Room) GetRoomID() string {
-	return ""
+	return r.id
 }
 
+// GetRoomAliases returns the room aliases from the current Room
 func (r *Room) GetRoomAliases() []string {
-	return nil
+	return r.aliases
 }
 
+// GetName returns the name from the current Room
 func (r *Room) GetName() (string, error) {
-	return "", nil
+	if r.name == "" {
+		type RespRoomName struct {
+			Name string `json:"name"`
+		}
+		resp := &RespRoomName{}
+		err := util.Client.StateEvent(r.id, "m.room.name", "", resp)
+		if err != nil {
+			return "", err
+		}
+		r.name = resp.Name
+	}
+	return r.name, nil
 }
 
-func (r *Room) GetAvatar() (string, error) {
-	return "", nil
+// GetAvatar returns the avatar from the current Room
+func (r *Room) GetAvatar() ([]byte, error) {
+	if r.avatar == nil {
+		resp := &gomatrix.Event{}
+		err := util.Client.StateEvent(r.id, "m.room.avatar", "", resp)
+		if err != nil {
+			return nil, err
+		}
+		var avatar []byte
+		value, exists := resp.Content["url"]
+		if !exists {
+			return nil, nil
+		}
+		url, ok := value.(string)
+		if !ok {
+			return nil, nil
+		}
+		split := strings.Split(url, "/")
+		servername := strings.TrimPrefix(split[0], "mxc://")
+		mediaID := split[1]
+		mediaURL := util.Client.BuildBaseURL("_matrix/media/r0/download", servername, mediaID)
+		avatar, err = util.Client.MakeRequest("GET", mediaURL, nil, nil)
+		if err != nil {
+			return nil, err
+		}
+		r.avatar = avatar
+	}
+	return r.avatar, nil
 }
 
+// GetTopic returns the topic from the current Room
 func (r *Room) GetTopic() (string, error) {
-	return "", nil
+	if r.topic == "" {
+		resp := &gomatrix.Event{}
+		err := util.Client.StateEvent(r.id, "m.room.topic", "", resp)
+		if err != nil {
+			return "", err
+		}
+		value, exists := resp.Content["topic"]
+		if !exists {
+			return "", nil
+		}
+		topic, ok := value.(string)
+		if !ok {
+			return "", nil
+		}
+		r.topic = topic
+	}
+	return r.topic, nil
 }
 
+// GetMessages returns the messages from the current Room
 func (r *Room) GetMessages() []matrix.Message {
-	return nil
-}
-
-func (r *Room) GetMessageIDS() ([]string, error) {
-	return nil, nil
+	// TODO Lazy load from DB
+	return r.messages
 }
