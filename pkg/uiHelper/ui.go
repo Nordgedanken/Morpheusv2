@@ -15,42 +15,10 @@
 package uiHelper
 
 import (
-	"github.com/Nordgedanken/Morpheusv2/pkg/loginUI"
-	"github.com/Nordgedanken/Morpheusv2/pkg/mainUI"
-	"github.com/Nordgedanken/Morpheusv2/pkg/registerUI"
 	"github.com/therecipe/qt/widgets"
-	"log"
 )
 
-type ui interface {
+type UI interface {
 	GetWidget() (widget *widgets.QWidget)
 	NewUI() error
-}
-
-// setNewWindow loads the new UI into the QMainWindow
-func setNewWindow(ui ui, window *widgets.QMainWindow, windowWidth, windowHeight int) error {
-	log.Println("Start changing UI")
-	uiErr := ui.NewUI()
-	if uiErr != nil {
-		return uiErr
-	}
-	ui.GetWidget().Resize2(windowWidth, windowHeight)
-	window.SetCentralWidget(ui.GetWidget())
-	log.Println("Finished changing UI")
-	return nil
-}
-
-func NewLoginUI(windowWidth, windowHeight int, window *widgets.QMainWindow) {
-	loginUIs := loginUI.NewLoginUI(windowWidth, windowHeight, window)
-	setNewWindow(loginUIs, window, windowWidth, windowHeight)
-}
-
-func NewRegisterUI(windowWidth, windowHeight int, window *widgets.QMainWindow) {
-	registerUIs := registerUI.NewRegisterUI(windowWidth, windowHeight, window)
-	setNewWindow(registerUIs, window, windowWidth, windowHeight)
-}
-
-func NewMainUI(windowWidth, windowHeight int, window *widgets.QMainWindow) {
-	mainUIs := mainUI.NewMainUI(windowWidth, windowHeight, window)
-	setNewWindow(mainUIs, window, windowWidth, windowHeight)
 }

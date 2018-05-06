@@ -16,8 +16,10 @@ package loginUI
 
 import (
 	"encoding/json"
+	"github.com/Nordgedanken/Morpheusv2/pkg/mainUI"
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix"
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix/users"
+	"github.com/Nordgedanken/Morpheusv2/pkg/registerUI"
 	"github.com/Nordgedanken/Morpheusv2/pkg/uiHelper"
 	"github.com/Nordgedanken/Morpheusv2/pkg/util"
 	"github.com/matrix-org/gomatrix"
@@ -164,7 +166,7 @@ func (l *LoginUI) setupRegisterButton() (err error) {
 	registerButton.SetGraphicsEffect(reffect)
 
 	registerButton.ConnectClicked(func(_ bool) {
-		uiHelper.NewRegisterUI(l.windowWidth, l.windowHeight, l.window)
+		switchToRegisterUI(l.windowWidth, l.windowHeight, l.window)
 	})
 
 	return
@@ -187,7 +189,7 @@ func (l *LoginUI) login() (err error) {
 		}
 	}()
 
-	uiHelper.NewMainUI(l.windowWidth, l.windowHeight, l.window)
+	switchToMainUI(l.windowWidth, l.windowHeight, l.window)
 
 	return
 }
@@ -314,4 +316,29 @@ func convertHelloMatrixRespToNameSlice(resp helloMatrixResp) (hostnames []string
 	}
 
 	return
+}
+
+// HELPER STUFF
+
+// setNewWindow loads the new UI into the QMainWindow
+func setNewWindow(ui uiHelper.UI, window *widgets.QMainWindow, windowWidth, windowHeight int) error {
+	log.Println("Start changing UI")
+	uiErr := ui.NewUI()
+	if uiErr != nil {
+		return uiErr
+	}
+	ui.GetWidget().Resize2(windowWidth, windowHeight)
+	window.SetCentralWidget(ui.GetWidget())
+	log.Println("Finished changing UI")
+	return nil
+}
+
+func switchToRegisterUI(windowWidth, windowHeight int, window *widgets.QMainWindow) {
+	registerUIs := registerUI.NewRegisterUI(windowWidth, windowHeight, window)
+	setNewWindow(registerUIs, window, windowWidth, windowHeight)
+}
+
+func switchToMainUI(windowWidth, windowHeight int, window *widgets.QMainWindow) {
+	mainUIs := mainUI.NewMainUI(windowWidth, windowHeight, window)
+	setNewWindow(mainUIs, window, windowWidth, windowHeight)
 }

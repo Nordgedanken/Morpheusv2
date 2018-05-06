@@ -16,6 +16,7 @@ package registerUI
 
 import (
 	"encoding/json"
+	"github.com/Nordgedanken/Morpheusv2/pkg/loginUI"
 	"github.com/Nordgedanken/Morpheusv2/pkg/uiHelper"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
@@ -293,7 +294,7 @@ func (r *RegisterUI) setupLoginButton() (err error) {
 	// loginButton
 	loginButton := widgets.NewQPushButtonFromPointer(r.widget.FindChild("loginButton", core.Qt__FindChildrenRecursively).Pointer())
 	loginButton.ConnectClicked(func(_ bool) {
-		uiHelper.NewLoginUI(r.windowWidth, r.windowHeight, r.window)
+		switchToLoginUI(r.windowWidth, r.windowHeight, r.window)
 	})
 	return
 }
@@ -378,4 +379,22 @@ func convertHelloMatrixRespToNameSlice(resp helloMatrixResp) (hostnames []string
 	}
 
 	return
+}
+
+// setNewWindow loads the new UI into the QMainWindow
+func setNewWindow(ui uiHelper.UI, window *widgets.QMainWindow, windowWidth, windowHeight int) error {
+	log.Println("Start changing UI")
+	uiErr := ui.NewUI()
+	if uiErr != nil {
+		return uiErr
+	}
+	ui.GetWidget().Resize2(windowWidth, windowHeight)
+	window.SetCentralWidget(ui.GetWidget())
+	log.Println("Finished changing UI")
+	return nil
+}
+
+func switchToLoginUI(windowWidth, windowHeight int, window *widgets.QMainWindow) {
+	loginUIs := loginUI.NewLoginUI(windowWidth, windowHeight, window)
+	setNewWindow(loginUIs, window, windowWidth, windowHeight)
 }
