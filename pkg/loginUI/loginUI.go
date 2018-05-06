@@ -153,7 +153,10 @@ func (l *LoginUI) login() (err error) {
 		return
 	}
 
-	go util.DB.SaveCurrentUser(user)
+	err = util.DB.SaveCurrentUser(user)
+	if err != nil {
+		return
+	}
 
 	mainUIs := mainUI.NewMainUI(l.windowWidth, l.windowHeight, l.window)
 	util.User = user
