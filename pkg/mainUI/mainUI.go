@@ -61,10 +61,15 @@ func (m *MainUI) NewUI() error {
 	layout.SetSpacing(0)
 	layout.SetContentsMargins(0, 0, 0, 0)
 
+	m.widget.SetSizePolicy2(widgets.QSizePolicy__Expanding, widgets.QSizePolicy__Expanding)
+	mainWidget.SetSizePolicy2(widgets.QSizePolicy__Expanding, widgets.QSizePolicy__Expanding)
+
 	m.widget.ConnectResizeEvent(func(event *gui.QResizeEvent) {
 		mainWidget.Resize(event.Size())
 		event.Accept()
 	})
+
+	m.window.SetWindowTitle("Morpheus")
 
 	return nil
 }

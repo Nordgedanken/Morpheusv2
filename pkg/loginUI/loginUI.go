@@ -75,17 +75,20 @@ func (l *LoginUI) NewUI() error {
 	var file = core.NewQFile2(":/qml/ui/login.ui")
 
 	file.Open(core.QIODevice__ReadOnly)
-	mainWidget := loader.Load(file, l.widget)
+	loginWidget := loader.Load(file, l.widget)
 	file.Close()
 
 	var layout = widgets.NewQHBoxLayout()
 	l.window.SetLayout(layout)
-	layout.InsertWidget(0, mainWidget, 0, core.Qt__AlignTop|core.Qt__AlignLeft)
+	layout.InsertWidget(0, loginWidget, 0, core.Qt__AlignTop|core.Qt__AlignLeft)
 	layout.SetSpacing(0)
 	layout.SetContentsMargins(0, 0, 0, 0)
 
+	l.widget.SetSizePolicy2(widgets.QSizePolicy__Expanding, widgets.QSizePolicy__Expanding)
+	loginWidget.SetSizePolicy2(widgets.QSizePolicy__Expanding, widgets.QSizePolicy__Expanding)
+
 	l.widget.ConnectResizeEvent(func(event *gui.QResizeEvent) {
-		mainWidget.Resize(event.Size())
+		loginWidget.Resize(event.Size())
 		event.Accept()
 	})
 
@@ -94,6 +97,8 @@ func (l *LoginUI) NewUI() error {
 	go l.setupLocalpartInput()
 	go l.setupPasswordInput()
 	go l.setupLoginButton()
+
+	l.window.SetWindowTitle("Morpheus - Login")
 
 	return nil
 }
