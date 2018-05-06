@@ -127,15 +127,6 @@ func (l *LoginUI) setupLoginButton() (err error) {
 	// loginButton
 	loginButton := widgets.NewQPushButtonFromPointer(l.widget.FindChild("LoginButton", core.Qt__FindChildrenRecursively).Pointer())
 
-	//Set Button Effect
-	leffect := widgets.NewQGraphicsDropShadowEffect(nil)
-	leffect.SetBlurRadius(5)
-	leffect.SetXOffset(2)
-	leffect.SetYOffset(2)
-	leffect.SetColor(gui.NewQColor2(core.Qt__black))
-
-	loginButton.SetGraphicsEffect(leffect)
-
 	loginButton.ConnectClicked(func(_ bool) {
 		if l.localpart != "" && l.password != "" {
 			l.server = l.serverDropdown.CurrentText()
