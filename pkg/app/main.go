@@ -18,6 +18,7 @@ import (
 	"database/sql"
 	"github.com/Nordgedanken/Morpheusv2/pkg/loginUI"
 	"github.com/Nordgedanken/Morpheusv2/pkg/mainUI"
+	"github.com/Nordgedanken/Morpheusv2/pkg/uiHelper"
 	"github.com/Nordgedanken/Morpheusv2/pkg/util"
 	"github.com/matrix-org/gomatrix"
 	"github.com/therecipe/qt/core"
@@ -43,13 +44,13 @@ func Start(argsArg []string) error {
 	// We special case ErrNoRows because this is expected to happen if user is missing
 	if err == sql.ErrNoRows {
 		loginUIs := loginUI.NewLoginUI(windowWidth, windowHeight, window)
-		SetNewWindow(loginUIs, window)
+		uiHelper.SetNewWindow(loginUIs, window, windowWidth, windowHeight)
 	} else if err != nil {
 		return err
 	} else {
 		mainUIs := mainUI.NewMainUI(windowWidth, windowHeight, window)
 		util.User = user
-		SetNewWindow(mainUIs, window)
+		uiHelper.SetNewWindow(mainUIs, window, windowWidth, windowHeight)
 	}
 
 	widgets.QApplication_Exec()
@@ -82,17 +83,4 @@ func initApp() {
 		log.Println("Morpheus closed")
 	})
 
-}
-
-// SetNewWindow loads the new UI into the QMainWindow
-func SetNewWindow(ui ui, window *widgets.QMainWindow) error {
-	ui.SetCli(cli)
-	uiErr := ui.NewUI()
-	if uiErr != nil {
-		return uiErr
-	}
-	ui.GetWidget().Resize2(windowWidth, windowHeight)
-	window.SetCentralWidget(ui.GetWidget())
-	window.Show()
-	return nil
 }

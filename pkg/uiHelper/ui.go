@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package app
+package uiHelper
 
 import (
 	"github.com/therecipe/qt/widgets"
@@ -21,4 +21,16 @@ import (
 type ui interface {
 	GetWidget() (widget *widgets.QWidget)
 	NewUI() error
+}
+
+// SetNewWindow loads the new UI into the QMainWindow
+func SetNewWindow(ui ui, window *widgets.QMainWindow, windowWidth, windowHeight int) error {
+	uiErr := ui.NewUI()
+	if uiErr != nil {
+		return uiErr
+	}
+	ui.GetWidget().Resize2(windowWidth, windowHeight)
+	window.SetCentralWidget(ui.GetWidget())
+	window.Show()
+	return nil
 }

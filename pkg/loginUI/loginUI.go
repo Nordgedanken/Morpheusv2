@@ -16,10 +16,10 @@ package loginUI
 
 import (
 	"encoding/json"
-	"github.com/Nordgedanken/Morpheusv2/pkg/app"
 	"github.com/Nordgedanken/Morpheusv2/pkg/mainUI"
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix"
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix/users"
+	"github.com/Nordgedanken/Morpheusv2/pkg/uiHelper"
 	"github.com/Nordgedanken/Morpheusv2/pkg/util"
 	"github.com/matrix-org/gomatrix"
 	"github.com/therecipe/qt/core"
@@ -157,7 +157,7 @@ func (l *LoginUI) login() (err error) {
 
 	mainUIs := mainUI.NewMainUI(l.windowWidth, l.windowHeight, l.window)
 	util.User = user
-	app.SetNewWindow(mainUIs, l.window)
+	uiHelper.SetNewWindow(mainUIs, l.window, l.windowWidth, l.windowHeight)
 
 	return nil
 }
