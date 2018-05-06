@@ -153,13 +153,14 @@ func (l *LoginUI) login() (err error) {
 		return
 	}
 
+	util.User = user
+
 	err = util.DB.SaveCurrentUser(user)
 	if err != nil {
 		return
 	}
 
 	mainUIs := mainUI.NewMainUI(l.windowWidth, l.windowHeight, l.window)
-	util.User = user
 	uiHelper.SetNewWindow(mainUIs, l.window, l.windowWidth, l.windowHeight)
 
 	return nil
