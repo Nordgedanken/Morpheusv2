@@ -15,7 +15,6 @@
 package mainUI
 
 import (
-	"github.com/matrix-org/gomatrix"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/uitools"
@@ -25,7 +24,6 @@ import (
 // MainUI defines the data for the main ui (that one with the chats)
 type MainUI struct {
 	widget       *widgets.QWidget
-	cli          *gomatrix.Client
 	window       *widgets.QMainWindow
 	windowWidth  int
 	windowHeight int
@@ -39,11 +37,6 @@ func NewMainUI(windowWidth, windowHeight int, window *widgets.QMainWindow) (main
 		window:       window,
 	}
 	return
-}
-
-// SetCli sets the gomatrix Client for the MainUI
-func (m *MainUI) SetCli(cli *gomatrix.Client) {
-	m.cli = cli
 }
 
 // GetWidget returns the QWidget of the MainUI

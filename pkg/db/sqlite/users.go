@@ -54,6 +54,43 @@ func (s *SQLite) SaveUser(user matrix.User) error {
 	return tx.Commit()
 }
 
+// SaveCurrentUser saves the currently logged in matrix User to the User table
+func (s *SQLite) SaveCurrentUser(user matrix.User) error {
+	if s.db == nil {
+		s.db = s.Open()
+	}
+
+	tx, err := s.db.Begin()
+	if err != nil {
+		return err
+	}
+
+	stmt, err := tx.Prepare("INSERT INTO users (id, display_name, avatar, access_token, own) VALUES (?, ?, ?, ?, ?)")
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+	displayName, err := user.GetDisplayName("")
+	if err != nil {
+		return err
+	}
+	avatar, err := user.GetAvatar("")
+	if err != nil {
+		return err
+	}
+	accessToken := user.GetAccessToken()
+	if err != nil {
+		return err
+	}
+	mxid := user.GetMXID()
+	_, err = stmt.Exec(mxid, displayName, string(avatar), accessToken, 1)
+	if err != nil {
+		return err
+	}
+
+	return tx.Commit()
+}
+
 // GetCurrentUser returns the current user including a ready gomatrix client
 func (s *SQLite) GetCurrentUser() (userR matrix.User, err error) {
 	if s.db == nil {

@@ -16,6 +16,11 @@ package loginUI
 
 import (
 	"encoding/json"
+	"github.com/Nordgedanken/Morpheusv2/pkg/app"
+	"github.com/Nordgedanken/Morpheusv2/pkg/mainUI"
+	"github.com/Nordgedanken/Morpheusv2/pkg/matrix"
+	"github.com/Nordgedanken/Morpheusv2/pkg/matrix/users"
+	"github.com/Nordgedanken/Morpheusv2/pkg/util"
 	"github.com/matrix-org/gomatrix"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
@@ -24,6 +29,7 @@ import (
 	"log"
 	"net/http"
 	"sort"
+	"strings"
 	"time"
 )
 
@@ -32,7 +38,6 @@ const redBorder = "border: 1px solid red"
 // LoginUI defines the data for the login ui
 type LoginUI struct {
 	widget       *widgets.QWidget
-	cli          *gomatrix.Client
 	window       *widgets.QMainWindow
 	windowWidth  int
 	windowHeight int
@@ -55,11 +60,6 @@ func NewLoginUI(windowWidth, windowHeight int, window *widgets.QMainWindow) (log
 		window:       window,
 	}
 	return
-}
-
-// SetCli sets the gomatrix Client for the LoginUI
-func (l *LoginUI) SetCli(cli *gomatrix.Client) {
-	l.cli = cli
 }
 
 // GetWidget returns the QWidget of the LoginUI
@@ -147,8 +147,64 @@ func (l *LoginUI) setupLoginButton() (err error) {
 }
 
 func (l *LoginUI) login() (err error) {
-	log.Println("login")
+	var user matrix.User
+	user, err = loginUser(l.localpart, l.password, l.server)
+	if err != nil {
+		return
+	}
+
+	mainUIs := mainUI.NewMainUI(l.windowWidth, l.windowHeight, l.window)
+	util.User = user
+	app.SetNewWindow(mainUIs, l.window)
+
 	return nil
+}
+
+//getClient returns a Client
+func getClient(homeserverURL, userID string) (client *gomatrix.Client, err error) {
+	client, ClientErr := gomatrix.NewClient(homeserverURL, userID, "")
+	if ClientErr != nil {
+		err = ClientErr
+		return
+	}
+
+	return
+}
+
+//loginUser Creates a Session for the User
+func loginUser(localpart, password, homeserverURL string) (matrix.User, error) {
+	var cli *gomatrix.Client
+	var cliErr error
+	if strings.HasPrefix(homeserverURL, "https://") {
+		cli, cliErr = getClient(homeserverURL, "")
+	} else if strings.HasPrefix(homeserverURL, "http://") {
+		cli, cliErr = getClient(homeserverURL, "")
+	} else {
+		cli, cliErr = getClient("https://"+homeserverURL, "")
+	}
+	if cliErr != nil {
+		return nil, cliErr
+	}
+
+	localpart = strings.Replace(localpart, "@", "", -1)
+
+	resp, err := cli.Login(&gomatrix.ReqLogin{
+		Type:                     "m.login.password",
+		User:                     localpart,
+		Password:                 password,
+		InitialDeviceDisplayName: "Morpheus 0.1.0-Alpha",
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	cli.SetCredentials(resp.UserID, resp.AccessToken)
+
+	user := &users.User{}
+	user.SetCli(cli)
+	user.SetMXID(cli.UserID)
+
+	return user, nil
 }
 
 func (l *LoginUI) setupDropdown() (err error) {

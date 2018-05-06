@@ -31,6 +31,8 @@ type User interface {
 	GetAvatar(roomID string) ([]byte, error)
 	GetCli() (cli *gomatrix.Client)
 
+	GetAccessToken() string
+
 	//Implement  MarshalJSON() (b []byte, e error) as in http://gregtrowbridge.com/golang-json-serialization-with-interfaces/ to support json
 }
 

@@ -125,3 +125,7 @@ func (u *User) GetAvatar(roomID string) ([]byte, error) {
 func (u *User) GetCli() *gomatrix.Client {
 	return u.cli
 }
+
+func (u *User) GetAccessToken() string {
+	return u.cli.AccessToken
+}
