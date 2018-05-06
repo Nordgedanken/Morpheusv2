@@ -27,13 +27,19 @@ import (
 	"time"
 )
 
+const redBorder = "border: 1px solid red"
+
 // LoginUI defines the data for the login ui
 type LoginUI struct {
-	widget          *widgets.QWidget
-	cli             *gomatrix.Client
-	window          *widgets.QMainWindow
-	windowWidth     int
-	windowHeight    int
+	widget       *widgets.QWidget
+	cli          *gomatrix.Client
+	window       *widgets.QMainWindow
+	windowWidth  int
+	windowHeight int
+
+	localpart string
+	password  string
+
 	helloMatrixResp helloMatrixResp
 	serverDropdown  *widgets.QComboBox
 }
@@ -80,9 +86,37 @@ func (l *LoginUI) NewUI() error {
 		event.Accept()
 	})
 
+	// Run Setup for all fields
 	go l.setupDropdown()
+	go l.setupLocalpartInput()
+	go l.setupPasswordInput()
 
 	return nil
+}
+
+func (l *LoginUI) setupLocalpartInput() {
+	// LocalpartInput
+	localpartInput := widgets.NewQLineEditFromPointer(l.widget.FindChild("LocalpartInput", core.Qt__FindChildrenRecursively).Pointer())
+
+	localpartInput.ConnectTextChanged(func(value string) {
+		if localpartInput.StyleSheet() == redBorder {
+			localpartInput.SetStyleSheet("")
+		}
+		l.localpart = value
+	})
+}
+
+func (l *LoginUI) setupPasswordInput() {
+	// PasswordInput
+	passwordInput := widgets.NewQLineEditFromPointer(l.widget.FindChild("PasswordInput", core.Qt__FindChildrenRecursively).Pointer())
+
+	passwordInput.ConnectTextChanged(func(value string) {
+		if passwordInput.StyleSheet() == redBorder {
+			passwordInput.SetStyleSheet("")
+		}
+		l.password = value
+	})
+
 }
 
 func (l *LoginUI) setupDropdown() (err error) {
