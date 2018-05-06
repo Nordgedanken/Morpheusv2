@@ -32,6 +32,7 @@ var cli *gomatrix.Client
 var windowHeight = 600
 var windowWidth = 950
 var window *widgets.QMainWindow
+var app *widgets.QApplication
 
 // Start prepares the Main QT Window and opens it
 func Start(argsArg []string) error {
@@ -55,14 +56,14 @@ func Start(argsArg []string) error {
 
 	window.Show()
 
-	widgets.QApplication_Exec()
+	app.Exec()
 
 	return nil
 }
 
 func initApp() {
 	log.Println("Create QApp")
-	app := widgets.NewQApplication(len(args), args)
+	app = widgets.NewQApplication(len(args), args)
 
 	app.SetAttribute(core.Qt__AA_UseHighDpiPixmaps, true)
 	app.SetApplicationName("Morpheus")
@@ -84,5 +85,4 @@ func initApp() {
 	window.ConnectCloseEvent(func(event *gui.QCloseEvent) {
 		log.Println("Morpheus closed")
 	})
-
 }
