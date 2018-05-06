@@ -92,6 +92,7 @@ func (r *RegisterUI) NewUI() error {
 	go r.setupUsername()
 	go r.setupPassword()
 	go r.setupRegisterButton()
+	go r.setupConfirmPassword()
 
 	r.window.SetWindowTitle("Morpheus - Register")
 
@@ -234,15 +235,23 @@ func (r *RegisterUI) setupRegisterButton() (err error) {
 	registerButton := widgets.NewQPushButtonFromPointer(r.widget.FindChild("RegisterButton", core.Qt__FindChildrenRecursively).Pointer())
 
 	registerButton.ConnectClicked(func(_ bool) {
-		if r.localpart != "" && r.password != "" {
+		if r.password == "" {
+			r.passwordInput.SetStyleSheet(redBorder)
+		}
+		if r.localpart == "" {
+			r.localpartInput.SetStyleSheet(redBorder)
+		}
+		if r.password == r.confirmpassword {
 			r.server = r.serverDropdown.CurrentText()
 			RegisterErr := r.register()
 			if RegisterErr != nil {
 				err = RegisterErr
 				return
 			}
+
+			r.passwordInput.Clear()
 		} else {
-			r.passwordInput.SetStyleSheet(redBorder)
+			r.passwordConfirmInput.SetStyleSheet(redBorder)
 		}
 	})
 	return
