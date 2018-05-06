@@ -27,6 +27,7 @@ import (
 )
 
 const redBorder = "border: 1px solid red"
+const selectMessage = "Select a Server"
 
 // RegisterUI defines the data for the register ui
 type RegisterUI struct {
@@ -112,7 +113,7 @@ func (r *RegisterUI) setupUsername() (err error) {
 
 	r.localpartInput.ConnectKeyPressEvent(func(ev *gui.QKeyEvent) {
 		if int(ev.Key()) == int(core.Qt__Key_Enter) || int(ev.Key()) == int(core.Qt__Key_Return) {
-			if r.serverDropdown.CurrentText() == "Select a Server" {
+			if r.serverDropdown.CurrentText() == selectMessage {
 				r.serverDropdown.SetStyleSheet(redBorder)
 				ev.Ignore()
 			}
@@ -163,7 +164,7 @@ func (r *RegisterUI) setupPassword() (err error) {
 
 	r.passwordInput.ConnectKeyPressEvent(func(ev *gui.QKeyEvent) {
 		if int(ev.Key()) == int(core.Qt__Key_Enter) || int(ev.Key()) == int(core.Qt__Key_Return) {
-			if r.serverDropdown.CurrentText() == "Select a Server" {
+			if r.serverDropdown.CurrentText() == selectMessage {
 				r.serverDropdown.SetStyleSheet(redBorder)
 				ev.Ignore()
 			}
@@ -215,7 +216,7 @@ func (r *RegisterUI) setupConfirmPassword() (err error) {
 
 	r.passwordConfirmInput.ConnectKeyPressEvent(func(ev *gui.QKeyEvent) {
 		if int(ev.Key()) == int(core.Qt__Key_Enter) || int(ev.Key()) == int(core.Qt__Key_Return) {
-			if r.serverDropdown.CurrentText() == "Select a Server" {
+			if r.serverDropdown.CurrentText() == selectMessage {
 				r.serverDropdown.SetStyleSheet(redBorder)
 				ev.Ignore()
 			}
@@ -259,7 +260,7 @@ func (r *RegisterUI) setupRegisterButton() (err error) {
 	registerButton := widgets.NewQPushButtonFromPointer(r.widget.FindChild("RegisterButton", core.Qt__FindChildrenRecursively).Pointer())
 
 	registerButton.ConnectClicked(func(_ bool) {
-		if r.serverDropdown.CurrentText() == "Select a Server" {
+		if r.serverDropdown.CurrentText() == selectMessage {
 			r.serverDropdown.SetStyleSheet(redBorder)
 		}
 		if r.password == "" {
@@ -357,7 +358,7 @@ func getHelloMatrixList() (resp helloMatrixResp, err error) {
 }
 
 func convertHelloMatrixRespToNameSlice(resp helloMatrixResp) (hostnames []string) {
-	hostnames = append(hostnames, "Select a Server")
+	hostnames = append(hostnames, selectMessage)
 
 	sort.Slice(resp, func(i, j int) bool {
 		return resp[i].LastResponseTime < resp[i].LastResponseTime
