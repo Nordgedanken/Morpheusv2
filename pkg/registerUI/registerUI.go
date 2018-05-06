@@ -112,12 +112,20 @@ func (r *RegisterUI) setupUsername() (err error) {
 
 	r.localpartInput.ConnectKeyPressEvent(func(ev *gui.QKeyEvent) {
 		if int(ev.Key()) == int(core.Qt__Key_Enter) || int(ev.Key()) == int(core.Qt__Key_Return) {
+			if r.serverDropdown.CurrentText() == "Select a Server" {
+				r.serverDropdown.SetStyleSheet(redBorder)
+				ev.Ignore()
+			}
 			if r.password == "" {
 				r.passwordInput.SetStyleSheet(redBorder)
 				ev.Ignore()
 			}
 			if r.localpart == "" {
 				r.localpartInput.SetStyleSheet(redBorder)
+				ev.Ignore()
+			}
+			if r.confirmpassword == "" {
+				r.passwordConfirmInput.SetStyleSheet(redBorder)
 				ev.Ignore()
 			}
 			if r.password == r.confirmpassword {
@@ -155,12 +163,20 @@ func (r *RegisterUI) setupPassword() (err error) {
 
 	r.passwordInput.ConnectKeyPressEvent(func(ev *gui.QKeyEvent) {
 		if int(ev.Key()) == int(core.Qt__Key_Enter) || int(ev.Key()) == int(core.Qt__Key_Return) {
+			if r.serverDropdown.CurrentText() == "Select a Server" {
+				r.serverDropdown.SetStyleSheet(redBorder)
+				ev.Ignore()
+			}
 			if r.password == "" {
 				r.passwordInput.SetStyleSheet(redBorder)
 				ev.Ignore()
 			}
 			if r.localpart == "" {
 				r.localpartInput.SetStyleSheet(redBorder)
+				ev.Ignore()
+			}
+			if r.confirmpassword == "" {
+				r.passwordConfirmInput.SetStyleSheet(redBorder)
 				ev.Ignore()
 			}
 			if r.password == r.confirmpassword {
@@ -199,12 +215,20 @@ func (r *RegisterUI) setupConfirmPassword() (err error) {
 
 	r.passwordConfirmInput.ConnectKeyPressEvent(func(ev *gui.QKeyEvent) {
 		if int(ev.Key()) == int(core.Qt__Key_Enter) || int(ev.Key()) == int(core.Qt__Key_Return) {
+			if r.serverDropdown.CurrentText() == "Select a Server" {
+				r.serverDropdown.SetStyleSheet(redBorder)
+				ev.Ignore()
+			}
 			if r.password == "" {
 				r.passwordInput.SetStyleSheet(redBorder)
 				ev.Ignore()
 			}
 			if r.localpart == "" {
 				r.localpartInput.SetStyleSheet(redBorder)
+				ev.Ignore()
+			}
+			if r.confirmpassword == "" {
+				r.passwordConfirmInput.SetStyleSheet(redBorder)
 				ev.Ignore()
 			}
 			if r.password == r.confirmpassword {
@@ -235,11 +259,17 @@ func (r *RegisterUI) setupRegisterButton() (err error) {
 	registerButton := widgets.NewQPushButtonFromPointer(r.widget.FindChild("RegisterButton", core.Qt__FindChildrenRecursively).Pointer())
 
 	registerButton.ConnectClicked(func(_ bool) {
+		if r.serverDropdown.CurrentText() == "Select a Server" {
+			r.serverDropdown.SetStyleSheet(redBorder)
+		}
 		if r.password == "" {
 			r.passwordInput.SetStyleSheet(redBorder)
 		}
 		if r.localpart == "" {
 			r.localpartInput.SetStyleSheet(redBorder)
+		}
+		if r.confirmpassword == "" {
+			r.passwordConfirmInput.SetStyleSheet(redBorder)
 		}
 		if r.password == r.confirmpassword {
 			r.server = r.serverDropdown.CurrentText()
