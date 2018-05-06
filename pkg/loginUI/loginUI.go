@@ -135,9 +135,8 @@ func (l *LoginUI) setupLoginButton() (err error) {
 	loginButton.ConnectClicked(func(_ bool) {
 		if l.localpart != "" && l.password != "" {
 			l.server = l.serverDropdown.CurrentText()
-			LoginErr := l.login()
-			if LoginErr != nil {
-				err = LoginErr
+			err = l.login()
+			if err != nil {
 				return
 			}
 		} else {
@@ -175,8 +174,8 @@ func (l *LoginUI) login() (err error) {
 }
 
 //getClient returns a Client
-func getClient(homeserverURL, userID string) (client *gomatrix.Client, err error) {
-	client, ClientErr := gomatrix.NewClient(homeserverURL, userID, "")
+func getClient(homeserverURL string) (client *gomatrix.Client, err error) {
+	client, ClientErr := gomatrix.NewClient(homeserverURL, "", "")
 	if ClientErr != nil {
 		err = ClientErr
 		return
@@ -190,11 +189,11 @@ func loginUser(localpart, password, homeserverURL string) (matrix.User, error) {
 	var cli *gomatrix.Client
 	var cliErr error
 	if strings.HasPrefix(homeserverURL, "https://") {
-		cli, cliErr = getClient(homeserverURL, "")
+		cli, cliErr = getClient(homeserverURL)
 	} else if strings.HasPrefix(homeserverURL, "http://") {
-		cli, cliErr = getClient(homeserverURL, "")
+		cli, cliErr = getClient(homeserverURL)
 	} else {
-		cli, cliErr = getClient("https://"+homeserverURL, "")
+		cli, cliErr = getClient("https://" + homeserverURL)
 	}
 	if cliErr != nil {
 		return nil, cliErr
