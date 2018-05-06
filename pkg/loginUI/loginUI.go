@@ -135,13 +135,11 @@ func (l *LoginUI) setupLoginButton() (err error) {
 	loginButton.ConnectClicked(func(_ bool) {
 		if l.localpart != "" && l.password != "" {
 			l.server = l.serverDropdown.CurrentText()
-			go func() {
-				LoginErr := l.login()
-				if LoginErr != nil {
-					err = LoginErr
-					return
-				}
-			}()
+			LoginErr := l.login()
+			if LoginErr != nil {
+				err = LoginErr
+				return
+			}
 		} else {
 			if l.localpart == "" {
 				l.localpartInput.SetStyleSheet(redBorder)
