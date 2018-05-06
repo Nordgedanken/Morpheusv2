@@ -126,6 +126,7 @@ func (u *User) GetCli() *gomatrix.Client {
 	return u.cli
 }
 
+// GetAccessToken returns the accessToken set in the gomatrix.Client of the current User
 func (u *User) GetAccessToken() string {
 	return u.cli.AccessToken
 }

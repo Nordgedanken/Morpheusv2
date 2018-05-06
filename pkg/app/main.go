@@ -20,7 +20,6 @@ import (
 	"github.com/Nordgedanken/Morpheusv2/pkg/mainUI"
 	"github.com/Nordgedanken/Morpheusv2/pkg/uiHelper"
 	"github.com/Nordgedanken/Morpheusv2/pkg/util"
-	"github.com/matrix-org/gomatrix"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/widgets"
@@ -28,7 +27,6 @@ import (
 )
 
 var args []string
-var cli *gomatrix.Client
 var windowHeight = 600
 var windowWidth = 950
 var window *widgets.QMainWindow
