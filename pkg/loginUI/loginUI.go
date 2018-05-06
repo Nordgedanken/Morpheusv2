@@ -37,8 +37,11 @@ type LoginUI struct {
 	windowWidth  int
 	windowHeight int
 
-	localpart string
-	password  string
+	localpart      string
+	password       string
+	server         string
+	passwordInput  *widgets.QLineEdit
+	localpartInput *widgets.QLineEdit
 
 	helloMatrixResp helloMatrixResp
 	serverDropdown  *widgets.QComboBox
@@ -96,11 +99,11 @@ func (l *LoginUI) NewUI() error {
 
 func (l *LoginUI) setupLocalpartInput() {
 	// LocalpartInput
-	localpartInput := widgets.NewQLineEditFromPointer(l.widget.FindChild("LocalpartInput", core.Qt__FindChildrenRecursively).Pointer())
+	l.localpartInput = widgets.NewQLineEditFromPointer(l.widget.FindChild("LocalpartInput", core.Qt__FindChildrenRecursively).Pointer())
 
-	localpartInput.ConnectTextChanged(func(value string) {
-		if localpartInput.StyleSheet() == redBorder {
-			localpartInput.SetStyleSheet("")
+	l.localpartInput.ConnectTextChanged(func(value string) {
+		if l.localpartInput.StyleSheet() == redBorder {
+			l.localpartInput.SetStyleSheet("")
 		}
 		l.localpart = value
 	})
@@ -108,15 +111,52 @@ func (l *LoginUI) setupLocalpartInput() {
 
 func (l *LoginUI) setupPasswordInput() {
 	// PasswordInput
-	passwordInput := widgets.NewQLineEditFromPointer(l.widget.FindChild("PasswordInput", core.Qt__FindChildrenRecursively).Pointer())
+	l.passwordInput = widgets.NewQLineEditFromPointer(l.widget.FindChild("PasswordInput", core.Qt__FindChildrenRecursively).Pointer())
 
-	passwordInput.ConnectTextChanged(func(value string) {
-		if passwordInput.StyleSheet() == redBorder {
-			passwordInput.SetStyleSheet("")
+	l.passwordInput.ConnectTextChanged(func(value string) {
+		if l.passwordInput.StyleSheet() == redBorder {
+			l.passwordInput.SetStyleSheet("")
 		}
 		l.password = value
 	})
 
+}
+
+func (l *LoginUI) setupLoginButton() (err error) {
+	// loginButton
+	loginButton := widgets.NewQPushButtonFromPointer(l.widget.FindChild("LoginButton", core.Qt__FindChildrenRecursively).Pointer())
+
+	//Set Button Effect
+	leffect := widgets.NewQGraphicsDropShadowEffect(nil)
+	leffect.SetBlurRadius(5)
+	leffect.SetXOffset(2)
+	leffect.SetYOffset(2)
+	leffect.SetColor(gui.NewQColor2(core.Qt__black))
+
+	loginButton.SetGraphicsEffect(leffect)
+
+	loginButton.ConnectClicked(func(_ bool) {
+		if l.localpart != "" && l.password != "" {
+			l.server = l.serverDropdown.CurrentText()
+			LoginErr := l.login()
+			if LoginErr != nil {
+				err = LoginErr
+				return
+			}
+		} else {
+			if l.localpart == "" {
+				l.localpartInput.SetStyleSheet(redBorder)
+			} else {
+				l.passwordInput.SetStyleSheet(redBorder)
+			}
+		}
+	})
+	return
+}
+
+func (l *LoginUI) login() (err error) {
+	log.Println("login")
+	return nil
 }
 
 func (l *LoginUI) setupDropdown() (err error) {
