@@ -98,6 +98,7 @@ func (l *LoginUI) NewUI() error {
 	go l.setupLocalpartInput()
 	go l.setupPasswordInput()
 	go l.setupLoginButton()
+	go l.setupRegisterButton()
 
 	l.window.SetWindowTitle("Morpheus - Login")
 
