@@ -35,11 +35,13 @@ type RegisterUI struct {
 	windowWidth  int
 	windowHeight int
 
-	localpart      string
-	password       string
-	server         string
-	passwordInput  *widgets.QLineEdit
-	localpartInput *widgets.QLineEdit
+	localpart            string
+	password             string
+	confirmpassword      string
+	server               string
+	passwordInput        *widgets.QLineEdit
+	passwordConfirmInput *widgets.QLineEdit
+	localpartInput       *widgets.QLineEdit
 
 	helloMatrixResp helloMatrixResp
 	serverDropdown  *widgets.QComboBox
@@ -109,7 +111,15 @@ func (r *RegisterUI) setupUsername() (err error) {
 
 	r.localpartInput.ConnectKeyPressEvent(func(ev *gui.QKeyEvent) {
 		if int(ev.Key()) == int(core.Qt__Key_Enter) || int(ev.Key()) == int(core.Qt__Key_Return) {
-			if r.password != "" {
+			if r.password == "" {
+				r.passwordInput.SetStyleSheet(redBorder)
+				ev.Ignore()
+			}
+			if r.localpart == "" {
+				r.localpartInput.SetStyleSheet(redBorder)
+				ev.Ignore()
+			}
+			if r.password == r.confirmpassword {
 				r.server = r.serverDropdown.CurrentText()
 				RegisterErr := r.register()
 				if RegisterErr != nil {
@@ -117,10 +127,10 @@ func (r *RegisterUI) setupUsername() (err error) {
 					return
 				}
 
-				r.localpartInput.Clear()
+				r.passwordInput.Clear()
 				ev.Accept()
 			} else {
-				r.passwordInput.SetStyleSheet(redBorder)
+				r.passwordConfirmInput.SetStyleSheet(redBorder)
 				ev.Ignore()
 			}
 		} else {
@@ -144,7 +154,15 @@ func (r *RegisterUI) setupPassword() (err error) {
 
 	r.passwordInput.ConnectKeyPressEvent(func(ev *gui.QKeyEvent) {
 		if int(ev.Key()) == int(core.Qt__Key_Enter) || int(ev.Key()) == int(core.Qt__Key_Return) {
-			if r.localpart != "" {
+			if r.password == "" {
+				r.passwordInput.SetStyleSheet(redBorder)
+				ev.Ignore()
+			}
+			if r.localpart == "" {
+				r.localpartInput.SetStyleSheet(redBorder)
+				ev.Ignore()
+			}
+			if r.password == r.confirmpassword {
 				r.server = r.serverDropdown.CurrentText()
 				RegisterErr := r.register()
 				if RegisterErr != nil {
@@ -155,11 +173,55 @@ func (r *RegisterUI) setupPassword() (err error) {
 				r.passwordInput.Clear()
 				ev.Accept()
 			} else {
-				r.localpartInput.SetStyleSheet(redBorder)
+				r.passwordConfirmInput.SetStyleSheet(redBorder)
 				ev.Ignore()
 			}
 		} else {
 			r.passwordInput.KeyPressEventDefault(ev)
+			ev.Ignore()
+		}
+	})
+
+	return
+}
+
+func (r *RegisterUI) setupConfirmPassword() (err error) {
+	// PasswordConfirmInput
+	r.passwordConfirmInput = widgets.NewQLineEditFromPointer(r.widget.FindChild("PasswordConfirmInput", core.Qt__FindChildrenRecursively).Pointer())
+
+	r.passwordConfirmInput.ConnectTextChanged(func(value string) {
+		if r.passwordConfirmInput.StyleSheet() == redBorder {
+			r.passwordConfirmInput.SetStyleSheet("")
+		}
+		r.confirmpassword = value
+	})
+
+	r.passwordConfirmInput.ConnectKeyPressEvent(func(ev *gui.QKeyEvent) {
+		if int(ev.Key()) == int(core.Qt__Key_Enter) || int(ev.Key()) == int(core.Qt__Key_Return) {
+			if r.password == "" {
+				r.passwordInput.SetStyleSheet(redBorder)
+				ev.Ignore()
+			}
+			if r.localpart == "" {
+				r.localpartInput.SetStyleSheet(redBorder)
+				ev.Ignore()
+			}
+			if r.password == r.confirmpassword {
+				r.server = r.serverDropdown.CurrentText()
+				RegisterErr := r.register()
+				if RegisterErr != nil {
+					err = RegisterErr
+					return
+				}
+
+				r.passwordInput.Clear()
+				ev.Accept()
+			} else {
+				r.passwordConfirmInput.SetStyleSheet(redBorder)
+				ev.Ignore()
+			}
+		} else {
+			r.passwordConfirmInput.KeyPressEventDefault(ev)
 			ev.Ignore()
 		}
 	})
