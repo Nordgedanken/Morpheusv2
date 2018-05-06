@@ -93,6 +93,7 @@ func (l *LoginUI) NewUI() error {
 	go l.setupDropdown()
 	go l.setupLocalpartInput()
 	go l.setupPasswordInput()
+	go l.setupLoginButton()
 
 	return nil
 }
