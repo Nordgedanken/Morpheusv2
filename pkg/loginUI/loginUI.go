@@ -130,11 +130,13 @@ func (l *LoginUI) setupLoginButton() (err error) {
 	loginButton.ConnectClicked(func(_ bool) {
 		if l.localpart != "" && l.password != "" {
 			l.server = l.serverDropdown.CurrentText()
-			LoginErr := l.login()
-			if LoginErr != nil {
-				err = LoginErr
-				return
-			}
+			go func() {
+				LoginErr := l.login()
+				if LoginErr != nil {
+					err = LoginErr
+					return
+				}
+			}()
 		} else {
 			if l.localpart == "" {
 				l.localpartInput.SetStyleSheet(redBorder)
@@ -155,15 +157,18 @@ func (l *LoginUI) login() (err error) {
 
 	util.User = user
 
-	err = util.DB.SaveCurrentUser(user)
-	if err != nil {
-		return
-	}
+	go func() {
+		err = util.DB.SaveCurrentUser(user)
+		if err != nil {
+			log.Panicln(err)
+			return
+		}
+	}()
 
 	mainUIs := mainUI.NewMainUI(l.windowWidth, l.windowHeight, l.window)
 	uiHelper.SetNewWindow(mainUIs, l.window, l.windowWidth, l.windowHeight)
 
-	return nil
+	return
 }
 
 //getClient returns a Client

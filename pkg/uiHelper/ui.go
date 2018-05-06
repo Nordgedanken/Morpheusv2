@@ -16,6 +16,7 @@ package uiHelper
 
 import (
 	"github.com/therecipe/qt/widgets"
+	"log"
 )
 
 type ui interface {
@@ -25,12 +26,13 @@ type ui interface {
 
 // SetNewWindow loads the new UI into the QMainWindow
 func SetNewWindow(ui ui, window *widgets.QMainWindow, windowWidth, windowHeight int) error {
+	log.Println("Start changing UI")
 	uiErr := ui.NewUI()
 	if uiErr != nil {
 		return uiErr
 	}
 	ui.GetWidget().Resize2(windowWidth, windowHeight)
 	window.SetCentralWidget(ui.GetWidget())
-	window.Show()
+	log.Println("Finished changing UI")
 	return nil
 }

@@ -53,6 +53,8 @@ func Start(argsArg []string) error {
 		uiHelper.SetNewWindow(mainUIs, window, windowWidth, windowHeight)
 	}
 
+	window.Show()
+
 	widgets.QApplication_Exec()
 
 	return nil
