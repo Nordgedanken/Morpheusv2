@@ -16,6 +16,7 @@ package registerUI
 
 import (
 	"encoding/json"
+	"github.com/Nordgedanken/Morpheusv2/pkg/uiHelper"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/uitools"
@@ -284,6 +285,15 @@ func (r *RegisterUI) setupRegisterButton() (err error) {
 		} else {
 			r.passwordConfirmInput.SetStyleSheet(redBorder)
 		}
+	})
+	return
+}
+
+func (r *RegisterUI) setupLoginButton() (err error) {
+	// loginButton
+	loginButton := widgets.NewQPushButtonFromPointer(r.widget.FindChild("loginButton", core.Qt__FindChildrenRecursively).Pointer())
+	loginButton.ConnectClicked(func(_ bool) {
+		uiHelper.NewLoginUI(r.windowWidth, r.windowHeight, r.window)
 	})
 	return
 }

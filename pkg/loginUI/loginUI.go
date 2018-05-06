@@ -16,10 +16,8 @@ package loginUI
 
 import (
 	"encoding/json"
-	"github.com/Nordgedanken/Morpheusv2/pkg/mainUI"
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix"
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix/users"
-	"github.com/Nordgedanken/Morpheusv2/pkg/registerUI"
 	"github.com/Nordgedanken/Morpheusv2/pkg/uiHelper"
 	"github.com/Nordgedanken/Morpheusv2/pkg/util"
 	"github.com/matrix-org/gomatrix"
@@ -166,8 +164,7 @@ func (l *LoginUI) setupRegisterButton() (err error) {
 	registerButton.SetGraphicsEffect(reffect)
 
 	registerButton.ConnectClicked(func(_ bool) {
-		registerUIs := registerUI.NewRegisterUI(l.windowWidth, l.windowHeight, l.window)
-		uiHelper.SetNewWindow(registerUIs, l.window, l.windowWidth, l.windowHeight)
+		uiHelper.NewRegisterUI(l.windowWidth, l.windowHeight, l.window)
 	})
 
 	return
@@ -190,8 +187,7 @@ func (l *LoginUI) login() (err error) {
 		}
 	}()
 
-	mainUIs := mainUI.NewMainUI(l.windowWidth, l.windowHeight, l.window)
-	uiHelper.SetNewWindow(mainUIs, l.window, l.windowWidth, l.windowHeight)
+	uiHelper.NewMainUI(l.windowWidth, l.windowHeight, l.window)
 
 	return
 }

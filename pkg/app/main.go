@@ -16,8 +16,6 @@ package app
 
 import (
 	"database/sql"
-	"github.com/Nordgedanken/Morpheusv2/pkg/loginUI"
-	"github.com/Nordgedanken/Morpheusv2/pkg/mainUI"
 	"github.com/Nordgedanken/Morpheusv2/pkg/uiHelper"
 	"github.com/Nordgedanken/Morpheusv2/pkg/util"
 	"github.com/therecipe/qt/core"
@@ -42,14 +40,12 @@ func Start(argsArg []string) error {
 	user, err := util.DB.GetCurrentUser()
 	// We special case ErrNoRows because this is expected to happen if user is missing
 	if err == sql.ErrNoRows {
-		loginUIs := loginUI.NewLoginUI(windowWidth, windowHeight, window)
-		uiHelper.SetNewWindow(loginUIs, window, windowWidth, windowHeight)
+		uiHelper.NewLoginUI(windowWidth, windowHeight, window)
 	} else if err != nil {
 		return err
 	} else {
-		mainUIs := mainUI.NewMainUI(windowWidth, windowHeight, window)
 		util.User = user
-		uiHelper.SetNewWindow(mainUIs, window, windowWidth, windowHeight)
+		uiHelper.NewMainUI(windowWidth, windowHeight, window)
 	}
 
 	window.Show()
