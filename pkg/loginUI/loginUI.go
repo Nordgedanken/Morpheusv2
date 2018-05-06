@@ -80,6 +80,8 @@ func (l *LoginUI) NewUI() error {
 		event.Accept()
 	})
 
+	go l.setupDropdown()
+
 	return nil
 }
 
