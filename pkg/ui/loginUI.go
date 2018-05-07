@@ -40,8 +40,7 @@ type LoginUI struct {
 	passwordInput  *widgets.QLineEdit
 	localpartInput *widgets.QLineEdit
 
-	helloMatrixResp helloMatrixResp
-	serverDropdown  *widgets.QComboBox
+	serverDropdown *widgets.QComboBox
 }
 
 // NewLoginUI gives you a MainUI struct with profiled data
@@ -230,14 +229,16 @@ func (l *LoginUI) setupDropdown() (err error) {
 	l.serverDropdown = widgets.NewQComboBoxFromPointer(l.widget.FindChild("ServerChooserDropdown", core.Qt__FindChildrenRecursively).Pointer())
 
 	var helloMatrixRespErr error
-	l.helloMatrixResp, helloMatrixRespErr = getHelloMatrixList()
-	if helloMatrixRespErr != nil {
-		log.Println(helloMatrixRespErr)
-		err = helloMatrixRespErr
-		return
+	if helloMatrixRespV == nil {
+		helloMatrixRespV, helloMatrixRespErr = getHelloMatrixList()
+		if helloMatrixRespErr != nil {
+			log.Println(helloMatrixRespErr)
+			err = helloMatrixRespErr
+			return
+		}
 	}
 
-	hostnames := convertHelloMatrixRespToNameSlice(l.helloMatrixResp)
+	hostnames := convertHelloMatrixRespToNameSlice(helloMatrixRespV)
 	l.serverDropdown.AddItems(hostnames)
 	return nil
 }

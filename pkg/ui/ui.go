@@ -19,6 +19,8 @@ import (
 	"log"
 )
 
+var helloMatrixRespV helloMatrixResp
+
 type ui interface {
 	GetWidget() (widget *widgets.QWidget)
 	NewUI() error
