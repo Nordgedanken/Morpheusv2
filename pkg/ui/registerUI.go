@@ -69,10 +69,6 @@ func (r *RegisterUI) NewUI() error {
 	registerWidget := loader.Load(file, r.widget)
 	file.Close()
 
-	layout := widgets.NewQHBoxLayout()
-	layout.AddWidget(registerWidget, 0, core.Qt__AlignTop|core.Qt__AlignLeft)
-	r.widget.SetLayout(layout)
-
 	r.widget.SetSizePolicy2(widgets.QSizePolicy__Expanding, widgets.QSizePolicy__Expanding)
 	registerWidget.SetSizePolicy2(widgets.QSizePolicy__Expanding, widgets.QSizePolicy__Expanding)
 
