@@ -66,14 +66,18 @@ func (r *RegisterUI) NewUI() error {
 	var file = core.NewQFile2(":/qml/ui/register.ui")
 
 	file.Open(core.QIODevice__ReadOnly)
-	loginWidget := loader.Load(file, r.widget)
+	registerWidget := loader.Load(file, r.widget)
 	file.Close()
 
+	layout := widgets.NewQVBoxLayout()
+	layout.AddWidget(registerWidget, 0, core.Qt__AlignTop|core.Qt__AlignLeft)
+	r.widget.SetLayout(layout)
+
 	r.widget.SetSizePolicy2(widgets.QSizePolicy__Expanding, widgets.QSizePolicy__Expanding)
-	loginWidget.SetSizePolicy2(widgets.QSizePolicy__Expanding, widgets.QSizePolicy__Expanding)
+	registerWidget.SetSizePolicy2(widgets.QSizePolicy__Expanding, widgets.QSizePolicy__Expanding)
 
 	r.widget.ConnectResizeEvent(func(event *gui.QResizeEvent) {
-		loginWidget.Resize(event.Size())
+		registerWidget.Resize(event.Size())
 		event.Accept()
 	})
 

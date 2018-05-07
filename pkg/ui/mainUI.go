@@ -57,6 +57,10 @@ func (m *MainUI) NewUI() error {
 	mainWidget := loader.Load(file, m.widget)
 	file.Close()
 
+	layout := widgets.NewQVBoxLayout()
+	layout.AddWidget(mainWidget, 0, core.Qt__AlignTop|core.Qt__AlignLeft)
+	m.widget.SetLayout(layout)
+
 	m.widget.SetSizePolicy2(widgets.QSizePolicy__Expanding, widgets.QSizePolicy__Expanding)
 	mainWidget.SetSizePolicy2(widgets.QSizePolicy__Expanding, widgets.QSizePolicy__Expanding)
 
