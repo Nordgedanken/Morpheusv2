@@ -24,6 +24,7 @@ import (
 	"github.com/therecipe/qt/widgets"
 	"log"
 	"strings"
+	"sync"
 )
 
 // LoginUI defines the data for the login ui
@@ -155,15 +156,16 @@ func (l *LoginUI) setupRegisterButton() (err error) {
 }
 
 func (l *LoginUI) login() (err error) {
-	go func() {
-		l.loginUser(l.localpart, l.password, l.server)
+	wg := &sync.WaitGroup{}
+	wg.Add(1)
+	go l.loginUser(l.localpart, l.password, l.server, wg)
+	wg.Wait()
 
-		mainUIs := NewMainUI(l.windowWidth, l.windowHeight, l.window)
-		err := SetNewWindow(mainUIs, l.window, l.windowWidth, l.windowHeight)
-		if err != nil {
-			log.Panicln(err)
-		}
-	}()
+	mainUIs := NewMainUI(l.windowWidth, l.windowHeight, l.window)
+	err = SetNewWindow(mainUIs, l.window, l.windowWidth, l.windowHeight)
+	if err != nil {
+		return err
+	}
 
 	return
 }
@@ -180,7 +182,7 @@ func getClient(homeserverURL string) (client *gomatrix.Client, err error) {
 }
 
 //loginUser Creates a Session for the User
-func (l *LoginUI) loginUser(localpart, password, homeserverURL string) {
+func (l *LoginUI) loginUser(localpart, password, homeserverURL string, wg *sync.WaitGroup) {
 	var cli *gomatrix.Client
 	var cliErr error
 	log.Println(homeserverURL)
@@ -221,6 +223,8 @@ func (l *LoginUI) loginUser(localpart, password, homeserverURL string) {
 			log.Panicln(err)
 		}
 	}()
+
+	wg.Done()
 }
 
 func (l *LoginUI) setupDropdown() (err error) {
