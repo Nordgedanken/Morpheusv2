@@ -60,6 +60,7 @@ func Start(argsArg []string) error {
 		if err != nil {
 			return err
 		}
+		util.E.Raise("setAvatar", nil)
 	}
 
 	window.Show()
