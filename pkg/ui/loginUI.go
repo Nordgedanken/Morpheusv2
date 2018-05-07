@@ -15,7 +15,6 @@
 package ui
 
 import (
-	"github.com/Nordgedanken/Morpheusv2/pkg/matrix"
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix/users"
 	"github.com/Nordgedanken/Morpheusv2/pkg/util"
 	"github.com/matrix-org/gomatrix"
@@ -155,25 +154,7 @@ func (l *LoginUI) setupRegisterButton() (err error) {
 }
 
 func (l *LoginUI) login() (err error) {
-	var user matrix.User
-	user, err = loginUser(l.localpart, l.password, l.server)
-	if err != nil {
-		return
-	}
-
-	util.User = user
-
-	go func() {
-		err = util.DB.SaveCurrentUser(user)
-		if err != nil {
-			log.Panicln(err)
-			return
-		}
-	}()
-
-	mainUIs := NewMainUI(l.windowWidth, l.windowHeight, l.window)
-	SetNewWindow(mainUIs, l.window, l.windowWidth, l.windowHeight)
-
+	go l.loginUser(l.localpart, l.password, l.server)
 	return
 }
 
@@ -189,7 +170,7 @@ func getClient(homeserverURL string) (client *gomatrix.Client, err error) {
 }
 
 //loginUser Creates a Session for the User
-func loginUser(localpart, password, homeserverURL string) (matrix.User, error) {
+func (l *LoginUI) loginUser(localpart, password, homeserverURL string) {
 	var cli *gomatrix.Client
 	var cliErr error
 	if strings.HasPrefix(homeserverURL, "https://") {
@@ -200,7 +181,7 @@ func loginUser(localpart, password, homeserverURL string) (matrix.User, error) {
 		cli, cliErr = getClient("https://" + homeserverURL)
 	}
 	if cliErr != nil {
-		return nil, cliErr
+		log.Panicln(cliErr)
 	}
 
 	localpart = strings.Replace(localpart, "@", "", -1)
@@ -212,7 +193,7 @@ func loginUser(localpart, password, homeserverURL string) (matrix.User, error) {
 		InitialDeviceDisplayName: "Morpheus 0.1.0-Alpha",
 	})
 	if err != nil {
-		return nil, err
+		log.Panicln(err)
 	}
 
 	cli.SetCredentials(resp.UserID, resp.AccessToken)
@@ -221,7 +202,17 @@ func loginUser(localpart, password, homeserverURL string) (matrix.User, error) {
 	user.SetCli(cli)
 	user.SetMXID(cli.UserID)
 
-	return user, nil
+	util.User = user
+
+	mainUIs := NewMainUI(l.windowWidth, l.windowHeight, l.window)
+	SetNewWindow(mainUIs, l.window, l.windowWidth, l.windowHeight)
+
+	go func() {
+		err = util.DB.SaveCurrentUser(user)
+		if err != nil {
+			log.Panicln(err)
+		}
+	}()
 }
 
 func (l *LoginUI) setupDropdown() (err error) {

@@ -20,6 +20,7 @@ import (
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/uitools"
 	"github.com/therecipe/qt/widgets"
+	"log"
 )
 
 // MainUI defines the data for the main ui (that one with the chats)
@@ -78,25 +79,27 @@ func (m *MainUI) NewUI() error {
 	return nil
 }
 
-func (m *MainUI) setupLogout() (err error) {
+func (m *MainUI) setupLogout() {
 	// Handle LogoutButton
 	logoutButton := widgets.NewQPushButtonFromPointer(m.widget.FindChild("LogoutButton", core.Qt__FindChildrenRecursively).Pointer())
 	logoutButton.ConnectClicked(func(_ bool) {
-		err := m.logout()
-		if err != nil {
-			return
-		}
+		go m.logout()
 	})
 	return
 }
 
-func (m *MainUI) logout() (err error) {
-	_, err = util.User.GetCli().Logout()
+func (m *MainUI) logout() {
+	_, err := util.User.GetCli().Logout()
 	if err != nil {
-		return
+		log.Panicln(err)
 	}
 	util.User.GetCli().ClearCredentials()
 
 	err = util.DB.RemoveCurrentUser()
-	return
+	if err != nil {
+		log.Panicln(err)
+	}
+
+	loginUIs := NewLoginUI(m.windowWidth, m.windowHeight, m.window)
+	SetNewWindow(loginUIs, m.window, m.windowWidth, m.windowHeight)
 }

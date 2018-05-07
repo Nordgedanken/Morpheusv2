@@ -44,8 +44,8 @@ type RegisterUI struct {
 }
 
 // NewRegisterUI gives you a MainUI struct with profiled data
-func NewRegisterUI(windowWidth, windowHeight int, window *widgets.QMainWindow) (loginUI *RegisterUI) {
-	loginUI = &RegisterUI{
+func NewRegisterUI(windowWidth, windowHeight int, window *widgets.QMainWindow) (registerUI *RegisterUI) {
+	registerUI = &RegisterUI{
 		windowWidth:  windowWidth,
 		windowHeight: windowHeight,
 		window:       window,
