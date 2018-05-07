@@ -15,7 +15,6 @@
 package sqlite
 
 import (
-	"bytes"
 	"encoding/json"
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix"
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix/rooms"
@@ -43,8 +42,7 @@ func (s *SQLite) SaveRoom(Room matrix.Room) error {
 	if err != nil {
 		return err
 	}
-	aliasesN := bytes.IndexByte(aliasesBytes, 0)
-	aliasesS := string(aliasesBytes[:aliasesN])
+	aliasesS := string(aliasesBytes)
 	roomID := Room.GetRoomID()
 	name, err := Room.GetName()
 	if err != nil {
@@ -54,8 +52,7 @@ func (s *SQLite) SaveRoom(Room matrix.Room) error {
 	if err != nil {
 		return err
 	}
-	avatarN := bytes.IndexByte(avatar, 0)
-	avatarS := string(avatar[:avatarN])
+	avatarS := string(avatar)
 	topic, err := Room.GetTopic()
 	if err != nil {
 		return err
