@@ -12,19 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package util
+package matrix
 
 import (
-	"github.com/Nordgedanken/Morpheusv2/pkg/db"
-	"github.com/Nordgedanken/Morpheusv2/pkg/matrix"
-	"github.com/Nordgedanken/events"
+	"bytes"
+	"github.com/therecipe/qt/gui"
 )
 
-// DB holds the main pointer to the Database
-var DB db.DB
+func ImageToPixmap(image []byte) *gui.QPixmap {
+	pixmap := gui.NewQPixmap()
 
-// User holds the Current User
-var User matrix.User
+	n := bytes.IndexByte(image, 0)
+	imageS := string(image[:n])
 
-// EventStore
-var E *events.Events
+	pixmap.LoadFromData(imageS, uint(len(imageS)), "", 0)
+
+	return pixmap
+}

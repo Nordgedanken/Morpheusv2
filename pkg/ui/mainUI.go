@@ -15,13 +15,13 @@
 package ui
 
 import (
+	"github.com/Nordgedanken/Morpheusv2/pkg/matrix"
 	"github.com/Nordgedanken/Morpheusv2/pkg/util"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/uitools"
 	"github.com/therecipe/qt/widgets"
 	"log"
-	"sync"
 )
 
 // MainUI defines the data for the main ui (that one with the chats)
@@ -68,20 +68,33 @@ func (m *MainUI) NewUI() error {
 
 	// Setup functions and elements
 	go m.setupLogout()
+	go m.registerSetAvatarEvent()
 
 	m.window.SetWindowTitle("Morpheus")
 
 	return nil
 }
 
+func (m *MainUI) registerSetAvatarEvent() {
+	// userAvatar
+	avatarLogo := widgets.NewQLabelFromPointer(m.widget.FindChild("UserAvatar", core.Qt__FindChildrenRecursively).Pointer())
+	util.E.On("setAvatar", func(_ interface{}) error {
+		image, err := util.User.GetAvatar("")
+		if err != nil {
+			return err
+		}
+		pixmap := matrix.ImageToPixmap(image)
+
+		avatarLogo.SetPixmap(pixmap)
+		return nil
+	})
+}
+
 func (m *MainUI) setupLogout() {
 	// Handle LogoutButton
 	logoutButton := widgets.NewQPushButtonFromPointer(m.widget.FindChild("LogoutButton", core.Qt__FindChildrenRecursively).Pointer())
 	logoutButton.ConnectClicked(func(_ bool) {
-		wg := &sync.WaitGroup{}
-		wg.Add(1)
-		go m.logout(wg)
-		wg.Wait()
+		go m.logout()
 
 		loginUIs := NewLoginUI(m.windowWidth, m.windowHeight, m.window)
 		err := SetNewWindow(loginUIs, m.window, m.windowWidth, m.windowHeight)
@@ -92,7 +105,7 @@ func (m *MainUI) setupLogout() {
 	return
 }
 
-func (m *MainUI) logout(wg *sync.WaitGroup) {
+func (m *MainUI) logout() {
 	_, err := util.User.GetCli().Logout()
 	if err != nil {
 		log.Panicln(err)
@@ -105,5 +118,4 @@ func (m *MainUI) logout(wg *sync.WaitGroup) {
 			log.Panicln(err)
 		}
 	}()
-	wg.Done()
 }

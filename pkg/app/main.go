@@ -18,6 +18,7 @@ import (
 	"database/sql"
 	"github.com/Nordgedanken/Morpheusv2/pkg/ui"
 	"github.com/Nordgedanken/Morpheusv2/pkg/util"
+	"github.com/Nordgedanken/events"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/widgets"
@@ -36,6 +37,11 @@ func Start(argsArg []string) error {
 	log.Println("Starting Morpheus v2")
 
 	initApp()
+
+	util.E = events.New()
+	util.E.OnError(func(err events.ListenerError) {
+		log.Panicln(err)
+	})
 
 	user, err := util.DB.GetCurrentUser()
 	// We special case ErrNoRows because this is expected to happen if user is missing

@@ -24,7 +24,6 @@ import (
 	"github.com/therecipe/qt/widgets"
 	"log"
 	"strings"
-	"sync"
 )
 
 // LoginUI defines the data for the login ui
@@ -156,10 +155,7 @@ func (l *LoginUI) setupRegisterButton() (err error) {
 }
 
 func (l *LoginUI) login() (err error) {
-	wg := &sync.WaitGroup{}
-	wg.Add(1)
-	go l.loginUser(l.localpart, l.password, l.server, wg)
-	wg.Wait()
+	go l.loginUser(l.localpart, l.password, l.server)
 
 	mainUIs := NewMainUI(l.windowWidth, l.windowHeight, l.window)
 	err = SetNewWindow(mainUIs, l.window, l.windowWidth, l.windowHeight)
@@ -182,7 +178,7 @@ func getClient(homeserverURL string) (client *gomatrix.Client, err error) {
 }
 
 //loginUser Creates a Session for the User
-func (l *LoginUI) loginUser(localpart, password, homeserverURL string, wg *sync.WaitGroup) {
+func (l *LoginUI) loginUser(localpart, password, homeserverURL string) {
 	var cli *gomatrix.Client
 	var cliErr error
 	log.Println(homeserverURL)
@@ -203,7 +199,7 @@ func (l *LoginUI) loginUser(localpart, password, homeserverURL string, wg *sync.
 		Type:                     "m.login.password",
 		User:                     localpart,
 		Password:                 password,
-		InitialDeviceDisplayName: "Morpheus 0.1.0-Alpha",
+		InitialDeviceDisplayName: "Morpheusv2 0.1.0-Alpha",
 	})
 	if err != nil {
 		log.Panicln(err)
@@ -224,7 +220,7 @@ func (l *LoginUI) loginUser(localpart, password, homeserverURL string, wg *sync.
 		}
 	}()
 
-	wg.Done()
+	util.E.Raise("setAvatar", nil)
 }
 
 func (l *LoginUI) setupDropdown() (err error) {

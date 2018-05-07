@@ -26,3 +26,7 @@ ignored = ["github.com/therecipe/qt/*"]
 [[constraint]]
   branch = "master"
   name = "github.com/shibukawa/configdir"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/Nordgedanken/events"

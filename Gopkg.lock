@@ -2,6 +2,18 @@
 
 
 [[projects]]
+  branch = "master"
+  name = "github.com/Nordgedanken/events"
+  packages = ["."]
+  revision = "06da56c0b8c029130428068d6aa758132cf16db6"
+
+[[projects]]
+  name = "github.com/Sirupsen/logrus"
+  packages = ["."]
+  revision = "c155da19408a8799da419ed3eeb0cb5db0ad5dbc"
+  version = "v1.0.5"
+
+[[projects]]
   name = "github.com/inconshreveable/mousetrap"
   packages = ["."]
   revision = "76626ae9c91c4f2a10f34cad8ce83ea42c93bb75"
@@ -37,9 +49,21 @@
   revision = "583c0c0531f06d5278b7d917446061adc344b5cd"
   version = "v1.0.1"
 
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/crypto"
+  packages = ["ssh/terminal"]
+  revision = "4ec37c66abab2c7e02ae775328b2ff001c3f025a"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/sys"
+  packages = ["unix","windows"]
+  revision = "7db1c3b1a98089d0071c84f646ff5c96aad43682"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "f746b36e895639f6b0cbe2cb4d928637d254f83f60346a95eaf5c0f383683229"
+  inputs-digest = "c6c4de95e2b4b37b761b481c90fa4a3143ea943ac91e91388a13422fa5a36cda"
   solver-name = "gps-cdcl"
   solver-version = 1
