@@ -16,6 +16,7 @@ package ui
 
 import (
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix"
+	"github.com/Nordgedanken/Morpheusv2/pkg/matrix/sync"
 	"github.com/Nordgedanken/Morpheusv2/pkg/util"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
@@ -69,6 +70,7 @@ func (m *MainUI) NewUI() error {
 	// Setup functions and elements
 	go m.setupLogout()
 	go m.registerSetAvatarEvent()
+	go m.registerStartSyncEvent()
 
 	m.window.SetWindowTitle("Morpheus")
 
@@ -89,8 +91,16 @@ func (m *MainUI) registerSetAvatarEvent() {
 	})
 }
 
+func (m *MainUI) registerStartSyncEvent() {
+	util.E.On("startSync", func(_ interface{}) error {
+		go sync.NewSync()
+		return nil
+	})
+}
+
 func (m *MainUI) Close() {
 	util.E.Remove("setAvatar")
+	util.E.Remove("startSync")
 }
 
 func (m *MainUI) setupLogout() {

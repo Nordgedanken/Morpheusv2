@@ -222,6 +222,7 @@ func (l *LoginUI) loginUser(localpart, password, homeserverURL string) {
 	}()
 
 	util.E.Raise("setAvatar", nil)
+	util.E.Raise("startSync", nil)
 }
 
 func (l *LoginUI) Close() {}

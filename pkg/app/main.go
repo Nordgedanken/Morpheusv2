@@ -61,6 +61,7 @@ func Start(argsArg []string) error {
 			return err
 		}
 		util.E.Raise("setAvatar", nil)
+		util.E.Raise("startSync", nil)
 	}
 
 	window.Show()
