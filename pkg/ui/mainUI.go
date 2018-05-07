@@ -90,12 +90,17 @@ func (m *MainUI) registerSetAvatarEvent() {
 	})
 }
 
+func (m *MainUI) Close() {
+	util.E.Remove("setAvatar")
+}
+
 func (m *MainUI) setupLogout() {
 	// Handle LogoutButton
 	logoutButton := widgets.NewQPushButtonFromPointer(m.widget.FindChild("LogoutButton", core.Qt__FindChildrenRecursively).Pointer())
 	logoutButton.ConnectClicked(func(_ bool) {
 		go m.logout()
 
+		m.Close()
 		loginUIs := NewLoginUI(m.windowWidth, m.windowHeight, m.window)
 		err := SetNewWindow(loginUIs, m.window, m.windowWidth, m.windowHeight)
 		if err != nil {

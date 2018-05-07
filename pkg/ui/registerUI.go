@@ -58,6 +58,8 @@ func (r *RegisterUI) GetWidget() (widget *widgets.QWidget) {
 	return r.widget
 }
 
+func (r *RegisterUI) Close() {}
+
 // NewUI prepares the new UI
 func (r *RegisterUI) NewUI() error {
 	r.widget = widgets.NewQWidget(nil, 0)
@@ -282,6 +284,7 @@ func (r *RegisterUI) setupLoginButton() (err error) {
 	// loginButton
 	loginButton := widgets.NewQPushButtonFromPointer(r.widget.FindChild("loginButton", core.Qt__FindChildrenRecursively).Pointer())
 	loginButton.ConnectClicked(func(_ bool) {
+		r.Close()
 		loginUIs := NewLoginUI(r.windowWidth, r.windowHeight, r.window)
 		err := SetNewWindow(loginUIs, r.window, r.windowWidth, r.windowHeight)
 		if err != nil {

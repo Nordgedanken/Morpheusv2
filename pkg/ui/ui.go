@@ -24,6 +24,7 @@ var helloMatrixRespV helloMatrixResp
 type ui interface {
 	GetWidget() (widget *widgets.QWidget)
 	NewUI() error
+	Close()
 }
 
 // SetNewWindow loads the new UI into the QMainWindow

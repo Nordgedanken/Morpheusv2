@@ -144,6 +144,7 @@ func (l *LoginUI) setupRegisterButton() (err error) {
 	registerButton := widgets.NewQPushButtonFromPointer(l.widget.FindChild("RegisterButton", core.Qt__FindChildrenRecursively).Pointer())
 
 	registerButton.ConnectClicked(func(_ bool) {
+		l.Close()
 		registerUIs := NewRegisterUI(l.windowWidth, l.windowHeight, l.window)
 		err := SetNewWindow(registerUIs, l.window, l.windowWidth, l.windowHeight)
 		if err != nil {
@@ -222,6 +223,8 @@ func (l *LoginUI) loginUser(localpart, password, homeserverURL string) {
 
 	util.E.Raise("setAvatar", nil)
 }
+
+func (l *LoginUI) Close() {}
 
 func (l *LoginUI) setupDropdown() (err error) {
 	// ServerDropdown
