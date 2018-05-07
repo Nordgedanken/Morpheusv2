@@ -126,7 +126,7 @@ func (s *SQLite) GetCurrentUser() (userR matrix.User, err error) {
 
 	splitUser := strings.Split(mxid, ":")
 	domain := strings.TrimPrefix(mxid, splitUser[0]+":")
-	client, err := gomatrix.NewClient(domain, mxid, accessToken)
+	client, err := gomatrix.NewClient("https://"+domain, mxid, accessToken)
 	if err != nil {
 		return
 	}
