@@ -120,6 +120,8 @@ func (l *LoginUI) setupLoginButton() (err error) {
 
 	loginButton.ConnectClicked(func(_ bool) {
 		l.server = l.serverDropdown.CurrentText()
+		log.Println(l.server)
+		log.Println(l.server)
 		if l.localpart != "" && l.password != "" && l.server != selectMessage {
 			err = l.login()
 			if err != nil {
