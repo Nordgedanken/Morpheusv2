@@ -15,6 +15,7 @@
 package sqlite
 
 import (
+	"bytes"
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix"
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix/users"
 	"github.com/matrix-org/gomatrix"
@@ -45,8 +46,10 @@ func (s *SQLite) SaveUser(user matrix.User) error {
 	if err != nil {
 		return err
 	}
+	avatarN := bytes.IndexByte(avatar, 0)
+	avatarS := string(avatar[:avatarN])
 	mxid := user.GetMXID()
-	_, err = stmt.Exec(mxid, displayName, string(avatar))
+	_, err = stmt.Exec(mxid, displayName, avatarS)
 	if err != nil {
 		return err
 	}
@@ -78,12 +81,14 @@ func (s *SQLite) SaveCurrentUser(user matrix.User) error {
 	if err != nil {
 		return err
 	}
+	avatarN := bytes.IndexByte(avatar, 0)
+	avatarS := string(avatar[:avatarN])
 	accessToken := user.GetAccessToken()
 	if err != nil {
 		return err
 	}
 	mxid := user.GetMXID()
-	_, err = stmt.Exec(mxid, displayName, string(avatar), accessToken, 1)
+	_, err = stmt.Exec(mxid, displayName, avatarS, accessToken, 1)
 	if err != nil {
 		return err
 	}

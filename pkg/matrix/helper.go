@@ -17,9 +17,11 @@ package matrix
 import (
 	"bytes"
 	"github.com/therecipe/qt/gui"
+	"log"
 )
 
 func ImageToPixmap(image []byte) *gui.QPixmap {
+	log.Println(image)
 	pixmap := gui.NewQPixmap()
 
 	n := bytes.IndexByte(image, 0)
