@@ -133,6 +133,7 @@ func (l *LoginUI) setupLoginButton() (err error) {
 			} else if l.password == "" {
 				l.passwordInput.SetStyleSheet(redBorder)
 			} else if l.server == selectMessage {
+				log.Println("serverDropdown red")
 				l.serverDropdown.SetStyleSheet(redBorder)
 			}
 		}
