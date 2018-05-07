@@ -176,12 +176,14 @@ func getClient(homeserverURL string) (client *gomatrix.Client, err error) {
 func (l *LoginUI) loginUser(localpart, password, homeserverURL string) {
 	var cli *gomatrix.Client
 	var cliErr error
+	log.Println(homeserverURL)
 	if strings.HasPrefix(homeserverURL, "https://") {
 		cli, cliErr = getClient(homeserverURL)
 	} else if strings.HasPrefix(homeserverURL, "http://") {
 		cli, cliErr = getClient(homeserverURL)
 	} else {
 		cli, cliErr = getClient("https://" + homeserverURL)
+		log.Println("https://" + homeserverURL)
 	}
 	if cliErr != nil {
 		log.Panicln(cliErr)
