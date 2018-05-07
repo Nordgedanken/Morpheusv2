@@ -15,6 +15,7 @@
 package ui
 
 import (
+	"github.com/Nordgedanken/Morpheusv2/pkg/util"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/uitools"
@@ -69,7 +70,33 @@ func (m *MainUI) NewUI() error {
 		event.Accept()
 	})
 
+	// Setup functions and elements
+	go m.setupLogout()
+
 	m.window.SetWindowTitle("Morpheus")
 
 	return nil
+}
+
+func (m *MainUI) setupLogout() (err error) {
+	// Handle LogoutButton
+	logoutButton := widgets.NewQPushButtonFromPointer(m.widget.FindChild("LogoutButton", core.Qt__FindChildrenRecursively).Pointer())
+	logoutButton.ConnectClicked(func(_ bool) {
+		err := m.logout()
+		if err != nil {
+			return
+		}
+	})
+	return
+}
+
+func (m *MainUI) logout() (err error) {
+	_, err = util.User.GetCli().Logout()
+	if err != nil {
+		return
+	}
+	util.User.GetCli().ClearCredentials()
+
+	err = util.DB.RemoveCurrentUser()
+	return
 }

@@ -91,6 +91,11 @@ func (s *SQLite) SaveCurrentUser(user matrix.User) error {
 	return tx.Commit()
 }
 
+func (s *SQLite) RemoveCurrentUser() (err error) {
+	_, err = s.db.Exec("DELETE FROM users WHERE own=1;")
+	return
+}
+
 // GetCurrentUser returns the current user including a ready gomatrix client
 func (s *SQLite) GetCurrentUser() (userR matrix.User, err error) {
 	if s.db == nil {

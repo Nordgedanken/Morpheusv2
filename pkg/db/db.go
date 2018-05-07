@@ -32,6 +32,7 @@ type DB interface {
 	GetUser(userID string) (userR matrix.User, err error)
 	SaveCurrentUser(user matrix.User) error
 	GetCurrentUser() (userR matrix.User, err error)
+	RemoveCurrentUser() (err error)
 
 	SaveMessage(message matrix.Message) error
 	GetMessage(eventID string) (messageR matrix.Message, err error)
