@@ -12,15 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package loginUI
+package ui
 
 import (
-	"encoding/json"
-	"github.com/Nordgedanken/Morpheusv2/pkg/mainUI"
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix"
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix/users"
-	"github.com/Nordgedanken/Morpheusv2/pkg/registerUI"
-	"github.com/Nordgedanken/Morpheusv2/pkg/uiHelper"
 	"github.com/Nordgedanken/Morpheusv2/pkg/util"
 	"github.com/matrix-org/gomatrix"
 	"github.com/therecipe/qt/core"
@@ -28,13 +24,8 @@ import (
 	"github.com/therecipe/qt/uitools"
 	"github.com/therecipe/qt/widgets"
 	"log"
-	"net/http"
-	"sort"
 	"strings"
-	"time"
 )
-
-const redBorder = "border: 1px solid red"
 
 // LoginUI defines the data for the login ui
 type LoginUI struct {
@@ -166,7 +157,8 @@ func (l *LoginUI) setupRegisterButton() (err error) {
 	registerButton.SetGraphicsEffect(reffect)
 
 	registerButton.ConnectClicked(func(_ bool) {
-		switchToRegisterUI(l.windowWidth, l.windowHeight, l.window)
+		registerUIs := NewRegisterUI(l.windowWidth, l.windowHeight, l.window)
+		SetNewWindow(registerUIs, l.window, l.windowWidth, l.windowHeight)
 	})
 
 	return
@@ -189,7 +181,8 @@ func (l *LoginUI) login() (err error) {
 		}
 	}()
 
-	switchToMainUI(l.windowWidth, l.windowHeight, l.window)
+	mainUIs := NewMainUI(l.windowWidth, l.windowHeight, l.window)
+	SetNewWindow(mainUIs, l.window, l.windowWidth, l.windowHeight)
 
 	return
 }
@@ -256,89 +249,4 @@ func (l *LoginUI) setupDropdown() (err error) {
 	hostnames := convertHelloMatrixRespToNameSlice(l.helloMatrixResp)
 	l.serverDropdown.AddItems(hostnames)
 	return nil
-}
-
-type helloMatrixResp []struct {
-	Hostname             string `json:"hostname"`
-	Description          string `json:"description"`
-	URL                  string `json:"url"`
-	Category             string `json:"category"`
-	Location             string `json:"location"`
-	OnlineSince          int64  `json:"online_since"`
-	LastResponse         int64  `json:"last_response"`
-	LastResponseTime     int64  `json:"last_response_time"`
-	StatusSince          string `json:"status_since"`
-	LastVersions         string `json:"last_versions"`
-	Measurements         int64  `json:"measurements"`
-	Successful           int64  `json:"successful"`
-	SumResponseTime      int64  `json:"sum_response_time"`
-	MeasurementsShort    int64  `json:"measurements_short"`
-	SuccessfulShort      int64  `json:"successful_short"`
-	SumResponseTimeShort int64  `json:"sum_response_time_short"`
-	UsersActive          int64  `json:"users_active,omitempty"`
-	ServerName           string `json:"server_name"`
-	ServerVersion        string `json:"server_version"`
-	Grade                string `json:"grade"`
-	GradeTrustIgnored    string `json:"gradeTrustIgnored"`
-	HasWarnings          int64  `json:"hasWarnings"`
-	PublicRoomCount      int64  `json:"public_room_count"`
-}
-
-func getHelloMatrixList() (resp helloMatrixResp, err error) {
-	var httpClient = &http.Client{Timeout: 10 * time.Second}
-
-	url := "https://www.hello-matrix.net/public_servers.php?format=json&only_public=true&client=Morpheusv2"
-
-	r, RespErr := httpClient.Get(url)
-	if RespErr != nil {
-		err = RespErr
-		return
-	}
-	defer r.Body.Close()
-
-	decodeErr := json.NewDecoder(r.Body).Decode(&resp)
-	if decodeErr != nil {
-		err = decodeErr
-		return
-	}
-
-	return
-}
-
-func convertHelloMatrixRespToNameSlice(resp helloMatrixResp) (hostnames []string) {
-	hostnames = append(hostnames, "Select a Server")
-
-	sort.Slice(resp, func(i, j int) bool {
-		return resp[i].LastResponseTime < resp[i].LastResponseTime
-	})
-	for _, v := range resp {
-		hostnames = append(hostnames, v.Hostname)
-	}
-
-	return
-}
-
-// HELPER STUFF
-
-// setNewWindow loads the new UI into the QMainWindow
-func setNewWindow(ui uiHelper.UI, window *widgets.QMainWindow, windowWidth, windowHeight int) error {
-	log.Println("Start changing UI")
-	uiErr := ui.NewUI()
-	if uiErr != nil {
-		return uiErr
-	}
-	ui.GetWidget().Resize2(windowWidth, windowHeight)
-	window.SetCentralWidget(ui.GetWidget())
-	log.Println("Finished changing UI")
-	return nil
-}
-
-func switchToRegisterUI(windowWidth, windowHeight int, window *widgets.QMainWindow) {
-	registerUIs := registerUI.NewRegisterUI(windowWidth, windowHeight, window)
-	setNewWindow(registerUIs, window, windowWidth, windowHeight)
-}
-
-func switchToMainUI(windowWidth, windowHeight int, window *widgets.QMainWindow) {
-	mainUIs := mainUI.NewMainUI(windowWidth, windowHeight, window)
-	setNewWindow(mainUIs, window, windowWidth, windowHeight)
 }

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package mainUI
+package ui
 
 import (
 	"github.com/therecipe/qt/core"

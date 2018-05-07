@@ -12,13 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package uiHelper
+package ui
 
 import (
 	"github.com/therecipe/qt/widgets"
+	"log"
 )
 
-type UI interface {
+type ui interface {
 	GetWidget() (widget *widgets.QWidget)
 	NewUI() error
+}
+
+// SetNewWindow loads the new UI into the QMainWindow
+func SetNewWindow(ui ui, window *widgets.QMainWindow, windowWidth, windowHeight int) error {
+	log.Println("Start changing UI")
+	uiErr := ui.NewUI()
+	if uiErr != nil {
+		return uiErr
+	}
+	ui.GetWidget().Resize2(windowWidth, windowHeight)
+	window.SetCentralWidget(ui.GetWidget())
+	log.Println("Finished changing UI")
+	return nil
 }
