@@ -147,15 +147,6 @@ func (l *LoginUI) setupRegisterButton() (err error) {
 	// registerButton
 	registerButton := widgets.NewQPushButtonFromPointer(l.widget.FindChild("RegisterButton", core.Qt__FindChildrenRecursively).Pointer())
 
-	//Set Button Effect
-	reffect := widgets.NewQGraphicsDropShadowEffect(nil)
-	reffect.SetBlurRadius(5)
-	reffect.SetXOffset(2)
-	reffect.SetYOffset(2)
-	reffect.SetColor(gui.NewQColor2(core.Qt__black))
-
-	registerButton.SetGraphicsEffect(reffect)
-
 	registerButton.ConnectClicked(func(_ bool) {
 		registerUIs := NewRegisterUI(l.windowWidth, l.windowHeight, l.window)
 		SetNewWindow(registerUIs, l.window, l.windowWidth, l.windowHeight)

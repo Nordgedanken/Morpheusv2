@@ -92,8 +92,9 @@ func (r *RegisterUI) NewUI() error {
 	go r.setupDropdown()
 	go r.setupUsername()
 	go r.setupPassword()
-	go r.setupRegisterButton()
 	go r.setupConfirmPassword()
+	go r.setupRegisterButton()
+	go r.setupLoginButton()
 
 	r.window.SetWindowTitle("Morpheus - Register")
 
