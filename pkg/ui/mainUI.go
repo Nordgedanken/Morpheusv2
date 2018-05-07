@@ -101,5 +101,8 @@ func (m *MainUI) logout() {
 	}
 
 	loginUIs := NewLoginUI(m.windowWidth, m.windowHeight, m.window)
-	SetNewWindow(loginUIs, m.window, m.windowWidth, m.windowHeight)
+	err = SetNewWindow(loginUIs, m.window, m.windowWidth, m.windowHeight)
+	if err != nil {
+		log.Panicln(err)
+	}
 }

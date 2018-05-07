@@ -289,7 +289,10 @@ func (r *RegisterUI) setupLoginButton() (err error) {
 	loginButton := widgets.NewQPushButtonFromPointer(r.widget.FindChild("loginButton", core.Qt__FindChildrenRecursively).Pointer())
 	loginButton.ConnectClicked(func(_ bool) {
 		loginUIs := NewLoginUI(r.windowWidth, r.windowHeight, r.window)
-		SetNewWindow(loginUIs, r.window, r.windowWidth, r.windowHeight)
+		err := SetNewWindow(loginUIs, r.window, r.windowWidth, r.windowHeight)
+		if err != nil {
+			log.Panicln(err)
+		}
 	})
 	return
 }

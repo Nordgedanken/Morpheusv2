@@ -34,6 +34,7 @@ func SetNewWindow(ui ui, window *widgets.QMainWindow, windowWidth, windowHeight 
 		return uiErr
 	}
 	ui.GetWidget().Resize2(windowWidth, windowHeight)
+	log.Println(ui.GetWidget())
 	window.SetCentralWidget(ui.GetWidget())
 	log.Println("Finished changing UI")
 	return nil

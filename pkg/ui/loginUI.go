@@ -147,7 +147,10 @@ func (l *LoginUI) setupRegisterButton() (err error) {
 
 	registerButton.ConnectClicked(func(_ bool) {
 		registerUIs := NewRegisterUI(l.windowWidth, l.windowHeight, l.window)
-		SetNewWindow(registerUIs, l.window, l.windowWidth, l.windowHeight)
+		err := SetNewWindow(registerUIs, l.window, l.windowWidth, l.windowHeight)
+		if err != nil {
+			log.Panicln(err)
+		}
 	})
 
 	return
@@ -205,7 +208,10 @@ func (l *LoginUI) loginUser(localpart, password, homeserverURL string) {
 	util.User = user
 
 	mainUIs := NewMainUI(l.windowWidth, l.windowHeight, l.window)
-	SetNewWindow(mainUIs, l.window, l.windowWidth, l.windowHeight)
+	err = SetNewWindow(mainUIs, l.window, l.windowWidth, l.windowHeight)
+	if err != nil {
+		log.Panicln(err)
+	}
 
 	go func() {
 		err = util.DB.SaveCurrentUser(user)
