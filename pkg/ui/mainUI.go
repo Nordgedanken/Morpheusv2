@@ -83,9 +83,8 @@ func (m *MainUI) registerSetAvatarEvent() {
 		if err != nil {
 			return err
 		}
-		pixmap := matrix.ImageToPixmap(image)
 
-		avatarLogo.SetPixmap(pixmap)
+		avatarLogo.SetPixmap(matrix.ImageToPixmap(image))
 		return nil
 	})
 }
