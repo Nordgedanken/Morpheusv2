@@ -68,12 +68,6 @@ func (l *LoginUI) NewUI() error {
 	loginWidget := loader.Load(file, l.widget)
 	file.Close()
 
-	var layout = widgets.NewQHBoxLayout()
-	l.window.SetLayout(layout)
-	layout.InsertWidget(0, loginWidget, 0, core.Qt__AlignTop|core.Qt__AlignLeft)
-	layout.SetSpacing(0)
-	layout.SetContentsMargins(0, 0, 0, 0)
-
 	l.widget.SetSizePolicy2(widgets.QSizePolicy__Expanding, widgets.QSizePolicy__Expanding)
 	loginWidget.SetSizePolicy2(widgets.QSizePolicy__Expanding, widgets.QSizePolicy__Expanding)
 

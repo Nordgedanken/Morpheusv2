@@ -57,12 +57,6 @@ func (m *MainUI) NewUI() error {
 	mainWidget := loader.Load(file, m.widget)
 	file.Close()
 
-	var layout = widgets.NewQHBoxLayout()
-	m.window.SetLayout(layout)
-	layout.InsertWidget(0, mainWidget, 0, core.Qt__AlignTop|core.Qt__AlignLeft)
-	layout.SetSpacing(0)
-	layout.SetContentsMargins(0, 0, 0, 0)
-
 	m.widget.SetSizePolicy2(widgets.QSizePolicy__Expanding, widgets.QSizePolicy__Expanding)
 	mainWidget.SetSizePolicy2(widgets.QSizePolicy__Expanding, widgets.QSizePolicy__Expanding)
 
