@@ -21,6 +21,7 @@ import (
 	"github.com/therecipe/qt/uitools"
 	"github.com/therecipe/qt/widgets"
 	"log"
+	"sync"
 )
 
 // MainUI defines the data for the main ui (that one with the chats)
@@ -81,26 +82,32 @@ func (m *MainUI) setupLogout() {
 	// Handle LogoutButton
 	logoutButton := widgets.NewQPushButtonFromPointer(m.widget.FindChild("LogoutButton", core.Qt__FindChildrenRecursively).Pointer())
 	logoutButton.ConnectClicked(func(_ bool) {
-		go m.logout()
+		wg := &sync.WaitGroup{}
+		wg.Add(1)
+		go m.logout(wg)
+		wg.Wait()
+
+		loginUIs := NewLoginUI(m.windowWidth, m.windowHeight, m.window)
+		err := SetNewWindow(loginUIs, m.window, m.windowWidth, m.windowHeight)
+		if err != nil {
+			log.Panicln(err)
+		}
 	})
 	return
 }
 
-func (m *MainUI) logout() {
+func (m *MainUI) logout(wg *sync.WaitGroup) {
 	_, err := util.User.GetCli().Logout()
 	if err != nil {
 		log.Panicln(err)
 	}
 	util.User.GetCli().ClearCredentials()
 
-	err = util.DB.RemoveCurrentUser()
-	if err != nil {
-		log.Panicln(err)
-	}
-
-	loginUIs := NewLoginUI(m.windowWidth, m.windowHeight, m.window)
-	err = SetNewWindow(loginUIs, m.window, m.windowWidth, m.windowHeight)
-	if err != nil {
-		log.Panicln(err)
-	}
+	go func() {
+		err = util.DB.RemoveCurrentUser()
+		if err != nil {
+			log.Panicln(err)
+		}
+	}()
+	wg.Done()
 }
