@@ -67,7 +67,7 @@ func (l *LoginUI) NewUI() error {
 	file.Open(core.QIODevice__ReadOnly)
 	loginWidget := loader.Load(file, l.widget)
 	file.Close()
-	layout := widgets.NewQVBoxLayout()
+	layout := widgets.NewQHBoxLayout()
 	layout.AddWidget(loginWidget, 0, core.Qt__AlignTop|core.Qt__AlignLeft)
 	l.widget.SetLayout(layout)
 
