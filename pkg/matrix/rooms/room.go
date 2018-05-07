@@ -107,7 +107,7 @@ func (r *Room) GetAvatar() ([]byte, error) {
 		split := strings.Split(strings.TrimPrefix(url, "mxc://"), "/")
 		servername := split[0]
 		mediaID := split[1]
-		mediaURL := util.User.GetCli().BuildBaseURL("_matrix/media/r0/download", servername, mediaID)
+		mediaURL := util.User.GetCli().HomeserverURL.String() + "/_matrix/media/r0/thumbnail/" + servername + "/" + mediaID + "?width=61&height=61&method=crop"
 		avatar, err = util.User.GetCli().MakeRequest("GET", mediaURL, nil, nil)
 		if err != nil {
 			return nil, err
