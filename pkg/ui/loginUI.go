@@ -121,7 +121,7 @@ func (l *LoginUI) setupLoginButton() (err error) {
 	loginButton := widgets.NewQPushButtonFromPointer(l.widget.FindChild("LoginButton", core.Qt__FindChildrenRecursively).Pointer())
 
 	loginButton.ConnectClicked(func(_ bool) {
-		if l.localpart != "" && l.password != "" {
+		if l.localpart != "" && l.password != "" && l.server != selectMessage {
 			l.server = l.serverDropdown.CurrentText()
 			err = l.login()
 			if err != nil {
@@ -130,8 +130,10 @@ func (l *LoginUI) setupLoginButton() (err error) {
 		} else {
 			if l.localpart == "" {
 				l.localpartInput.SetStyleSheet(redBorder)
-			} else {
+			} else if l.password == "" {
 				l.passwordInput.SetStyleSheet(redBorder)
+			} else if l.server == selectMessage {
+				l.serverDropdown.SetStyleSheet(redBorder)
 			}
 		}
 	})
