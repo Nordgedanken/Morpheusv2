@@ -238,5 +238,11 @@ func (l *LoginUI) setupDropdown() (err error) {
 
 	hostnames := convertHelloMatrixRespToNameSlice(helloMatrixRespV)
 	l.serverDropdown.AddItems(hostnames)
-	return nil
+	l.serverDropdown.ConnectChangeEvent(func(event *core.QEvent) {
+		if l.serverDropdown.StyleSheet() == redBorder {
+			l.serverDropdown.SetStyleSheet("")
+		}
+	})
+
+	return
 }
