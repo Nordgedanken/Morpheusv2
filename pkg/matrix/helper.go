@@ -21,9 +21,9 @@ import (
 func ImageToPixmap(image []byte) *gui.QPixmap {
 	pixmap := gui.NewQPixmap()
 
-	imageS := string(image)
+	imageS := string(image[:])
 
-	pixmap.LoadFromData(imageS, uint(len(imageS)), "", 0)
+	pixmap.LoadFromData(string(imageS[:]), uint(len(imageS)), "", 0)
 
 	return pixmap
 }
