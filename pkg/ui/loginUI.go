@@ -121,8 +121,8 @@ func (l *LoginUI) setupLoginButton() (err error) {
 	loginButton := widgets.NewQPushButtonFromPointer(l.widget.FindChild("LoginButton", core.Qt__FindChildrenRecursively).Pointer())
 
 	loginButton.ConnectClicked(func(_ bool) {
+		l.server = l.serverDropdown.CurrentText()
 		if l.localpart != "" && l.password != "" && l.server != selectMessage {
-			l.server = l.serverDropdown.CurrentText()
 			err = l.login()
 			if err != nil {
 				return
