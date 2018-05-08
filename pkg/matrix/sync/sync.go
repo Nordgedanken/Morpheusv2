@@ -15,8 +15,10 @@
 package sync
 
 import (
+	"database/sql"
 	"encoding/json"
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix/messages"
+	"github.com/Nordgedanken/Morpheusv2/pkg/matrix/rooms"
 	"github.com/Nordgedanken/Morpheusv2/pkg/util"
 	"github.com/matrix-org/gomatrix"
 	"log"
@@ -46,7 +48,10 @@ func NewSync() error {
 		msg.SetAuthorMXID(ev.Sender)
 		msg.SetEventID(ev.ID)
 		room, err := util.DB.GetRoom(ev.RoomID)
-		if err != nil {
+		if err == sql.ErrNoRows {
+			room := &rooms.Room{}
+			room.SetRoomID(ev.RoomID)
+		} else if err != nil && err != sql.ErrNoRows {
 			log.Panicln(err)
 		}
 		messages := room.GetMessages()
