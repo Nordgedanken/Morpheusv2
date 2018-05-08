@@ -44,25 +44,26 @@ func (s *SQLite) SaveRoom(Room matrix.Room) error {
 		return err
 	}
 	aliasesS := string(aliasesBytes)
+
 	roomID := Room.GetRoomID()
+
 	name, err := Room.GetName()
 	if err != nil {
 		return err
 	}
+
 	avatar, err := Room.GetAvatar()
 	if err != nil {
 		return err
 	}
 	avatarS := string(avatar)
+
 	topic, err := Room.GetTopic()
 	if err != nil {
 		return err
 	}
 
 	messages := Room.GetMessages()
-	if err != nil {
-		return err
-	}
 	var messageIDs []string
 	for _, v := range messages {
 		messageIDs = append(messageIDs, v.GetEventID())

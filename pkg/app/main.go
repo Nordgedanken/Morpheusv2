@@ -94,6 +94,11 @@ func initApp() {
 
 	window.ConnectCloseEvent(func(event *gui.QCloseEvent) {
 		log.Println("Morpheus closed")
+		rooms, err := util.DB.GetRooms()
+		if err != nil {
+			log.Panicln(err)
+		}
+		log.Println(rooms)
 		util.E.Wait()
 	})
 }
