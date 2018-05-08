@@ -39,6 +39,7 @@ func NewSync() error {
 	util.User.GetCli().Store.SaveFilterID(util.User.GetCli().UserID, filterID)
 
 	syncer.OnEventType("m.room.message", func(ev *gomatrix.Event) {
+		log.Println("New Message")
 		msg := &messages.Message{}
 		msg.SetEvent(ev)
 		msg.SetTimestamp(parseEventTimestamp(ev.Timestamp))
@@ -56,6 +57,7 @@ func NewSync() error {
 		go util.DB.SaveMessage(msg)
 	})
 
+	log.Println("Start Sync...")
 	go func() {
 		for {
 			if err := util.User.GetCli().Sync(); err != nil {
