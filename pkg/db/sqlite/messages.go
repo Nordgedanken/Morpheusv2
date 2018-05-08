@@ -45,7 +45,12 @@ func (s *SQLite) SaveMessage(message matrix.Message) error {
 	timestampR := message.GetTimestamp()
 	timestamp := timestampR.Format("2006-01-02 15:04:05")
 	pureEvent := message.GetEvent()
-	_, err = stmt.Exec(id, authorID, messageS, timestamp, pureEvent)
+	pureEventBytes, err := json.Marshal(pureEvent)
+	if err != nil {
+		return err
+	}
+	pureEventS := string(pureEventBytes)
+	_, err = stmt.Exec(id, authorID, messageS, timestamp, pureEventS)
 	if err != nil {
 		return err
 	}
