@@ -88,6 +88,8 @@ func (m *MainUI) setupRoomList() {
 	}
 	log.Println("Searched DB")
 	log.Println(rooms)
+	layout := widgets.NewQVBoxLayout()
+	roomScrollArea.SetLayout(layout)
 	for _, v := range rooms {
 		log.Printf("New Room: %+v\n", v)
 		room, err := NewRoom(v, roomScrollArea)
@@ -96,7 +98,7 @@ func (m *MainUI) setupRoomList() {
 			log.Panicln(err)
 		}
 		log.Printf("New RoomWidget: %+v\n", room)
-		roomScrollArea.Layout().AddWidget(room)
+		layout.InsertWidget(-1, room, 0, 0)
 	}
 }
 
