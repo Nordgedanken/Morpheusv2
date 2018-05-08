@@ -75,5 +75,6 @@ func NewSync() error {
 }
 
 func Stop() {
+	log.Println("Stop Sync...")
 	util.User.GetCli().StopSync()
 }
