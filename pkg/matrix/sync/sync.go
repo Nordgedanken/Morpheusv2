@@ -62,13 +62,12 @@ func NewSync() error {
 		go util.DB.SaveMessage(msg)
 	})
 
-	log.Println("Start Sync...")
 	go func() {
+		log.Println("Start Sync...")
 		for {
 			if err := util.User.GetCli().Sync(); err != nil {
 				log.Panicln("Sync err:", err)
 			}
-			time.After(time.Second * 5)
 		}
 	}()
 	return nil
