@@ -80,7 +80,11 @@ func (s *SQLite) SaveRoom(Room matrix.Room) error {
 	if err != nil {
 		return err
 	}
-	return tx.Commit()
+	err = tx.Commit()
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // GetRooms returns all Rooms from the Database
