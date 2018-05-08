@@ -49,7 +49,7 @@ func NewSync() error {
 		msg.SetEventID(ev.ID)
 		room, err := util.DB.GetRoom(ev.RoomID)
 		if err == sql.ErrNoRows {
-			room := &rooms.Room{}
+			room = &rooms.Room{}
 			room.SetRoomID(ev.RoomID)
 		} else if err != nil && err != sql.ErrNoRows {
 			log.Panicln(err)
