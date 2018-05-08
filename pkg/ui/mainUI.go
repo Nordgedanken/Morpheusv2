@@ -59,6 +59,9 @@ func (m *MainUI) NewUI() error {
 	mainWidget := loader.Load(file, m.widget)
 	file.Close()
 
+	go m.registerSetAvatarEvent()
+	go m.registerStartSyncEvent()
+
 	m.widget.SetSizePolicy2(widgets.QSizePolicy__Expanding, widgets.QSizePolicy__Expanding)
 	mainWidget.SetSizePolicy2(widgets.QSizePolicy__Expanding, widgets.QSizePolicy__Expanding)
 
@@ -69,8 +72,6 @@ func (m *MainUI) NewUI() error {
 
 	// Setup functions and elements
 	go m.setupLogout()
-	go m.registerSetAvatarEvent()
-	go m.registerStartSyncEvent()
 	go m.setupRoomList()
 
 	m.window.SetWindowTitle("Morpheus")
