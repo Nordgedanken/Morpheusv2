@@ -120,6 +120,7 @@ func (m *MainUI) setupLogout() {
 }
 
 func (m *MainUI) logout() {
+	sync.Stop()
 	_, err := util.User.GetCli().Logout()
 	if err != nil {
 		log.Panicln(err)

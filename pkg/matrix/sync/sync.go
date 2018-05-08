@@ -66,3 +66,7 @@ func NewSync() error {
 	}()
 	return nil
 }
+
+func Stop() {
+	util.User.GetCli().StopSync()
+}
