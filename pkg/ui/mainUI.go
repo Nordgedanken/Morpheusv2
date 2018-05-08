@@ -71,10 +71,27 @@ func (m *MainUI) NewUI() error {
 	go m.setupLogout()
 	go m.registerSetAvatarEvent()
 	go m.registerStartSyncEvent()
+	go m.setupRoomList()
 
 	m.window.SetWindowTitle("Morpheus")
 
 	return nil
+}
+
+func (m *MainUI) setupRoomList() {
+	roomScrollArea := widgets.NewQScrollAreaFromPointer(m.widget.FindChild("roomScroll", core.Qt__FindChildrenRecursively).Pointer())
+	rooms, err := util.DB.GetRooms()
+	if err != nil {
+		log.Panicln(err)
+	}
+	for _, v := range rooms {
+		room, err := NewRoom(&v, roomScrollArea)
+		if err != nil {
+			break
+			log.Panicln(err)
+		}
+		roomScrollArea.Layout().AddWidget(room)
+	}
 }
 
 func (m *MainUI) registerSetAvatarEvent() {
