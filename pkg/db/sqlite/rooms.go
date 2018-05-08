@@ -68,15 +68,20 @@ func (s *SQLite) SaveRoom(Room matrix.Room) error {
 	for _, v := range messages {
 		messageIDs = append(messageIDs, v.GetEventID())
 	}
+	messageIDsBytes, err := json.Marshal(messageIDs)
+	if err != nil {
+		return err
+	}
+	messageIDsS := string(messageIDsBytes)
 
 	log.Println(aliasesS)
 	log.Println(roomID)
 	log.Println(name)
 	log.Println(avatarS)
 	log.Println(topic)
-	log.Println(messageIDs)
+	log.Println(messageIDsS)
 
-	_, err = stmt.Exec(aliasesS, roomID, name, avatarS, topic, messageIDs)
+	_, err = stmt.Exec(aliasesS, roomID, name, avatarS, topic, messageIDsS)
 	if err != nil {
 		return err
 	}
