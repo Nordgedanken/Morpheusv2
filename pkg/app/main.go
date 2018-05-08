@@ -94,5 +94,6 @@ func initApp() {
 
 	window.ConnectCloseEvent(func(event *gui.QCloseEvent) {
 		log.Println("Morpheus closed")
+		util.E.Wait()
 	})
 }
