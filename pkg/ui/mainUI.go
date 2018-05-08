@@ -95,6 +95,7 @@ func (m *MainUI) setupRoomList() {
 			break
 			log.Panicln(err)
 		}
+		log.Printf("New RoomWidget: %+v\n", room)
 		roomScrollArea.Layout().AddWidget(room)
 	}
 }

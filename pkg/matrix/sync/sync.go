@@ -59,7 +59,7 @@ func NewSync() error {
 		room.SetMessages(messages)
 
 		go func() {
-			err := util.DB.SaveRoom(room)
+			err := util.DB.UpdateRoom(room)
 			if err != nil {
 				log.Panicln(err)
 			}

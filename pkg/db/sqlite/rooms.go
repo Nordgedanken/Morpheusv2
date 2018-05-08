@@ -92,6 +92,69 @@ func (s *SQLite) SaveRoom(Room matrix.Room) error {
 	return nil
 }
 
+// UpdateRoom updates a Room in the sqlite DB
+func (s *SQLite) UpdateRoom(Room matrix.Room) error {
+	if s.db == nil {
+		s.db = s.Open()
+	}
+
+	tx, err := s.db.Begin()
+	if err != nil {
+		return err
+	}
+	stmt, err := tx.Prepare("UPDATE rooms SET room_aliases = ?, room_name = ?, room_avatar = ?, room_topic = ?, room_messages = ? WHERE id = ?")
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	aliases := Room.GetRoomAliases()
+	aliasesBytes, err := json.Marshal(aliases)
+	if err != nil {
+		return err
+	}
+	aliasesS := string(aliasesBytes)
+
+	roomID := Room.GetRoomID()
+
+	name, err := Room.GetName()
+	if err != nil {
+		return err
+	}
+
+	avatar, err := Room.GetAvatar()
+	if err != nil {
+		return err
+	}
+	avatarS := string(avatar)
+
+	topic, err := Room.GetTopic()
+	if err != nil {
+		return err
+	}
+
+	messages := Room.GetMessages()
+	var messageIDs []string
+	for _, v := range messages {
+		messageIDs = append(messageIDs, v.GetEventID())
+	}
+	messageIDsBytes, err := json.Marshal(messageIDs)
+	if err != nil {
+		return err
+	}
+	messageIDsS := string(messageIDsBytes)
+
+	_, err = stmt.Exec(aliasesS, name, avatarS, topic, messageIDsS, roomID)
+	if err != nil {
+		return err
+	}
+	err = tx.Commit()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // GetRooms returns all Rooms from the Database
 func (s *SQLite) GetRooms() (roomsR []matrix.Room, err error) {
 	if s.db == nil {
