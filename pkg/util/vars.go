@@ -26,5 +26,5 @@ var DB db.DB
 // User holds the Current User
 var User matrix.User
 
-// EventStore
+// E is the EventStore
 var E *events.Events

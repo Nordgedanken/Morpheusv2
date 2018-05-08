@@ -86,6 +86,7 @@ func (s *SQLite) GetRooms() (roomsR []matrix.Room, err error) {
 	}
 	defer rows.Close()
 
+	var roomsS []matrix.Room
 	for rows.Next() {
 		var roomID string
 		var roomAliases string
@@ -117,8 +118,9 @@ func (s *SQLite) GetRooms() (roomsR []matrix.Room, err error) {
 		// TODO Convert IDs to messages slice using another call or from the beginning on using a JOIN
 		//roomI.SetMessages(messages)
 
-		roomsR = append(roomsR, roomI)
+		roomsS = append(roomsS, roomI)
 	}
+	roomsR = roomsS
 
 	// get any error encountered during iteration
 	err = rows.Err()

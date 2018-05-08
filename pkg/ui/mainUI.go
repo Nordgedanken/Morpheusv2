@@ -85,6 +85,8 @@ func (m *MainUI) setupRoomList() {
 	if err != nil {
 		log.Panicln(err)
 	}
+	log.Println("Searched DB")
+	log.Println(rooms)
 	for _, v := range rooms {
 		log.Printf("New Room: %+v\n", v)
 		room, err := NewRoom(v, roomScrollArea)
