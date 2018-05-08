@@ -85,7 +85,7 @@ func (m *MainUI) setupRoomList() {
 		log.Panicln(err)
 	}
 	for _, v := range rooms {
-		room, err := NewRoom(&v, roomScrollArea)
+		room, err := NewRoom(v, roomScrollArea)
 		if err != nil {
 			break
 			log.Panicln(err)
