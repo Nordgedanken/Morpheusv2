@@ -58,8 +58,18 @@ func NewSync() error {
 		messages = append(messages, msg)
 		room.SetMessages(messages)
 
-		go util.DB.SaveRoom(room)
-		go util.DB.SaveMessage(msg)
+		go func() {
+			err := util.DB.SaveRoom(room)
+			if err != nil {
+				log.Panicln(err)
+			}
+		}()
+		go func() {
+			err := util.DB.SaveMessage(msg)
+			if err != nil {
+				log.Panicln(err)
+			}
+		}()
 	})
 
 	go func() {
