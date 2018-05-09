@@ -121,7 +121,7 @@ func (r *Room) GetAvatar() ([]byte, error) {
 // GetTopic returns the topic from the current Room
 func (r *Room) GetTopic() (string, error) {
 	if r.topic == "" {
-		event := util.User.GetCli().Store.LoadRoom(r.id).GetStateEvent("m.room.avatar", "")
+		event := util.User.GetCli().Store.LoadRoom(r.id).GetStateEvent("m.room.topic", "")
 		value, exists := event.Content["topic"]
 		if !exists {
 			return "", errors.New("missing topic in topic state event")
