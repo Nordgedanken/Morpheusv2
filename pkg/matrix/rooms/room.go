@@ -20,6 +20,7 @@ import (
 	"github.com/Nordgedanken/Morpheusv2/pkg/util"
 	"github.com/matrix-org/gomatrix"
 	"log"
+	"strings"
 )
 
 // Room holds the needed Room data and allows to work with that. It gets normally loaded from the cache
@@ -99,23 +100,17 @@ func (r *Room) GetAvatar() ([]byte, error) {
 	log.Println(len(r.avatar))
 	if len(r.avatar) == 0 {
 		log.Println("Avatar getting")
-		//resp := &gomatrix.Event{}
-		//err := util.User.GetCli().StateEvent(r.id, "m.room.avatar", "", nil)
-		u := util.User.GetCli().BuildURL("rooms", r.id, "state", "m.room.avatar", "")
-		respR, err := util.User.GetCli().MakeRequest("GET", u, nil, nil)
+		type RespRoomAvatar struct {
+			URL string `json:"url"`
+		}
+		resp := &RespRoomAvatar{}
+		err := util.User.GetCli().StateEvent(r.id, "m.room.avatar", "", resp)
 		if err != nil {
 			return nil, err
 		}
-		log.Printf("%s\n", respR)
-		/*var avatar []byte
-		value, exists := resp.Content["url"]
-		if !exists {
-			return nil, errors.New("missing url in avatar state event")
-		}
-		url, ok := value.(string)
-		if !ok {
-			return nil, errors.New("value not ok in avatar state event")
-		}
+		var avatar []byte
+		log.Printf("resp: %+v\n", resp)
+		url := resp.URL
 		log.Println(url)
 		split := strings.Split(strings.TrimPrefix(url, "mxc://"), "/")
 		servername := split[0]
@@ -127,7 +122,7 @@ func (r *Room) GetAvatar() ([]byte, error) {
 			return nil, err
 		}
 		r.avatar = avatar
-		log.Println(avatar)*/
+		log.Println(avatar)
 	}
 	return r.avatar, nil
 }
