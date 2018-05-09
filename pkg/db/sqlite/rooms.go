@@ -20,7 +20,6 @@ import (
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix/rooms"
 	"github.com/Nordgedanken/Morpheusv2/pkg/util"
 	"github.com/matrix-org/gomatrix"
-	"log"
 )
 
 // SaveRoom saves a Room into the sqlite DB
@@ -205,17 +204,13 @@ func (s *SQLite) GetRooms() (roomsR []matrix.Room, err error) {
 		roomsS = append(roomsS, roomI)
 	}
 
-	log.Println(len(roomsS))
-
 	if len(roomsS) == 0 {
 		var resp *gomatrix.RespJoinedRooms
 		resp, err = util.User.GetCli().JoinedRooms()
 		if err != nil {
 			return
 		}
-		log.Println(resp)
 		for _, v := range resp.JoinedRooms {
-			log.Println(v)
 			roomI := &rooms.Room{}
 			roomI.SetRoomID(v)
 			err = s.SaveRoom(roomI)
@@ -226,7 +221,6 @@ func (s *SQLite) GetRooms() (roomsR []matrix.Room, err error) {
 		}
 	}
 
-	log.Println(roomsS)
 	roomsR = roomsS
 
 	// get any error encountered during iteration

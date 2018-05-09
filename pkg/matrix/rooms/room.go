@@ -85,7 +85,7 @@ func (r *Room) GetName() (string, error) {
 		if err == nil {
 			r.name = resp.Name
 		} else if err != nil && err.(gomatrix.HTTPError).WrappedError.(gomatrix.RespError).ErrCode == "M_NOT_FOUND" {
-			r.name = "Name not found"
+			r.name = r.id
 		}
 
 	}
