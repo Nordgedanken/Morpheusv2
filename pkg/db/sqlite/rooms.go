@@ -18,7 +18,6 @@ import (
 	"encoding/json"
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix"
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix/rooms"
-	"log"
 )
 
 // SaveRoom saves a Room into the sqlite DB
@@ -73,13 +72,6 @@ func (s *SQLite) SaveRoom(Room matrix.Room) error {
 		return err
 	}
 	messageIDsS := string(messageIDsBytes)
-
-	log.Println(aliasesS)
-	log.Println(roomID)
-	log.Println(name)
-	log.Println(avatarS)
-	log.Println(topic)
-	log.Println(messageIDsS)
 
 	_, err = stmt.Exec(aliasesS, roomID, name, avatarS, topic, messageIDsS)
 	if err != nil {

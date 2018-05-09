@@ -108,7 +108,6 @@ func (m *MainUI) registerRoomListEvent() {
 		if err != nil {
 			return err
 		}
-		log.Println(rooms)
 		layout := widgets.NewQVBoxLayout()
 		roomScroll.Widget().SetLayout(layout)
 		m.roomCount = 0
@@ -148,6 +147,8 @@ func (m *MainUI) registerStartSyncEvent() {
 func (m *MainUI) Close() {
 	util.E.Remove("setAvatar")
 	util.E.Remove("startSync")
+	util.E.Remove("setupRoomList")
+	util.E.Remove("changeRoom")
 }
 
 func (m *MainUI) setupLogout() {
