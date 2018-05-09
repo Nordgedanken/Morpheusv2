@@ -17,7 +17,7 @@
   branch = "master"
   name = "github.com/matrix-org/gomatrix"
   packages = ["."]
-  revision = "a7fc80c8060c2544fe5d4dae465b584f8e9b4e27"
+  revision = "76dfc7718ac9739a43b41a53d4293e6190720939"
 
 [[projects]]
   name = "github.com/mattn/go-sqlite3"
