@@ -94,7 +94,7 @@ func (m *MainUI) setupRoomList() {
 	roomScrollArea.SetLayout(layout)
 	m.roomCount = 0
 	for _, v := range rooms {
-		m.roomCount = m.roomCount + 1
+		log.Println(m.roomCount)
 		log.Printf("New Room: %+v\n", v)
 		room, err := NewRoom(v, roomScrollArea)
 		if err != nil {
@@ -103,6 +103,7 @@ func (m *MainUI) setupRoomList() {
 		}
 		log.Printf("New RoomWidget: %+v\n", room)
 		layout.InsertWidget(m.roomCount, room, 0, 0)
+		m.roomCount = m.roomCount + 1
 	}
 }
 
