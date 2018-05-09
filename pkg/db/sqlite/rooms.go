@@ -18,6 +18,8 @@ import (
 	"encoding/json"
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix"
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix/rooms"
+	"github.com/Nordgedanken/Morpheusv2/pkg/util"
+	"github.com/matrix-org/gomatrix"
 )
 
 // SaveRoom saves a Room into the sqlite DB
@@ -193,6 +195,20 @@ func (s *SQLite) GetRooms() (roomsR []matrix.Room, err error) {
 
 		roomsS = append(roomsS, roomI)
 	}
+	if len(roomsS) == 0 {
+		var resp *gomatrix.RespJoinedRooms
+		resp, err = util.User.GetCli().JoinedRooms()
+		if err != nil {
+			return
+		}
+		for _, v := range resp.JoinedRooms {
+			roomI := &rooms.Room{}
+			roomI.SetRoomID(v)
+			s.SaveRoom(roomI)
+			roomsS = append(roomsS, roomI)
+		}
+	}
+
 	roomsR = roomsS
 
 	// get any error encountered during iteration
