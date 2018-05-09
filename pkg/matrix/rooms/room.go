@@ -18,7 +18,6 @@ import (
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix"
 	"github.com/Nordgedanken/Morpheusv2/pkg/util"
 	"github.com/matrix-org/gomatrix"
-	"log"
 	"strings"
 )
 
@@ -80,12 +79,12 @@ func (r *Room) GetName() (string, error) {
 		}
 		resp := &RespRoomName{}
 		err := util.User.GetCli().StateEvent(r.id, "m.room.name", "", resp)
-		if err != nil && err.(gomatrix.HTTPError).WrappedError.(gomatrix.RespError).Err != "M_NOT_FOUND" {
+		if err != nil && err.(gomatrix.HTTPError).WrappedError.(gomatrix.RespError).ErrCode != "M_NOT_FOUND" {
 			return "", err
 		}
 		if err == nil {
 			r.name = resp.Name
-		} else if err != nil && err.(gomatrix.HTTPError).WrappedError.(gomatrix.RespError).Err == "M_NOT_FOUND" {
+		} else if err != nil && err.(gomatrix.HTTPError).WrappedError.(gomatrix.RespError).ErrCode == "M_NOT_FOUND" {
 			r.name = "Name not found"
 		}
 
@@ -101,10 +100,7 @@ func (r *Room) GetAvatar() ([]byte, error) {
 		}
 		resp := &RespRoomAvatar{}
 		err := util.User.GetCli().StateEvent(r.id, "m.room.avatar", "", resp)
-		log.Println(err)
-		log.Println(err.(gomatrix.HTTPError))
-		log.Println(err.(gomatrix.HTTPError).WrappedError.(gomatrix.RespError))
-		if err != nil && err.(gomatrix.HTTPError).WrappedError.(gomatrix.RespError).Err != "M_NOT_FOUND" {
+		if err != nil && err.(gomatrix.HTTPError).WrappedError.(gomatrix.RespError).ErrCode != "M_NOT_FOUND" {
 			return nil, err
 		}
 		if err == nil {
@@ -119,7 +115,7 @@ func (r *Room) GetAvatar() ([]byte, error) {
 				return nil, err
 			}
 			r.avatar = avatar
-		} else if err != nil && err.(gomatrix.HTTPError).WrappedError.(gomatrix.RespError).Err == "M_NOT_FOUND" {
+		} else if err != nil && err.(gomatrix.HTTPError).WrappedError.(gomatrix.RespError).ErrCode == "M_NOT_FOUND" {
 			r.avatar = nil
 		}
 	}
@@ -134,12 +130,12 @@ func (r *Room) GetTopic() (string, error) {
 		}
 		resp := &RespRoomAvatar{}
 		err := util.User.GetCli().StateEvent(r.id, "m.room.topic", "", resp)
-		if err != nil && err.(gomatrix.HTTPError).WrappedError.(gomatrix.RespError).Err != "M_NOT_FOUND" {
+		if err != nil && err.(gomatrix.HTTPError).WrappedError.(gomatrix.RespError).ErrCode != "M_NOT_FOUND" {
 			return "", err
 		}
 		if err == nil {
 			r.topic = resp.Topic
-		} else if err != nil && err.(gomatrix.HTTPError).WrappedError.(gomatrix.RespError).Err == "M_NOT_FOUND" {
+		} else if err != nil && err.(gomatrix.HTTPError).WrappedError.(gomatrix.RespError).ErrCode == "M_NOT_FOUND" {
 			r.topic = ""
 		}
 	}
