@@ -18,7 +18,6 @@ import (
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix"
 	"github.com/Nordgedanken/Morpheusv2/pkg/util"
 	"github.com/matrix-org/gomatrix"
-	"log"
 	"strings"
 )
 
@@ -95,10 +94,7 @@ func (r *Room) GetName() (string, error) {
 
 // GetAvatar returns the avatar from the current Room
 func (r *Room) GetAvatar() ([]byte, error) {
-	log.Println(r.avatar)
-	log.Println(len(r.avatar))
 	if len(r.avatar) == 0 {
-		log.Println("Avatar getting")
 		type RespRoomAvatar struct {
 			URL string `json:"url"`
 		}
@@ -108,20 +104,16 @@ func (r *Room) GetAvatar() ([]byte, error) {
 			return nil, err
 		}
 		var avatar []byte
-		log.Printf("resp: %+v\n", resp)
 		url := resp.URL
-		log.Println(url)
 		split := strings.Split(strings.TrimPrefix(url, "mxc://"), "/")
 		servername := split[0]
 		mediaID := split[1]
 		mediaURL := util.User.GetCli().HomeserverURL.String() + "/_matrix/media/r0/thumbnail/" + servername + "/" + mediaID + "?width=61&height=61&method=crop"
-		log.Println(mediaURL)
 		avatar, err = util.User.GetCli().MakeRequest("GET", mediaURL, nil, nil)
 		if err != nil {
 			return nil, err
 		}
 		r.avatar = avatar
-		log.Println(avatar)
 	}
 	return r.avatar, nil
 }
