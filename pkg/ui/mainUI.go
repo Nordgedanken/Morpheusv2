@@ -61,9 +61,9 @@ func (m *MainUI) NewUI() error {
 	mainWidget := loader.Load(file, m.widget)
 	file.Close()
 
-	go m.registerSetAvatarEvent()
-	go m.registerStartSyncEvent()
-	go m.registerRoomListEvent()
+	m.registerSetAvatarEvent()
+	m.registerStartSyncEvent()
+	m.registerRoomListEvent()
 
 	m.widget.SetSizePolicy2(widgets.QSizePolicy__Expanding, widgets.QSizePolicy__Expanding)
 	mainWidget.SetSizePolicy2(widgets.QSizePolicy__Expanding, widgets.QSizePolicy__Expanding)
