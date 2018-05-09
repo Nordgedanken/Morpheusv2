@@ -91,8 +91,7 @@ func (m *MainUI) registerRoomListEvent() {
 		}
 		log.Println("Searched DB")
 		log.Println(rooms)
-		//layout := widgets.NewQVBoxLayout()
-		widgets.NewQVBoxLayout()
+		layout := widgets.NewQVBoxLayout()
 		roomScrollArea.Widget().SetContentsMargins(0, 0, 0, 0)
 		//roomScrollArea.Widget().SetLayout(layout)
 		m.roomCount = 0
@@ -100,11 +99,11 @@ func (m *MainUI) registerRoomListEvent() {
 			log.Println(m.roomCount)
 			log.Printf("New Room: %+v\n", v)
 			go func() {
-				_, err := NewRoom(v, roomScrollArea)
+				room, err := NewRoom(v, roomScrollArea)
 				if err != nil {
 					log.Panicln(err)
 				}
-				//layout.InsertWidget(m.roomCount, room, 0, 0)
+				layout.InsertWidget(m.roomCount, room, 0, 0)
 			}()
 			m.roomCount = m.roomCount + 1
 		}
