@@ -74,7 +74,7 @@ func (m *MainUI) NewUI() error {
 
 	// Setup functions and elements
 	go m.setupLogout()
-	go m.setupRoomList()
+	//go m.setupRoomList()
 
 	m.window.SetWindowTitle("Morpheus")
 
@@ -97,12 +97,12 @@ func (m *MainUI) setupRoomList() {
 	for _, v := range rooms {
 		log.Println(m.roomCount)
 		log.Printf("New Room: %+v\n", v)
-		/*room, err := NewRoom(v, roomScrollArea)
+		room, err := NewRoom(v, roomScrollArea)
 		if err != nil {
 			break
 			log.Panicln(err)
-		}*/
-		//layout.InsertWidget(m.roomCount, room, 0, 0)
+		}
+		layout.InsertWidget(m.roomCount, room, 0, 0)
 		m.roomCount = m.roomCount + 1
 	}
 }
