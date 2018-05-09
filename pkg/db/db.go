@@ -37,4 +37,6 @@ type DB interface {
 
 	SaveMessage(message matrix.Message) error
 	GetMessage(eventID string) (messageR matrix.Message, err error)
+
+	RemoveAll() error
 }

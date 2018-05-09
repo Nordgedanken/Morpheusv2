@@ -60,3 +60,25 @@ func (s *SQLite) Open() *sql.DB {
 	}
 	return nil
 }
+
+func (s *SQLite) RemoveAll() error {
+	if s.db == nil {
+		s.db = s.Open()
+	}
+
+	_, err := s.db.Exec("DELETE FROM users;")
+	if err != nil {
+		return err
+	}
+
+	_, err = s.db.Exec("DELETE FROM messages;")
+	if err != nil {
+		return err
+	}
+
+	_, err = s.db.Exec("DELETE FROM rooms;")
+	if err != nil {
+		return err
+	}
+	return nil
+}

@@ -176,7 +176,7 @@ func (m *MainUI) logout() {
 	util.User.GetCli().ClearCredentials()
 
 	go func() {
-		err = util.DB.RemoveCurrentUser()
+		err = util.DB.RemoveAll()
 		if err != nil {
 			log.Panicln(err)
 		}
