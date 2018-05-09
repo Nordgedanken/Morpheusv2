@@ -79,12 +79,12 @@ func (r *Room) GetName() (string, error) {
 		}
 		resp := &RespRoomName{}
 		err := util.User.GetCli().StateEvent(r.id, "m.room.name", "", resp)
-		if err != nil && err.(*gomatrix.HTTPError).WrappedError.(*gomatrix.RespError).Err != "M_NOT_FOUND" {
+		if err != nil && err.(gomatrix.HTTPError).WrappedError.(gomatrix.RespError).Err != "M_NOT_FOUND" {
 			return "", err
 		}
 		if err == nil {
 			r.name = resp.Name
-		} else if err != nil && err.(*gomatrix.HTTPError).WrappedError.(*gomatrix.RespError).Err == "M_NOT_FOUND" {
+		} else if err != nil && err.(gomatrix.HTTPError).WrappedError.(gomatrix.RespError).Err == "M_NOT_FOUND" {
 			r.name = "Name not found"
 		}
 
