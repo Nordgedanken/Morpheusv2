@@ -15,7 +15,6 @@
 package rooms
 
 import (
-	"errors"
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix"
 	"github.com/Nordgedanken/Morpheusv2/pkg/util"
 	"github.com/matrix-org/gomatrix"
@@ -130,19 +129,15 @@ func (r *Room) GetAvatar() ([]byte, error) {
 // GetTopic returns the topic from the current Room
 func (r *Room) GetTopic() (string, error) {
 	if r.topic == "" {
-		resp := &gomatrix.Event{}
+		type RespRoomAvatar struct {
+			Topic string `json:"topic"`
+		}
+		resp := &RespRoomAvatar{}
 		err := util.User.GetCli().StateEvent(r.id, "m.room.topic", "", resp)
 		if err != nil {
 			return "", err
 		}
-		value, exists := resp.Content["topic"]
-		if !exists {
-			return "", errors.New("missing topic in topic state event")
-		}
-		topic, ok := value.(string)
-		if !ok {
-			return "", errors.New("value not ok in topic state event")
-		}
+		topic := resp.Topic
 		r.topic = topic
 	}
 	return r.topic, nil
