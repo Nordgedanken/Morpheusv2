@@ -63,6 +63,7 @@ func (m *MainUI) NewUI() error {
 
 	go m.registerSetAvatarEvent()
 	go m.registerStartSyncEvent()
+	go m.registerRoomListEvent()
 
 	m.widget.SetSizePolicy2(widgets.QSizePolicy__Expanding, widgets.QSizePolicy__Expanding)
 	mainWidget.SetSizePolicy2(widgets.QSizePolicy__Expanding, widgets.QSizePolicy__Expanding)
@@ -74,7 +75,6 @@ func (m *MainUI) NewUI() error {
 
 	// Setup functions and elements
 	go m.setupLogout()
-	go m.registerRoomListEvent()
 
 	m.window.SetWindowTitle("Morpheus")
 
@@ -82,7 +82,7 @@ func (m *MainUI) NewUI() error {
 }
 
 func (m *MainUI) registerRoomListEvent() {
-	roomScrollArea := widgets.NewQScrollAreaFromPointer(m.widget.FindChild("roomScroll", core.Qt__FindChildrenRecursively).Pointer())
+	//roomScrollArea := widgets.NewQScrollAreaFromPointer(m.widget.FindChild("roomScroll", core.Qt__FindChildrenRecursively).Pointer())
 	util.E.On("setupRoomList", func(_ interface{}) error {
 		log.Println("Setting up RoomList")
 		rooms, err := util.DB.GetRooms()
@@ -91,21 +91,21 @@ func (m *MainUI) registerRoomListEvent() {
 		}
 		log.Println("Searched DB")
 		log.Println(rooms)
-		layout := widgets.NewQVBoxLayout()
+		/*layout := widgets.NewQVBoxLayout()
 		roomScrollArea.Widget().SetContentsMargins(0, 0, 0, 0)
 		roomScrollArea.Widget().SetLayout(layout)
 		m.roomCount = 0
 		for _, v := range rooms {
 			log.Println(m.roomCount)
 			log.Printf("New Room: %+v\n", v)
-			/*room, err := NewRoom(v, roomScrollArea)
+			room, err := NewRoom(v, roomScrollArea)
 			if err != nil {
 				break
 				return err
-			}*/
-			//layout.InsertWidget(m.roomCount, room, 0, 0)
+			}
+			layout.InsertWidget(m.roomCount, room, 0, 0)
 			m.roomCount = m.roomCount + 1
-		}
+		}*/
 		return nil
 	})
 }
