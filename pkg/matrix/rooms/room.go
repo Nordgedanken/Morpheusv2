@@ -106,6 +106,7 @@ func (r *Room) GetAvatar() ([]byte, error) {
 			return nil, err
 		}
 		var avatar []byte
+		log.Printf("resp: %+v\n", resp)
 		value, exists := resp.Content["url"]
 		if !exists {
 			return nil, errors.New("missing url in avatar state event")
