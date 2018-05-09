@@ -43,8 +43,8 @@ func NewRoom(room matrix.Room, roomScroll *widgets.QScrollArea) (widgetR *widget
 	}
 	roomName.SetText(name)
 
-	/*wrapperWidget.Resize2(roomScroll.Widget().Size().Width(), wrapperWidget.Size().Height())
-	widget.Resize2(roomScroll.Widget().Size().Width(), wrapperWidget.Size().Height())*/
+	wrapperWidget.Resize2(roomScroll.Widget().Size().Width(), wrapperWidget.Size().Height())
+	widget.Resize2(roomScroll.Widget().Size().Width(), wrapperWidget.Size().Height())
 
 	var filterObject = core.NewQObject(nil)
 	filterObject.ConnectEventFilter(func(watched *core.QObject, event *core.QEvent) bool {

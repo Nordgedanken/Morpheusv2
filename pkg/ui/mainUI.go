@@ -82,8 +82,8 @@ func (m *MainUI) NewUI() error {
 }
 
 func (m *MainUI) registerRoomListEvent() {
-	roomScroll := widgets.NewQScrollAreaFromPointer(m.widget.FindChild("roomScroll", core.Qt__FindChildrenRecursively).Pointer())
 	util.E.On("setupRoomList", func(_ interface{}) error {
+		roomScroll := widgets.NewQScrollAreaFromPointer(m.widget.FindChild("roomScroll", core.Qt__FindChildrenRecursively).Pointer())
 		log.Println("Setting up RoomList")
 		rooms, err := util.DB.GetRooms()
 		if err != nil {
