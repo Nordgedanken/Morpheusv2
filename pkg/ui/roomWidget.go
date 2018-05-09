@@ -23,7 +23,7 @@ import (
 	"github.com/therecipe/qt/widgets"
 )
 
-func NewRoom(room matrix.Room, roomScrollAreaContent *widgets.QWidget) (widgetR *widgets.QWidget, err error) {
+func NewRoom(room matrix.Room, roomScroll *widgets.QScrollArea) (widgetR *widgets.QWidget, err error) {
 	widget := widgets.NewQWidget(nil, 0)
 
 	loader := uitools.NewQUiLoader(nil)
@@ -43,8 +43,8 @@ func NewRoom(room matrix.Room, roomScrollAreaContent *widgets.QWidget) (widgetR 
 	}
 	roomName.SetText(name)
 
-	wrapperWidget.Resize2(roomScrollAreaContent.Size().Width(), wrapperWidget.Size().Height())
-	widget.Resize2(roomScrollAreaContent.Size().Width(), wrapperWidget.Size().Height())
+	/*wrapperWidget.Resize2(roomScroll.Widget().Size().Width(), wrapperWidget.Size().Height())
+	widget.Resize2(roomScroll.Widget().Size().Width(), wrapperWidget.Size().Height())*/
 
 	var filterObject = core.NewQObject(nil)
 	filterObject.ConnectEventFilter(func(watched *core.QObject, event *core.QEvent) bool {

@@ -82,7 +82,7 @@ func (m *MainUI) NewUI() error {
 }
 
 func (m *MainUI) registerRoomListEvent() {
-	roomScrollAreaContent := widgets.NewQWidgetFromPointer(m.widget.FindChild("roomScrollAreaContent", core.Qt__FindChildrenRecursively).Pointer())
+	roomScroll := widgets.NewQScrollAreaFromPointer(m.widget.FindChild("roomScroll", core.Qt__FindChildrenRecursively).Pointer())
 	util.E.On("setupRoomList", func(_ interface{}) error {
 		log.Println("Setting up RoomList")
 		rooms, err := util.DB.GetRooms()
@@ -92,14 +92,14 @@ func (m *MainUI) registerRoomListEvent() {
 		log.Println("Searched DB")
 		log.Println(rooms)
 		layout := widgets.NewQVBoxLayout()
-		log.Printf("roomScrollArea: %+v\n", roomScrollAreaContent)
-		roomScrollAreaContent.SetLayout(layout)
+		log.Printf("roomScrollArea: %+v\n", roomScroll)
+		roomScroll.Widget().SetLayout(layout)
 		m.roomCount = 0
 		for _, v := range rooms {
 			log.Println(m.roomCount)
 			log.Printf("New Room: %+v\n", v)
 			go func() {
-				room, err := NewRoom(v, roomScrollAreaContent)
+				room, err := NewRoom(v, roomScroll)
 				if err != nil {
 					log.Panicln(err)
 				}
