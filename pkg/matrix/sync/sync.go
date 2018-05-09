@@ -48,7 +48,9 @@ func NewSync() error {
 		msg.SetAuthorMXID(ev.Sender)
 		msg.SetEventID(ev.ID)
 		room, err := util.DB.GetRoom(ev.RoomID)
+		new := false
 		if err == sql.ErrNoRows {
+			new = true
 			room = &rooms.Room{}
 			room.SetRoomID(ev.RoomID)
 		} else if err != nil && err != sql.ErrNoRows {
@@ -58,12 +60,22 @@ func NewSync() error {
 		messages = append(messages, msg)
 		room.SetMessages(messages)
 
-		go func() {
-			err := util.DB.UpdateRoom(room)
-			if err != nil {
-				log.Panicln(err)
-			}
-		}()
+		if new {
+			go func() {
+				err := util.DB.SaveRoom(room)
+				if err != nil {
+					log.Panicln(err)
+				}
+			}()
+		} else {
+			go func() {
+				err := util.DB.UpdateRoom(room)
+				if err != nil {
+					log.Panicln(err)
+				}
+			}()
+		}
+
 		go func() {
 			err := util.DB.SaveMessage(msg)
 			if err != nil {
