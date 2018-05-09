@@ -16,7 +16,9 @@ package ui
 
 import (
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix"
+	"github.com/Nordgedanken/Morpheusv2/pkg/util"
 	"github.com/therecipe/qt/core"
+	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/uitools"
 	"github.com/therecipe/qt/widgets"
 )
@@ -44,7 +46,7 @@ func NewRoom(room matrix.Room, scrollArea *widgets.QScrollArea) (widgetR *widget
 	wrapperWidget.Resize2(scrollArea.Widget().Size().Width(), wrapperWidget.Size().Height())
 	widget.Resize2(scrollArea.Widget().Size().Width(), wrapperWidget.Size().Height())
 
-	/*var filterObject = core.NewQObject(nil)
+	var filterObject = core.NewQObject(nil)
 	filterObject.ConnectEventFilter(func(watched *core.QObject, event *core.QEvent) bool {
 		if event.Type() == core.QEvent__MouseButtonPress {
 			var mouseEvent = gui.NewQMouseEventFromPointer(event.Pointer())
@@ -58,9 +60,9 @@ func NewRoom(room matrix.Room, scrollArea *widgets.QScrollArea) (widgetR *widget
 		}
 
 		return false
-	})*/
+	})
 
-	//wrapperWidget.InstallEventFilter(filterObject)
+	wrapperWidget.InstallEventFilter(filterObject)
 
 	var avatar []byte
 	avatar, err = room.GetAvatar()
