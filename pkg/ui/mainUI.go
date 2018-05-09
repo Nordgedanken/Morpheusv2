@@ -98,13 +98,11 @@ func (m *MainUI) registerRoomListEvent() {
 		for _, v := range rooms {
 			log.Println(m.roomCount)
 			log.Printf("New Room: %+v\n", v)
-			go func() {
-				room, err := NewRoom(v, roomScroll)
-				if err != nil {
-					log.Panicln(err)
-				}
-				layout.InsertWidget(m.roomCount, room, 0, 0)
-			}()
+			room, err := NewRoom(v, roomScroll)
+			if err != nil {
+				return err
+			}
+			layout.InsertWidget(m.roomCount, room, 0, 0)
 			m.roomCount = m.roomCount + 1
 		}
 		return nil
