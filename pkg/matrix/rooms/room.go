@@ -98,6 +98,7 @@ func (r *Room) GetAvatar() ([]byte, error) {
 	log.Println(r.avatar)
 	log.Println(len(r.avatar))
 	if len(r.avatar) == 0 {
+		log.Println("Avatar getting")
 		resp := &gomatrix.Event{}
 		err := util.User.GetCli().StateEvent(r.id, "m.room.avatar", "", resp)
 		if err != nil {
