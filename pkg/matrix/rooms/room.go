@@ -18,6 +18,7 @@ import (
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix"
 	"github.com/Nordgedanken/Morpheusv2/pkg/util"
 	"github.com/matrix-org/gomatrix"
+	"log"
 	"strings"
 )
 
@@ -100,6 +101,9 @@ func (r *Room) GetAvatar() ([]byte, error) {
 		}
 		resp := &RespRoomAvatar{}
 		err := util.User.GetCli().StateEvent(r.id, "m.room.avatar", "", resp)
+		log.Println(err)
+		log.Println(err.(gomatrix.HTTPError))
+		log.Println(err.(gomatrix.HTTPError).WrappedError.(gomatrix.RespError))
 		if err != nil && err.(gomatrix.HTTPError).WrappedError.(gomatrix.RespError).Err != "M_NOT_FOUND" {
 			return nil, err
 		}
