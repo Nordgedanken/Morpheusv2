@@ -102,7 +102,7 @@ func (m *MainUI) registerRoomListEvent() {
 			if err != nil {
 				return err
 			}
-			layout.InsertWidget(m.roomCount, room, 0, 0)
+			layout.AddWidget(room, 0, 0)
 			m.roomCount = m.roomCount + 1
 		}
 		return nil
