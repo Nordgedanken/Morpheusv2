@@ -91,7 +91,7 @@ func (u *User) GetDisplayName(roomID string) (string, error) {
 // GetAvatar returns the avatar from the current User
 func (u *User) GetAvatar(roomID string) ([]byte, error) {
 	if roomID == "" {
-		if u.defaultAvatar == nil {
+		if len(u.defaultAvatar) == 0 {
 			urlPath := util.User.GetCli().BuildURL("profile", u.mxid, "avatar_url")
 			s := struct {
 				AvatarURL string `json:"avatar_url"`
@@ -115,7 +115,7 @@ func (u *User) GetAvatar(roomID string) ([]byte, error) {
 		return u.defaultAvatar, nil
 	}
 	// TODO get Membership Event from Room instead returning default directly
-	if u.avatar[roomID] == nil {
+	if len(u.avatar[roomID]) == 0 {
 		return u.defaultAvatar, nil
 	}
 	return u.avatar[roomID], nil
