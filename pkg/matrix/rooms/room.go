@@ -100,20 +100,24 @@ func (r *Room) GetAvatar() ([]byte, error) {
 		}
 		resp := &RespRoomAvatar{}
 		err := util.User.GetCli().StateEvent(r.id, "m.room.avatar", "", resp)
-		if err != nil {
+		if err != nil && err.(gomatrix.HTTPError).WrappedError.(gomatrix.RespError).Err != "M_NOT_FOUND" {
 			return nil, err
 		}
-		var avatar []byte
-		url := resp.URL
-		split := strings.Split(strings.TrimPrefix(url, "mxc://"), "/")
-		servername := split[0]
-		mediaID := split[1]
-		mediaURL := util.User.GetCli().HomeserverURL.String() + "/_matrix/media/r0/thumbnail/" + servername + "/" + mediaID + "?width=61&height=61&method=crop"
-		avatar, err = util.User.GetCli().MakeRequest("GET", mediaURL, nil, nil)
-		if err != nil {
-			return nil, err
+		if err == nil {
+			var avatar []byte
+			url := resp.URL
+			split := strings.Split(strings.TrimPrefix(url, "mxc://"), "/")
+			servername := split[0]
+			mediaID := split[1]
+			mediaURL := util.User.GetCli().HomeserverURL.String() + "/_matrix/media/r0/thumbnail/" + servername + "/" + mediaID + "?width=61&height=61&method=crop"
+			avatar, err = util.User.GetCli().MakeRequest("GET", mediaURL, nil, nil)
+			if err != nil {
+				return nil, err
+			}
+			r.avatar = avatar
+		} else if err != nil && err.(gomatrix.HTTPError).WrappedError.(gomatrix.RespError).Err == "M_NOT_FOUND" {
+			r.avatar = nil
 		}
-		r.avatar = avatar
 	}
 	return r.avatar, nil
 }
@@ -126,11 +130,14 @@ func (r *Room) GetTopic() (string, error) {
 		}
 		resp := &RespRoomAvatar{}
 		err := util.User.GetCli().StateEvent(r.id, "m.room.topic", "", resp)
-		if err != nil {
+		if err != nil && err.(gomatrix.HTTPError).WrappedError.(gomatrix.RespError).Err != "M_NOT_FOUND" {
 			return "", err
 		}
-		topic := resp.Topic
-		r.topic = topic
+		if err == nil {
+			r.topic = resp.Topic
+		} else if err != nil && err.(gomatrix.HTTPError).WrappedError.(gomatrix.RespError).Err == "M_NOT_FOUND" {
+			r.topic = ""
+		}
 	}
 	return r.topic, nil
 }

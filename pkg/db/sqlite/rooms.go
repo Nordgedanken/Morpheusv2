@@ -226,6 +226,7 @@ func (s *SQLite) GetRooms() (roomsR []matrix.Room, err error) {
 		}
 	}
 
+	log.Println(roomsS)
 	roomsR = roomsS
 
 	// get any error encountered during iteration
