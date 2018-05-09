@@ -29,7 +29,7 @@
    <string>Morpheus</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../rcc.qrc">
+   <iconset>
     <normaloff>:/qml/resources/logos/MorpheusBig.png</normaloff>:/qml/resources/logos/MorpheusBig.png</iconset>
   </property>
   <property name="autoFillBackground">
@@ -201,7 +201,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset resource="../../rcc.qrc">
+                  <iconset>
                    <normaloff>:/qml/icons/ic_person_white_48px.svg</normaloff>:/qml/icons/ic_person_white_48px.svg</iconset>
                  </property>
                  <property name="iconSize">
@@ -263,7 +263,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset resource="../../rcc.qrc">
+                  <iconset>
                    <normaloff>:/qml/icons/ic_add_white_48px.svg</normaloff>:/qml/icons/ic_add_white_48px.svg</iconset>
                  </property>
                  <property name="iconSize">
@@ -325,7 +325,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset resource="../../rcc.qrc">
+                  <iconset>
                    <normaloff>:/qml/icons/ic_menu_white_48px.svg</normaloff>:/qml/icons/ic_menu_white_48px.svg</iconset>
                  </property>
                  <property name="iconSize">
@@ -390,7 +390,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset resource="../../rcc.qrc">
+                  <iconset>
                    <normaloff>:/qml/icons/ic_settings_white_48px.svg</normaloff>:/qml/icons/ic_settings_white_48px.svg</iconset>
                  </property>
                  <property name="iconSize">
@@ -516,13 +516,13 @@
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
          <property name="leftMargin">
-          <number>0</number>
+          <number>9</number>
          </property>
          <property name="topMargin">
           <number>9</number>
          </property>
          <property name="rightMargin">
-          <number>0</number>
+          <number>9</number>
          </property>
          <property name="bottomMargin">
           <number>9</number>
@@ -600,7 +600,7 @@ border-radius: 5px;</string>
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>271</width>
+           <width>289</width>
            <height>551</height>
           </rect>
          </property>
@@ -813,7 +813,7 @@ border-radius: 2px;</string>
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../../rcc.qrc">
+            <iconset>
              <normaloff>:/qml/icons/ic_phone_black_48px.svg</normaloff>:/qml/icons/ic_phone_black_48px.svg</iconset>
            </property>
            <property name="iconSize">
@@ -851,7 +851,7 @@ border-radius: 2px;</string>
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../../rcc.qrc">
+            <iconset>
              <normaloff>:/qml/icons/ic_video_call_black_48px.svg</normaloff>:/qml/icons/ic_video_call_black_48px.svg</iconset>
            </property>
            <property name="iconSize">
@@ -904,7 +904,7 @@ border-radius: 2px;</string>
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>601</width>
+             <width>593</width>
              <height>469</height>
             </rect>
            </property>
