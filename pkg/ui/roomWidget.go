@@ -52,7 +52,7 @@ func NewRoom(room matrix.Room, roomScroll *widgets.QScrollArea) (widgetR *widget
 			var mouseEvent = gui.NewQMouseEventFromPointer(event.Pointer())
 
 			if mouseEvent.Button() == core.Qt__LeftButton {
-				util.E.Raise("changeRoom", room.GetRoomID())
+				util.E.Raise("changeRoom", room)
 				return true
 			}
 

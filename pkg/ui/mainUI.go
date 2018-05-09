@@ -16,6 +16,7 @@ package ui
 
 import (
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix"
+	"github.com/Nordgedanken/Morpheusv2/pkg/matrix/rooms"
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix/sync"
 	"github.com/Nordgedanken/Morpheusv2/pkg/util"
 	"github.com/therecipe/qt/core"
@@ -32,7 +33,8 @@ type MainUI struct {
 	windowWidth  int
 	windowHeight int
 
-	roomCount int
+	roomCount   int
+	currentRoom matrix.Room
 }
 
 // NewMainUI gives you a MainUI struct with prefilled data
@@ -64,6 +66,7 @@ func (m *MainUI) NewUI() error {
 	m.registerSetAvatarEvent()
 	m.registerStartSyncEvent()
 	m.registerRoomListEvent()
+	m.registerChangeRoomEvent()
 
 	m.widget.SetSizePolicy2(widgets.QSizePolicy__Expanding, widgets.QSizePolicy__Expanding)
 	mainWidget.SetSizePolicy2(widgets.QSizePolicy__Expanding, widgets.QSizePolicy__Expanding)
@@ -81,6 +84,22 @@ func (m *MainUI) NewUI() error {
 	return nil
 }
 
+func (m *MainUI) registerChangeRoomEvent() {
+	util.E.On("changeRoom", func(room interface{}) error {
+		switch v := room.(type) {
+		case *rooms.Room:
+			m.currentRoom = v
+			name, err := v.GetName()
+			if err != nil {
+				return err
+			}
+			m.window.SetWindowTitle("Morpheus - " + name)
+		}
+
+		return nil
+	})
+}
+
 func (m *MainUI) registerRoomListEvent() {
 	util.E.On("setupRoomList", func(_ interface{}) error {
 		roomScroll := widgets.NewQScrollAreaFromPointer(m.widget.FindChild("roomScroll", core.Qt__FindChildrenRecursively).Pointer())
@@ -89,15 +108,11 @@ func (m *MainUI) registerRoomListEvent() {
 		if err != nil {
 			return err
 		}
-		log.Println("Searched DB")
 		log.Println(rooms)
 		layout := widgets.NewQVBoxLayout()
-		log.Printf("roomScrollArea: %+v\n", roomScroll)
 		roomScroll.Widget().SetLayout(layout)
 		m.roomCount = 0
 		for _, v := range rooms {
-			log.Println(m.roomCount)
-			log.Printf("New Room: %+v\n", v)
 			room, err := NewRoom(v, roomScroll)
 			if err != nil {
 				return err
