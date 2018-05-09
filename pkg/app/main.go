@@ -62,6 +62,7 @@ func Start(argsArg []string) error {
 		}
 		util.E.Raise("setAvatar", nil)
 		util.E.Raise("startSync", nil)
+		util.E.Raise("setupRoomList", nil)
 	}
 
 	window.Show()
