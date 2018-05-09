@@ -31,6 +31,8 @@ type MainUI struct {
 	window       *widgets.QMainWindow
 	windowWidth  int
 	windowHeight int
+
+	roomCount int
 }
 
 // NewMainUI gives you a MainUI struct with prefilled data
@@ -90,7 +92,9 @@ func (m *MainUI) setupRoomList() {
 	log.Println(rooms)
 	layout := widgets.NewQVBoxLayout()
 	roomScrollArea.SetLayout(layout)
+	m.roomCount = 0
 	for _, v := range rooms {
+		m.roomCount = m.roomCount + 1
 		log.Printf("New Room: %+v\n", v)
 		room, err := NewRoom(v, roomScrollArea)
 		if err != nil {
@@ -98,7 +102,7 @@ func (m *MainUI) setupRoomList() {
 			log.Panicln(err)
 		}
 		log.Printf("New RoomWidget: %+v\n", room)
-		layout.InsertWidget(-1, room, 0, 0)
+		layout.InsertWidget(m.roomCount, room, 0, 0)
 	}
 }
 
