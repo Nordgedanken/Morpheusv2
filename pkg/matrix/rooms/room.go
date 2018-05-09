@@ -95,6 +95,8 @@ func (r *Room) GetName() (string, error) {
 
 // GetAvatar returns the avatar from the current Room
 func (r *Room) GetAvatar() ([]byte, error) {
+	log.Println(r.avatar)
+	log.Println(len(r.avatar))
 	if len(r.avatar) == 0 {
 		resp := &gomatrix.Event{}
 		err := util.User.GetCli().StateEvent(r.id, "m.room.avatar", "", resp)
