@@ -15,6 +15,7 @@
 package rooms
 
 import (
+	"errors"
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix"
 	"github.com/Nordgedanken/Morpheusv2/pkg/util"
 	"github.com/matrix-org/gomatrix"
@@ -107,11 +108,11 @@ func (r *Room) GetAvatar() ([]byte, error) {
 		var avatar []byte
 		value, exists := resp.Content["url"]
 		if !exists {
-			return nil, nil
+			return nil, errors.New("missing url in avatar state event")
 		}
 		url, ok := value.(string)
 		if !ok {
-			return nil, nil
+			return nil, errors.New("value not ok in avatar state event")
 		}
 		log.Println(url)
 		split := strings.Split(strings.TrimPrefix(url, "mxc://"), "/")
@@ -139,11 +140,11 @@ func (r *Room) GetTopic() (string, error) {
 		}
 		value, exists := resp.Content["topic"]
 		if !exists {
-			return "", nil
+			return "", errors.New("missing topic in topic state event")
 		}
 		topic, ok := value.(string)
 		if !ok {
-			return "", nil
+			return "", errors.New("value not ok in topic state event")
 		}
 		r.topic = topic
 	}
