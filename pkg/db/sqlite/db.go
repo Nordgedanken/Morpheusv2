@@ -17,9 +17,9 @@ package sqlite
 import (
 	"database/sql"
 	"fmt"
-	log "github.com/Sirupsen/logrus"
 	_ "github.com/mattn/go-sqlite3" // Go-sqlite3 side effect import needed to use SQLite3 databases
 	"github.com/shibukawa/configdir"
+	log "github.com/sirupsen/logrus"
 	"path/filepath"
 )
 

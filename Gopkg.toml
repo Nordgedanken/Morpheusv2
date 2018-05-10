@@ -30,3 +30,11 @@ ignored = ["github.com/therecipe/qt/*"]
 [[constraint]]
   branch = "master"
   name = "github.com/Nordgedanken/events"
+
+[[constraint]]
+  version = "1.0.5"
+  name = "github.com/sirupsen/logrus"
+
+[[constraint]]
+  version = "2.3"
+  name = "github.com/rifflock/lfshook"

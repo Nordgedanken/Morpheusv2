@@ -14,6 +14,18 @@
   version = "v1.0"
 
 [[projects]]
+  name = "github.com/lestrrat-go/file-rotatelogs"
+  packages = ["."]
+  revision = "9df8b44f21785240553882138c5df2e9cc1db910"
+  version = "v2.1.0"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/lestrrat/go-strftime"
+  packages = ["."]
+  revision = "ba3bf9c1d0421aa146564a632931730344f1f9f1"
+
+[[projects]]
   branch = "master"
   name = "github.com/matrix-org/gomatrix"
   packages = ["."]
@@ -26,10 +38,28 @@
   version = "v1.6.0"
 
 [[projects]]
+  name = "github.com/pkg/errors"
+  packages = ["."]
+  revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
+  version = "v0.8.0"
+
+[[projects]]
+  name = "github.com/rifflock/lfshook"
+  packages = ["."]
+  revision = "bf539943797a1f34c1f502d07de419b5238ae6c6"
+  version = "v2.3"
+
+[[projects]]
   branch = "master"
   name = "github.com/shibukawa/configdir"
   packages = ["."]
   revision = "e180dbdc8da04c4fa04272e875ce64949f38bd3e"
+
+[[projects]]
+  name = "github.com/sirupsen/logrus"
+  packages = ["."]
+  revision = "c155da19408a8799da419ed3eeb0cb5db0ad5dbc"
+  version = "v1.0.5"
 
 [[projects]]
   name = "github.com/spf13/cobra"
@@ -43,9 +73,21 @@
   revision = "583c0c0531f06d5278b7d917446061adc344b5cd"
   version = "v1.0.1"
 
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/crypto"
+  packages = ["ssh/terminal"]
+  revision = "2d027ae1dddd4694d54f7a8b6cbe78dca8720226"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/sys"
+  packages = ["unix","windows"]
+  revision = "7dfd1290c7917b7ba22824b9d24954ab3002fe24"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "c6c4de95e2b4b37b761b481c90fa4a3143ea943ac91e91388a13422fa5a36cda"
+  inputs-digest = "ff6aa616e3195472729d426cb0ec7ae74cd6b1b5fd93a598c99820f97f251df3"
   solver-name = "gps-cdcl"
   solver-version = 1

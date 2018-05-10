@@ -20,8 +20,8 @@ import (
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix/messages"
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix/rooms"
 	"github.com/Nordgedanken/Morpheusv2/pkg/util"
-	log "github.com/Sirupsen/logrus"
 	"github.com/matrix-org/gomatrix"
+	log "github.com/sirupsen/logrus"
 	"time"
 )
 

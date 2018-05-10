@@ -17,8 +17,8 @@ package ui
 import (
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix/users"
 	"github.com/Nordgedanken/Morpheusv2/pkg/util"
-	log "github.com/Sirupsen/logrus"
 	"github.com/matrix-org/gomatrix"
+	log "github.com/sirupsen/logrus"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/uitools"
