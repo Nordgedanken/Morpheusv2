@@ -244,12 +244,13 @@ func (l *LoginUI) setupDropdown() (err error) {
 	}
 
 	hostnames := convertHelloMatrixRespToNameSlice(helloMatrixRespV)
+	log.Infoln(hostnames)
 	l.serverDropdown.AddItems(hostnames)
-	l.serverDropdown.ConnectCurrentIndexChanged(func(index int) {
+	/*l.serverDropdown.ConnectCurrentIndexChanged(func(index int) {
 		if l.serverDropdown.StyleSheet() == redBorder {
 			l.serverDropdown.SetStyleSheet("")
 		}
-	})
+	})*/
 
 	return
 }
