@@ -52,7 +52,6 @@ var rootCmd = &cobra.Command{
 
 		writer, err := rotatelogs.New(
 			logFilePath+".%Y%m%d%H%M",
-			rotatelogs.WithLinkName(logFilePath),
 			rotatelogs.WithMaxAge(time.Duration(86400)*time.Second),
 			rotatelogs.WithRotationTime(time.Duration(604800)*time.Second),
 		)
