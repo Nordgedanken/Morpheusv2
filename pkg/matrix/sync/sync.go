@@ -70,7 +70,7 @@ func NewSync() error {
 		} else {
 			go func() {
 				err := util.DB.UpdateRoom(room)
-				if err != nil {
+				if err != nil && err.(gomatrix.HTTPError).WrappedError.(gomatrix.RespError).ErrCode != "M_UNRECOGNIZED" {
 					log.Panicln(err)
 				}
 			}()
