@@ -29,6 +29,7 @@ var args []string
 var windowHeight = 600
 var windowWidth = 950
 var window *widgets.QMainWindow
+var currentUI ui.UI
 
 // Start prepares the Main QT Window and opens it
 func Start(argsArg []string) error {
@@ -48,7 +49,7 @@ func Start(argsArg []string) error {
 	// We special case ErrNoRows because this is expected to happen if user is missing
 	if err == sql.ErrNoRows {
 		loginUIs := ui.NewLoginUI(windowWidth, windowHeight, window)
-		util.CurrentUI = loginUIs
+		currentUI = loginUIs
 		err := ui.SetNewWindow(loginUIs, window, windowWidth, windowHeight)
 		if err != nil {
 			return err
@@ -58,7 +59,7 @@ func Start(argsArg []string) error {
 	} else {
 		util.User = user
 		mainUIs := ui.NewMainUI(windowWidth, windowHeight, window)
-		util.CurrentUI = mainUIs
+		currentUI = mainUIs
 		err := ui.SetNewWindow(mainUIs, window, windowWidth, windowHeight)
 		if err != nil {
 			return err
@@ -96,7 +97,7 @@ func initApp() {
 
 	window.ConnectCloseEvent(func(event *gui.QCloseEvent) {
 		util.E.Wait()
-		util.CurrentUI.Close()
+		currentUI.Close()
 		log.Println("Morpheus closed")
 	})
 }
