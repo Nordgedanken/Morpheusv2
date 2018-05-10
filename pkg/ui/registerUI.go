@@ -316,3 +316,7 @@ func (r *RegisterUI) setupDropdown() (err error) {
 	r.serverDropdown.AddItems(hostnames)
 	return
 }
+
+func (r *RegisterUI) Extra() error {
+	return nil
+}

@@ -25,6 +25,7 @@ type ui interface {
 	GetWidget() (widget *widgets.QWidget)
 	NewUI() error
 	Close()
+	Extra() error
 }
 
 // SetNewWindow loads the new UI into the QMainWindow

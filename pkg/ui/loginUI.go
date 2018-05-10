@@ -252,3 +252,7 @@ func (l *LoginUI) setupDropdown() (err error) {
 
 	return
 }
+
+func (l *LoginUI) Extra() error {
+	return nil
+}

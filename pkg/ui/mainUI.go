@@ -76,7 +76,6 @@ func (m *MainUI) NewUI() error {
 
 	// Setup functions and elements
 	go m.setupLogout()
-	m.setupRoomList()
 
 	m.window.SetWindowTitle("Morpheus")
 
@@ -101,7 +100,7 @@ func (m *MainUI) registerChangeRoomEvent() {
 	})
 }
 
-func (m *MainUI) setupRoomList() {
+func (m *MainUI) setupRoomList() error {
 	layout := NewRoomLayout()
 	roomScroll := widgets.NewQScrollAreaFromPointer(m.widget.FindChild("roomScroll", core.Qt__FindChildrenRecursively).Pointer())
 	roomScroll.Widget().SetLayout(layout)
@@ -114,7 +113,7 @@ func (m *MainUI) setupRoomList() {
 	log.Infoln("Setting up RoomList")
 	rooms, err := util.DB.GetRooms()
 	if err != nil {
-		log.Errorln(err)
+		return err
 	}
 
 	layout.Rooms = make(map[string]matrix.Room)
@@ -135,6 +134,7 @@ func (m *MainUI) setupRoomList() {
 		}
 	}
 	util.App.ProcessEvents(core.QEventLoop__AllEvents)
+	return nil
 }
 
 func (m *MainUI) registerSetAvatarEvent() {
@@ -195,4 +195,8 @@ func (m *MainUI) logout() {
 			log.Errorln(err)
 		}
 	}()
+}
+
+func (m *MainUI) Extra() error {
+	return m.setupRoomList()
 }
