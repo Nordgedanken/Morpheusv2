@@ -16,6 +16,7 @@ package ui
 
 import (
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix"
+	"github.com/Nordgedanken/Morpheusv2/pkg/matrix/rooms"
 	"github.com/Nordgedanken/Morpheusv2/pkg/util"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
@@ -76,7 +77,7 @@ func (r *RoomLayout) NewRoom(roomID string, roomScroll *widgets.QScrollArea) (er
 
 	util.E.On("setRoomAvatar"+room.GetRoomID(), func(i interface{}) error {
 		switch v := i.(type) {
-		case matrix.Room:
+		case *rooms.Room:
 			var avatar []byte
 			avatar, err := v.GetAvatar()
 			if err != nil {
