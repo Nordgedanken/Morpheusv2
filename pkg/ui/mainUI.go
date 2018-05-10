@@ -104,11 +104,7 @@ func (m *MainUI) registerRoomListEvent() {
 	roomScroll := widgets.NewQScrollAreaFromPointer(m.widget.FindChild("roomScroll", core.Qt__FindChildrenRecursively).Pointer())
 	roomScroll.Widget().SetLayout(layout)
 	layout.ConnectAddRoom(func(roomID string) {
-		roomS, rerr := util.DB.GetRoom(roomID)
-		if rerr != nil {
-			log.Errorln(rerr)
-		}
-		err := layout.NewRoom(roomS, roomScroll)
+		err := layout.NewRoom(roomID, roomScroll)
 		if err != nil {
 			log.Errorln(err)
 		}
@@ -122,7 +118,9 @@ func (m *MainUI) registerRoomListEvent() {
 		}
 
 		go func() {
+			layout.Rooms = make(map[string]matrix.Room)
 			for _, v := range rooms {
+				layout.Rooms[v.GetRoomID()] = v
 				log.Debugln(v.GetRoomID())
 				go layout.AddRoom(v.GetRoomID())
 			}

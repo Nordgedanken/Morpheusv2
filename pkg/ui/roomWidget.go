@@ -26,10 +26,13 @@ import (
 type RoomLayout struct {
 	widgets.QVBoxLayout
 
+	Rooms map[string]matrix.Room
+
 	_ func(roomID string) `slot:"addRoom"`
 }
 
-func (r *RoomLayout) NewRoom(room matrix.Room, roomScroll *widgets.QScrollArea) (err error) {
+func (r *RoomLayout) NewRoom(roomID string, roomScroll *widgets.QScrollArea) (err error) {
+	room := r.Rooms[roomID]
 	widget := widgets.NewQWidget(nil, 0)
 
 	loader := uitools.NewQUiLoader(nil)
