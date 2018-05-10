@@ -192,6 +192,7 @@ func (m *MainUI) Close() {
 	util.E.Remove("setupRoomList")
 	util.E.Remove("changeRoom")
 	m.roomList.DeleteLater()
+	sync.Stop()
 }
 
 func (m *MainUI) setupLogout() {
