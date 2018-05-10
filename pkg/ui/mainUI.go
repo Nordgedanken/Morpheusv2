@@ -111,6 +111,9 @@ func (m *MainUI) setupRoomList() error {
 		if err != nil {
 			log.Errorln(err)
 		}
+		if (m.roomList.RoomCount % 5) == 0 {
+			util.App.ProcessEvents(core.QEventLoop__AllEvents)
+		}
 	})
 	log.Infoln("Setting up RoomList")
 	rooms, err := util.DB.GetRooms()
@@ -126,9 +129,6 @@ func (m *MainUI) setupRoomList() error {
 		log.Debugln(v.GetRoomID())
 		go m.roomList.AddRoom(v.GetRoomID())
 		m.roomList.RoomCount++
-		if (m.roomList.RoomCount % 5) == 0 {
-			util.App.ProcessEvents(core.QEventLoop__AllEvents)
-		}
 		if first {
 			util.E.Raise("changeRoom", v)
 			util.App.ProcessEvents(core.QEventLoop__AllEvents)
