@@ -111,24 +111,29 @@ func (m *MainUI) registerRoomListEvent() {
 			log.Errorln(err)
 		}
 	})
+	log.Infoln("Setting up RoomList")
+	rooms, err := util.DB.GetRooms()
+	if err != nil {
+		log.Errorln(err)
+	}
 
-	util.E.On("setupRoomList", func(_ interface{}) error {
-		log.Infoln("Setting up RoomList")
-		rooms, err := util.DB.GetRooms()
-		if err != nil {
-			return err
+	layout.Rooms = make(map[string]matrix.Room)
+
+	first := true
+	for _, v := range rooms {
+		go layout.AddRoom(v.GetRoomID())
+		layout.RoomCount++
+		if (layout.RoomCount % 10) == 0 {
+			util.App.ProcessEvents(core.QEventLoop__AllEvents)
 		}
-
-		go func() {
-			layout.Rooms = make(map[string]matrix.Room)
-			for _, v := range rooms {
-				layout.Rooms[v.GetRoomID()] = v
-				log.Debugln(v.GetRoomID())
-				go layout.AddRoom(v.GetRoomID())
-			}
-		}()
-		return nil
-	})
+		if first {
+			util.E.Raise("changeRoom", v)
+			util.App.ProcessEvents(core.QEventLoop__AllEvents)
+		}
+		layout.Rooms[v.GetRoomID()] = v
+		log.Debugln(v.GetRoomID())
+		first = false
+	}
 }
 
 func (m *MainUI) registerSetAvatarEvent() {

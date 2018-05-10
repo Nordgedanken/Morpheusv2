@@ -29,7 +29,6 @@ var args []string
 var windowHeight = 600
 var windowWidth = 950
 var window *widgets.QMainWindow
-var app *widgets.QApplication
 
 // Start prepares the Main QT Window and opens it
 func Start(argsArg []string) error {
@@ -66,24 +65,24 @@ func Start(argsArg []string) error {
 
 	window.Show()
 
-	app.Exec()
+	util.App.Exec()
 
 	return nil
 }
 
 func initApp() {
 	log.Println("Create QApp")
-	app = widgets.NewQApplication(len(args), args)
+	util.App = widgets.NewQApplication(len(args), args)
 
-	app.SetAttribute(core.Qt__AA_UseHighDpiPixmaps, true)
-	app.SetApplicationName("Morpheus")
-	app.SetApplicationVersion("0.1.0")
+	util.App.SetAttribute(core.Qt__AA_UseHighDpiPixmaps, true)
+	util.App.SetApplicationName("Morpheus")
+	util.App.SetApplicationVersion("0.1.0")
 	appIcon := gui.NewQIcon5(":/qml/resources/logos/MorpheusBig.png")
-	app.SetWindowIcon(appIcon)
+	util.App.SetWindowIcon(appIcon)
 	window = widgets.NewQMainWindow(nil, 0)
-	app.SetActiveWindow(window)
+	util.App.SetActiveWindow(window)
 
-	desktopApp := app.Desktop()
+	desktopApp := util.App.Desktop()
 	primaryScreen := desktopApp.PrimaryScreen()
 	screen := desktopApp.Screen(primaryScreen)
 	windowX := (screen.Width() - windowHeight) / 2

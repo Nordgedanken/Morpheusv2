@@ -26,7 +26,8 @@ import (
 type RoomLayout struct {
 	widgets.QVBoxLayout
 
-	Rooms map[string]matrix.Room
+	Rooms     map[string]matrix.Room
+	RoomCount int
 
 	_ func(roomID string) `slot:"addRoom"`
 }

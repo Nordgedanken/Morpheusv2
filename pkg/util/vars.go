@@ -18,6 +18,7 @@ import (
 	"github.com/Nordgedanken/Morpheusv2/pkg/db"
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix"
 	"github.com/Nordgedanken/events"
+	"github.com/therecipe/qt/widgets"
 )
 
 // DB holds the main pointer to the Database
@@ -28,3 +29,6 @@ var User matrix.User
 
 // E is the EventStore
 var E *events.Events
+
+// App holds the main pointer to the QApplication
+var App *widgets.QApplication
