@@ -29,7 +29,7 @@ type RoomLayout struct {
 	_ func(roomID string) `slot:"addRoom"`
 }
 
-func NewRoom(room matrix.Room, roomScroll *widgets.QScrollArea) (widgetR *widgets.QWidget, err error) {
+func (r *RoomLayout) NewRoom(room matrix.Room, roomScroll *widgets.QScrollArea) (err error) {
 	widget := widgets.NewQWidget(nil, 0)
 
 	loader := uitools.NewQUiLoader(nil)
@@ -77,6 +77,6 @@ func NewRoom(room matrix.Room, roomScroll *widgets.QScrollArea) (widgetR *widget
 	}
 	roomAvatarQLabel.SetPixmap(matrix.ImageToPixmap(avatar))
 
-	widgetR = wrapperWidget
+	r.InsertWidget(r.Count()+1, wrapperWidget, 0, 0)
 	return
 }

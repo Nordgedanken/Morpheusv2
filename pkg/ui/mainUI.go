@@ -33,7 +33,6 @@ type MainUI struct {
 	windowWidth  int
 	windowHeight int
 
-	roomCount   int
 	currentRoom matrix.Room
 }
 
@@ -109,11 +108,10 @@ func (m *MainUI) registerRoomListEvent() {
 		if rerr != nil {
 			log.Errorln(rerr)
 		}
-		room, err := NewRoom(roomS, roomScroll)
+		err := layout.NewRoom(roomS, roomScroll)
 		if err != nil {
 			log.Errorln(err)
 		}
-		layout.InsertWidget(m.roomCount, room, 0, 0)
 	})
 
 	util.E.On("setupRoomList", func(_ interface{}) error {
@@ -124,11 +122,9 @@ func (m *MainUI) registerRoomListEvent() {
 		}
 
 		go func() {
-			m.roomCount = 0
 			for _, v := range rooms {
 				log.Debugln(v.GetRoomID())
 				go layout.AddRoom(v.GetRoomID())
-				m.roomCount = m.roomCount + 1
 			}
 		}()
 		return nil
