@@ -134,6 +134,7 @@ func (m *MainUI) setupRoomList() {
 		log.Debugln(v.GetRoomID())
 		first = false
 	}
+	util.App.ProcessEvents(core.QEventLoop__AllEvents)
 }
 
 func (m *MainUI) registerSetAvatarEvent() {
