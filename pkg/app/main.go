@@ -69,11 +69,23 @@ func Start(argsArg []string) error {
 
 	window.Show()
 
-	go app.Exec()
-
 	if loggedIn {
 		util.E.RaiseBlocking("setupRoomList", nil)
 	}
+
+	for f := range mainfunc {
+		f()
+	}
+
+	Do(func() {
+		if loggedIn {
+			util.E.RaiseBlocking("setupRoomList", nil)
+		}
+	})
+
+	Do(func() {
+		app.Exec()
+	})
 
 	return nil
 }
@@ -103,4 +115,17 @@ func initApp() {
 		util.E.Wait()
 		log.Println("Morpheus closed")
 	})
+}
+
+// queue of work to run in main thread.
+var mainfunc = make(chan func())
+
+// do runs f on the main thread.
+func Do(f func()) {
+	done := make(chan bool, 1)
+	mainfunc <- func() {
+		f()
+		done <- true
+	}
+	<-done
 }

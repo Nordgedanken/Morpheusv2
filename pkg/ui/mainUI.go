@@ -115,9 +115,9 @@ func (m *MainUI) registerRoomListEvent() {
 			log.Debugln(v)
 			room, err := NewRoom(v, roomScroll)
 			if err != nil {
-				log.Errorln(err)
+				return err
 			}
-			go layout.InsertWidget(m.roomCount, room, 0, 0)
+			layout.InsertWidget(m.roomCount, room, 0, 0)
 			m.roomCount = m.roomCount + 1
 		}
 		return nil
