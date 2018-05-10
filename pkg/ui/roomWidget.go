@@ -74,12 +74,23 @@ func (r *RoomLayout) NewRoom(roomID string, roomScroll *widgets.QScrollArea) (er
 
 	wrapperWidget.InstallEventFilter(filterObject)
 
-	var avatar []byte
-	avatar, err = room.GetAvatar()
-	if err != nil {
-		return
-	}
-	roomAvatarQLabel.SetPixmap(matrix.ImageToPixmap(avatar))
+	util.E.On("setRoomAvatar"+room.GetRoomID(), func(i interface{}) error {
+		switch v := i.(type) {
+		case matrix.Room:
+			var avatar []byte
+			avatar, err := v.GetAvatar()
+			if err != nil {
+				return err
+			}
+			roomAvatarQLabel.SetPixmap(matrix.ImageToPixmap(avatar))
+		}
+
+		if (r.RoomCount % 5) == 0 {
+			util.App.ProcessEvents(core.QEventLoop__AllEvents)
+		}
+
+		return nil
+	})
 
 	r.InsertWidget(r.Count()+1, wrapperWidget, 0, 0)
 	return
