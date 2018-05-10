@@ -87,6 +87,9 @@ func (m *MainUI) NewUI() error {
 }
 
 func (m *MainUI) registerChangeRoomEvent() {
+	roomTitle := widgets.NewQLabelFromPointer(m.widget.FindChild("RoomTitle", core.Qt__FindChildrenRecursively).Pointer())
+	roomTopic := widgets.NewQLabelFromPointer(m.widget.FindChild("Topic", core.Qt__FindChildrenRecursively).Pointer())
+
 	util.E.On("changeRoom", func(room interface{}) error {
 		switch v := room.(type) {
 		case *rooms.Room:
@@ -95,7 +98,16 @@ func (m *MainUI) registerChangeRoomEvent() {
 			if err != nil {
 				return err
 			}
+
+			topic, err := v.GetTopic()
+			if err != nil {
+				return err
+			}
+
 			m.window.SetWindowTitle("Morpheus - " + name)
+
+			roomTitle.SetText(name)
+			roomTopic.SetText(topic)
 		}
 
 		return nil
