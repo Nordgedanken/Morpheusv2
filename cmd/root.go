@@ -21,11 +21,14 @@ import (
 	"github.com/Nordgedanken/Morpheusv2/pkg/app"
 	"github.com/Nordgedanken/Morpheusv2/pkg/db/sqlite"
 	"github.com/Nordgedanken/Morpheusv2/pkg/util"
+	log "github.com/Sirupsen/logrus"
+	"github.com/lestrrat-go/file-rotatelogs"
+	"github.com/rifflock/lfshook"
 	"github.com/shibukawa/configdir"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"io"
-	"log"
 	"path/filepath"
+	"time"
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -47,17 +50,23 @@ var rootCmd = &cobra.Command{
 			}
 		}
 
-		// os.OpenFile opens the file where the log is supposed to be written to
-		logFile, err := os.OpenFile(logFilePath, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0600)
+		writer, err := rotatelogs.New(
+			logFilePath+".%Y%m%d%H%M",
+			rotatelogs.WithLinkName(logFilePath),
+			rotatelogs.WithMaxAge(time.Duration(86400)*time.Second),
+			rotatelogs.WithRotationTime(time.Duration(604800)*time.Second),
+		)
 		if err != nil {
 			return err
 		}
 
-		// MultiWriter makes it possible to print log to both log File and console
-		mw := io.MultiWriter(os.Stdout, logFile)
-
-		// SetOutput tells the log where to write to
-		log.SetOutput(mw)
+		log.AddHook(lfshook.NewHook(
+			lfshook.WriterMap{
+				logrus.InfoLevel:  writer,
+				logrus.ErrorLevel: writer,
+			},
+			&logrus.TextFormatter{},
+		))
 
 		// dbImpl.Init() generates the needed tables if needed before the app starts
 		util.DB = &sqlite.SQLite{}

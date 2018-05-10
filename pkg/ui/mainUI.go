@@ -19,11 +19,11 @@ import (
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix/rooms"
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix/sync"
 	"github.com/Nordgedanken/Morpheusv2/pkg/util"
+	log "github.com/Sirupsen/logrus"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/uitools"
 	"github.com/therecipe/qt/widgets"
-	"log"
 )
 
 // MainUI defines the data for the main ui (that one with the chats)

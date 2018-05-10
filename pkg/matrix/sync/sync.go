@@ -20,8 +20,8 @@ import (
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix/messages"
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix/rooms"
 	"github.com/Nordgedanken/Morpheusv2/pkg/util"
+	log "github.com/Sirupsen/logrus"
 	"github.com/matrix-org/gomatrix"
-	"log"
 	"time"
 )
 
@@ -64,14 +64,14 @@ func NewSync() error {
 			go func() {
 				err := util.DB.SaveRoom(room)
 				if err != nil {
-					log.Panicln(err)
+					log.Errorln(err)
 				}
 			}()
 		} else {
 			go func() {
 				err := util.DB.UpdateRoom(room)
-				if err != nil && err.(gomatrix.HTTPError).WrappedError.(gomatrix.RespError).ErrCode != "M_UNRECOGNIZED" {
-					log.Panicln(err)
+				if err != nil {
+					log.Errorln(err)
 				}
 			}()
 		}
@@ -79,7 +79,7 @@ func NewSync() error {
 		go func() {
 			err := util.DB.SaveMessage(msg)
 			if err != nil {
-				log.Panicln(err)
+				log.Errorln(err)
 			}
 		}()
 	})
@@ -87,8 +87,8 @@ func NewSync() error {
 	go func() {
 		log.Println("Start Sync...")
 		for {
-			if err := util.User.GetCli().Sync(); err != nil {
-				log.Panicln("Sync err:", err)
+			if err := util.User.GetCli().Sync(); err != nil && err.(gomatrix.HTTPError).WrappedError.(gomatrix.RespError).ErrCode != "M_UNRECOGNIZED" {
+				log.Errorln("Sync err:", err)
 			}
 		}
 	}()

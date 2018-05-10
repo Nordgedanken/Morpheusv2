@@ -15,11 +15,11 @@
 package ui
 
 import (
+	log "github.com/Sirupsen/logrus"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/uitools"
 	"github.com/therecipe/qt/widgets"
-	"log"
 )
 
 const redBorder = "border: 1px solid red"

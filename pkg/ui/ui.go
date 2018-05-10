@@ -15,8 +15,8 @@
 package ui
 
 import (
+	log "github.com/Sirupsen/logrus"
 	"github.com/therecipe/qt/widgets"
-	"log"
 )
 
 var helloMatrixRespV helloMatrixResp

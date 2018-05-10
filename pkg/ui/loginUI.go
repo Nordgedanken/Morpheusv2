@@ -17,12 +17,12 @@ package ui
 import (
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix/users"
 	"github.com/Nordgedanken/Morpheusv2/pkg/util"
+	log "github.com/Sirupsen/logrus"
 	"github.com/matrix-org/gomatrix"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/uitools"
 	"github.com/therecipe/qt/widgets"
-	"log"
 	"strings"
 )
 

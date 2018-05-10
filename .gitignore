@@ -15,7 +15,7 @@
 deploy/
 rcc*
 debug*
-log/
+/log/
 data/
 moc*
 .idea/

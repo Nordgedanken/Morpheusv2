@@ -19,10 +19,10 @@ import (
 	"github.com/Nordgedanken/Morpheusv2/pkg/ui"
 	"github.com/Nordgedanken/Morpheusv2/pkg/util"
 	"github.com/Nordgedanken/events"
+	log "github.com/Sirupsen/logrus"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/widgets"
-	"log"
 )
 
 var args []string
