@@ -5,7 +5,7 @@
   branch = "master"
   name = "github.com/Nordgedanken/events"
   packages = ["."]
-  revision = "da20f40f6a30c574ff9e821f952bf2a316815484"
+  revision = "059c2ff76394bad894555562e31cbcfe18402485"
 
 [[projects]]
   name = "github.com/inconshreveable/mousetrap"
