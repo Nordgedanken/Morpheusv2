@@ -126,7 +126,7 @@ func (m *MainUI) setupRoomList() error {
 		log.Debugln(v.GetRoomID())
 		go m.roomList.AddRoom(v.GetRoomID())
 		m.roomList.RoomCount++
-		if (m.roomList.RoomCount % 10) == 0 {
+		if (m.roomList.RoomCount % 5) == 0 {
 			util.App.ProcessEvents(core.QEventLoop__AllEvents)
 		}
 		if first {
