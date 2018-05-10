@@ -69,11 +69,11 @@ func Start(argsArg []string) error {
 
 	window.Show()
 
+	go app.Exec()
+
 	if loggedIn {
 		util.E.RaiseBlocking("setupRoomList", nil)
 	}
-
-	app.Exec()
 
 	return nil
 }
