@@ -16,18 +16,8 @@ package main
 
 import (
 	"github.com/Nordgedanken/Morpheusv2/cmd"
-	"os"
-	"os/signal"
-	"syscall"
 )
 
-var c = make(chan os.Signal, 2)
-
 func main() {
-	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
-	go func() {
-		<-c
-		os.Exit(1)
-	}()
 	cmd.Execute()
 }
