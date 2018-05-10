@@ -33,6 +33,8 @@ type MainUI struct {
 	windowWidth  int
 	windowHeight int
 
+	roomList *RoomLayout
+
 	currentRoom matrix.Room
 }
 
@@ -101,11 +103,11 @@ func (m *MainUI) registerChangeRoomEvent() {
 }
 
 func (m *MainUI) setupRoomList() error {
-	layout := NewRoomLayout()
+	m.roomList = NewRoomLayout()
 	roomScroll := widgets.NewQScrollAreaFromPointer(m.widget.FindChild("roomScroll", core.Qt__FindChildrenRecursively).Pointer())
-	roomScroll.Widget().SetLayout(layout)
-	layout.ConnectAddRoom(func(roomID string) {
-		err := layout.NewRoom(roomID, roomScroll)
+	roomScroll.Widget().SetLayout(m.roomList)
+	m.roomList.ConnectAddRoom(func(roomID string) {
+		err := m.roomList.NewRoom(roomID, roomScroll)
 		if err != nil {
 			log.Errorln(err)
 		}
@@ -116,15 +118,15 @@ func (m *MainUI) setupRoomList() error {
 		return err
 	}
 
-	layout.Rooms = make(map[string]matrix.Room)
+	m.roomList.Rooms = make(map[string]matrix.Room)
 
 	first := true
 	for _, v := range rooms {
-		layout.Rooms[v.GetRoomID()] = v
+		m.roomList.Rooms[v.GetRoomID()] = v
 		log.Debugln(v.GetRoomID())
-		go layout.AddRoom(v.GetRoomID())
-		layout.RoomCount++
-		if (layout.RoomCount % 10) == 0 {
+		go m.roomList.AddRoom(v.GetRoomID())
+		m.roomList.RoomCount++
+		if (m.roomList.RoomCount % 10) == 0 {
 			util.App.ProcessEvents(core.QEventLoop__AllEvents)
 		}
 		if first {
@@ -163,6 +165,7 @@ func (m *MainUI) Close() {
 	util.E.Remove("startSync")
 	util.E.Remove("setupRoomList")
 	util.E.Remove("changeRoom")
+	m.roomList.DeleteLater()
 }
 
 func (m *MainUI) setupLogout() {
