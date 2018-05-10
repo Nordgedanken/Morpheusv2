@@ -76,7 +76,7 @@ func (m *MainUI) NewUI() error {
 
 	// Setup functions and elements
 	go m.setupLogout()
-	go m.setupRoomList()
+	m.setupRoomList()
 
 	m.window.SetWindowTitle("Morpheus")
 
