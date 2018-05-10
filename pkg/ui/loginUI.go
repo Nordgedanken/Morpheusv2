@@ -118,7 +118,6 @@ func (l *LoginUI) setupLoginButton() (err error) {
 	loginButton := widgets.NewQPushButtonFromPointer(l.widget.FindChild("LoginButton", core.Qt__FindChildrenRecursively).Pointer())
 
 	loginButton.ConnectClicked(func(_ bool) {
-		l.server = l.serverDropdown.CurrentText()
 		log.Infoln(l.serverDropdown.CurrentText())
 		log.Infoln(l.server)
 		if l.localpart != "" && l.password != "" && l.server != selectMessage {
@@ -246,11 +245,14 @@ func (l *LoginUI) setupDropdown() (err error) {
 	hostnames := convertHelloMatrixRespToNameSlice(helloMatrixRespV)
 	log.Infoln(hostnames)
 	l.serverDropdown.AddItems(hostnames)
-	/*l.serverDropdown.ConnectCurrentIndexChanged(func(index int) {
+	l.serverDropdown.ConnectCurrentTextChanged(func(text string) {
+		l.server = text
+	})
+	l.serverDropdown.ConnectCurrentIndexChanged(func(index int) {
 		if l.serverDropdown.StyleSheet() == redBorder {
 			l.serverDropdown.SetStyleSheet("")
 		}
-	})*/
+	})
 
 	return
 }
