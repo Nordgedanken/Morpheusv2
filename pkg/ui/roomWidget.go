@@ -16,7 +16,6 @@ package ui
 
 import (
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix"
-	"github.com/Nordgedanken/Morpheusv2/pkg/matrix/rooms"
 	"github.com/Nordgedanken/Morpheusv2/pkg/util"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
@@ -76,15 +75,12 @@ func (r *RoomLayout) NewRoom(roomID string, roomScroll *widgets.QScrollArea) (er
 	wrapperWidget.InstallEventFilter(filterObject)
 
 	util.E.On("setRoomAvatar"+room.GetRoomID(), func(i interface{}) error {
-		switch v := i.(type) {
-		case *rooms.Room:
-			var avatar []byte
-			avatar, err := v.GetAvatar()
-			if err != nil {
-				return err
-			}
-			roomAvatarQLabel.SetPixmap(matrix.ImageToPixmap(avatar))
+		var avatar []byte
+		avatar, err := room.GetAvatar()
+		if err != nil {
+			return err
 		}
+		roomAvatarQLabel.SetPixmap(matrix.ImageToPixmap(avatar))
 
 		if (r.RoomCount % 5) == 0 {
 			util.App.ProcessEvents(core.QEventLoop__AllEvents)

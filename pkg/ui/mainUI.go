@@ -153,11 +153,7 @@ func (m *MainUI) setupRoomList() error {
 
 	go func() {
 		for _, v := range rooms {
-			avatar, err := v.GetAvatar()
-			if err != nil {
-				log.Errorln(err)
-			}
-			util.E.Raise("setRoomAvatar"+v.GetRoomID(), avatar)
+			util.E.Raise("setRoomAvatar"+v.GetRoomID(), nil)
 		}
 		util.App.ProcessEvents(core.QEventLoop__AllEvents)
 	}()
