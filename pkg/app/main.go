@@ -43,6 +43,8 @@ func Start(argsArg []string) error {
 		log.Panicln(err)
 	})
 
+	loggedIn := false
+
 	user, err := util.DB.GetCurrentUser()
 	// We special case ErrNoRows because this is expected to happen if user is missing
 	if err == sql.ErrNoRows {
@@ -56,16 +58,20 @@ func Start(argsArg []string) error {
 	} else {
 		util.User = user
 		mainUIs := ui.NewMainUI(windowWidth, windowHeight, window)
-		util.E.RaiseBlocking("setupRoomList", nil)
 		err := ui.SetNewWindow(mainUIs, window, windowWidth, windowHeight)
 		if err != nil {
 			return err
 		}
 		util.E.Raise("setAvatar", nil)
 		util.E.Raise("startSync", nil)
+		loggedIn = true
 	}
 
 	window.Show()
+
+	if loggedIn {
+		util.E.RaiseBlocking("setupRoomList", nil)
+	}
 
 	app.Exec()
 
