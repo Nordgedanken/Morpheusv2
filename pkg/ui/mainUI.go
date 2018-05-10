@@ -64,7 +64,6 @@ func (m *MainUI) NewUI() error {
 
 	m.registerSetAvatarEvent()
 	m.registerStartSyncEvent()
-	m.registerRoomListEvent()
 	m.registerChangeRoomEvent()
 
 	m.widget.SetSizePolicy2(widgets.QSizePolicy__Expanding, widgets.QSizePolicy__Expanding)
@@ -77,6 +76,7 @@ func (m *MainUI) NewUI() error {
 
 	// Setup functions and elements
 	go m.setupLogout()
+	go m.setupRoomList()
 
 	m.window.SetWindowTitle("Morpheus")
 
@@ -101,7 +101,7 @@ func (m *MainUI) registerChangeRoomEvent() {
 	})
 }
 
-func (m *MainUI) registerRoomListEvent() {
+func (m *MainUI) setupRoomList() {
 	layout := NewRoomLayout()
 	roomScroll := widgets.NewQScrollAreaFromPointer(m.widget.FindChild("roomScroll", core.Qt__FindChildrenRecursively).Pointer())
 	roomScroll.Widget().SetLayout(layout)
