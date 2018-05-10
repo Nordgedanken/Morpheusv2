@@ -56,13 +56,13 @@ func Start(argsArg []string) error {
 	} else {
 		util.User = user
 		mainUIs := ui.NewMainUI(windowWidth, windowHeight, window)
+		util.E.RaiseBlocking("setupRoomList", nil)
 		err := ui.SetNewWindow(mainUIs, window, windowWidth, windowHeight)
 		if err != nil {
 			return err
 		}
 		util.E.Raise("setAvatar", nil)
 		util.E.Raise("startSync", nil)
-		util.E.RaiseBlocking("setupRoomList", nil)
 	}
 
 	window.Show()
