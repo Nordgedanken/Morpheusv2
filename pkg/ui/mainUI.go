@@ -117,19 +117,20 @@ func (m *MainUI) registerRoomListEvent() {
 	})
 
 	util.E.On("setupRoomList", func(_ interface{}) error {
-
 		log.Infoln("Setting up RoomList")
 		rooms, err := util.DB.GetRooms()
 		if err != nil {
 			return err
 		}
 
-		m.roomCount = 0
-		for _, v := range rooms {
-			log.Debugln(v)
-			go layout.AddRoom(v.GetRoomID())
-			m.roomCount = m.roomCount + 1
-		}
+		go func() {
+			m.roomCount = 0
+			for _, v := range rooms {
+				log.Debugln(v.GetRoomID())
+				go layout.AddRoom(v.GetRoomID())
+				m.roomCount = m.roomCount + 1
+			}
+		}()
 		return nil
 	})
 }
