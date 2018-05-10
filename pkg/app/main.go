@@ -42,6 +42,8 @@ func Start(argsArg []string) error {
 		log.Panicln(err)
 	})
 
+	window.Show()
+
 	user, err := util.DB.GetCurrentUser()
 	// We special case ErrNoRows because this is expected to happen if user is missing
 	if err == sql.ErrNoRows {
@@ -62,8 +64,6 @@ func Start(argsArg []string) error {
 		util.E.Raise("setAvatar", nil)
 		util.E.Raise("startSync", nil)
 	}
-
-	window.Show()
 
 	util.App.Exec()
 
