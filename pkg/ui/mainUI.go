@@ -121,6 +121,8 @@ func (m *MainUI) setupRoomList() {
 
 	first := true
 	for _, v := range rooms {
+		layout.Rooms[v.GetRoomID()] = v
+		log.Debugln(v.GetRoomID())
 		go layout.AddRoom(v.GetRoomID())
 		layout.RoomCount++
 		if (layout.RoomCount % 10) == 0 {
@@ -129,10 +131,8 @@ func (m *MainUI) setupRoomList() {
 		if first {
 			util.E.Raise("changeRoom", v)
 			util.App.ProcessEvents(core.QEventLoop__AllEvents)
+			first = false
 		}
-		layout.Rooms[v.GetRoomID()] = v
-		log.Debugln(v.GetRoomID())
-		first = false
 	}
 	util.App.ProcessEvents(core.QEventLoop__AllEvents)
 }
