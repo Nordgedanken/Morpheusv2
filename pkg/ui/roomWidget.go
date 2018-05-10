@@ -53,8 +53,8 @@ func (r *RoomLayout) NewRoom(roomID string, roomScroll *widgets.QScrollArea) (er
 	}
 	roomName.SetText(name)
 
-	wrapperWidget.Resize2(roomScroll.Widget().Size().Width(), wrapperWidget.Size().Height())
-	widget.Resize2(roomScroll.Widget().Size().Width(), wrapperWidget.Size().Height())
+	wrapperWidget.Resize2(roomScroll.Widget().Size().Width()-61, wrapperWidget.Size().Height())
+	widget.Resize2(roomScroll.Widget().Size().Width()-61, wrapperWidget.Size().Height())
 
 	var filterObject = core.NewQObject(nil)
 	filterObject.ConnectEventFilter(func(watched *core.QObject, event *core.QEvent) bool {
@@ -81,13 +81,6 @@ func (r *RoomLayout) NewRoom(roomID string, roomScroll *widgets.QScrollArea) (er
 			return err
 		}
 		roomAvatarQLabel.SetPixmap(matrix.ImageToPixmap(avatar))
-
-		if (r.RoomCount % 5) == 0 {
-			util.App.ProcessEvents(core.QEventLoop__AllEvents)
-		}
-
-		wrapperWidget.Resize2(roomScroll.Widget().Size().Width(), wrapperWidget.Size().Height())
-		widget.Resize2(roomScroll.Widget().Size().Width(), wrapperWidget.Size().Height())
 
 		if (r.RoomCount % 5) == 0 {
 			util.App.ProcessEvents(core.QEventLoop__AllEvents)
