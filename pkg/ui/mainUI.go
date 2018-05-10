@@ -187,12 +187,19 @@ func (m *MainUI) registerStartSyncEvent() {
 }
 
 func (m *MainUI) Close() {
+	sync.Stop()
 	util.E.Remove("setAvatar")
 	util.E.Remove("startSync")
 	util.E.Remove("setupRoomList")
 	util.E.Remove("changeRoom")
 	m.roomList.DeleteLater()
-	sync.Stop()
+	rooms, err := util.DB.GetRooms()
+	if err != nil {
+		log.Errorln(err)
+	}
+	for _, v := range rooms {
+		util.E.Remove("setRoomAvatar" + v.GetRoomID())
+	}
 }
 
 func (m *MainUI) setupLogout() {

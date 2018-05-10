@@ -17,6 +17,7 @@ package util
 import (
 	"github.com/Nordgedanken/Morpheusv2/pkg/db"
 	"github.com/Nordgedanken/Morpheusv2/pkg/matrix"
+	"github.com/Nordgedanken/Morpheusv2/pkg/ui"
 	"github.com/Nordgedanken/events"
 	"github.com/therecipe/qt/widgets"
 )
@@ -32,3 +33,5 @@ var E *events.Events
 
 // App holds the main pointer to the QApplication
 var App *widgets.QApplication
+
+var CurrentUI ui.UI

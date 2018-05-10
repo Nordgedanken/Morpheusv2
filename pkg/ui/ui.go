@@ -21,7 +21,7 @@ import (
 
 var helloMatrixRespV helloMatrixResp
 
-type ui interface {
+type UI interface {
 	GetWidget() (widget *widgets.QWidget)
 	NewUI() error
 	Close()
@@ -29,7 +29,7 @@ type ui interface {
 }
 
 // SetNewWindow loads the new UI into the QMainWindow
-func SetNewWindow(ui ui, window *widgets.QMainWindow, windowWidth, windowHeight int) error {
+func SetNewWindow(ui UI, window *widgets.QMainWindow, windowWidth, windowHeight int) error {
 	log.Debugln("Start changing UI")
 	uiErr := ui.NewUI()
 	if uiErr != nil {
