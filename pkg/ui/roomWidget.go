@@ -23,6 +23,12 @@ import (
 	"github.com/therecipe/qt/widgets"
 )
 
+type RoomLayout struct {
+	widgets.QVBoxLayout
+
+	_ func(roomID string) `slot:"addRoom"`
+}
+
 func NewRoom(room matrix.Room, roomScroll *widgets.QScrollArea) (widgetR *widgets.QWidget, err error) {
 	widget := widgets.NewQWidget(nil, 0)
 

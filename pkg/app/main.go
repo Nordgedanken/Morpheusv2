@@ -43,8 +43,6 @@ func Start(argsArg []string) error {
 		log.Panicln(err)
 	})
 
-	loggedIn := false
-
 	user, err := util.DB.GetCurrentUser()
 	// We special case ErrNoRows because this is expected to happen if user is missing
 	if err == sql.ErrNoRows {
@@ -64,28 +62,12 @@ func Start(argsArg []string) error {
 		}
 		util.E.Raise("setAvatar", nil)
 		util.E.Raise("startSync", nil)
-		loggedIn = true
+		util.E.RaiseBlocking("setupRoomList", nil)
 	}
 
 	window.Show()
 
-	if loggedIn {
-		util.E.RaiseBlocking("setupRoomList", nil)
-	}
-
-	for f := range mainfunc {
-		f()
-	}
-
-	Do(func() {
-		if loggedIn {
-			util.E.RaiseBlocking("setupRoomList", nil)
-		}
-	})
-
-	Do(func() {
-		app.Exec()
-	})
+	app.Exec()
 
 	return nil
 }
@@ -115,17 +97,4 @@ func initApp() {
 		util.E.Wait()
 		log.Println("Morpheus closed")
 	})
-}
-
-// queue of work to run in main thread.
-var mainfunc = make(chan func())
-
-// do runs f on the main thread.
-func Do(f func()) {
-	done := make(chan bool, 1)
-	mainfunc <- func() {
-		f()
-		done <- true
-	}
-	<-done
 }

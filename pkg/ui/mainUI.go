@@ -108,16 +108,24 @@ func (m *MainUI) registerRoomListEvent() {
 		if err != nil {
 			return err
 		}
-		layout := widgets.NewQVBoxLayout()
+		layout := NewRoomLayout()
 		roomScroll.Widget().SetLayout(layout)
+		layout.ConnectAddRoom(func(roomID string) {
+			roomS, rerr := util.DB.GetRoom(roomID)
+			if rerr != nil {
+				log.Errorln(rerr)
+			}
+			room, err := NewRoom(roomS, roomScroll)
+			if err != nil {
+				log.Errorln(err)
+			}
+			layout.InsertWidget(m.roomCount, room, 0, 0)
+		})
+
 		m.roomCount = 0
 		for _, v := range rooms {
 			log.Debugln(v)
-			room, err := NewRoom(v, roomScroll)
-			if err != nil {
-				return err
-			}
-			layout.InsertWidget(m.roomCount, room, 0, 0)
+			layout.AddRoom(v.GetRoomID())
 			m.roomCount = m.roomCount + 1
 		}
 		return nil
