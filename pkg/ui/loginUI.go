@@ -164,6 +164,9 @@ func (l *LoginUI) login() (err error) {
 		return err
 	}
 
+	util.E.Raise("setAvatar", nil)
+	util.E.Raise("startSync", nil)
+	mainUIs.Extra()
 	return
 }
 
@@ -220,10 +223,6 @@ func (l *LoginUI) loginUser(localpart, password, homeserverURL string) {
 			log.Errorln(err)
 		}
 	}()
-
-	util.E.Raise("setAvatar", nil)
-	util.E.Raise("startSync", nil)
-	util.E.RaiseBlocking("setupRoomList", nil)
 }
 
 func (l *LoginUI) Close() {}
