@@ -155,17 +155,14 @@ func (l *LoginUI) setupRegisterButton() (err error) {
 }
 
 func (l *LoginUI) login() (err error) {
-	go l.loginUser(l.localpart, l.password, l.server)
-
 	mainUIs := NewMainUI(l.windowWidth, l.windowHeight, l.window)
+	go l.loginUser(l.localpart, l.password, l.server, mainUIs)
+
 	err = SetNewWindow(mainUIs, l.window, l.windowWidth, l.windowHeight)
 	if err != nil {
 		return err
 	}
 
-	util.E.Raise("setAvatar", nil)
-	util.E.Raise("startSync", nil)
-	mainUIs.Extra()
 	return
 }
 
@@ -181,7 +178,7 @@ func getClient(homeserverURL string) (client *gomatrix.Client, err error) {
 }
 
 //loginUser Creates a Session for the User
-func (l *LoginUI) loginUser(localpart, password, homeserverURL string) {
+func (l *LoginUI) loginUser(localpart, password, homeserverURL string, mainUIs UI) {
 	var cli *gomatrix.Client
 	var cliErr error
 	log.Debugln(homeserverURL)
@@ -222,6 +219,10 @@ func (l *LoginUI) loginUser(localpart, password, homeserverURL string) {
 			log.Errorln(err)
 		}
 	}()
+
+	util.E.Raise("setAvatar", nil)
+	util.E.Raise("startSync", nil)
+	mainUIs.Extra()
 }
 
 func (l *LoginUI) Close() {}
