@@ -156,12 +156,11 @@ func (l *LoginUI) setupRegisterButton() (err error) {
 
 func (l *LoginUI) login() (err error) {
 	mainUIs := NewMainUI(l.windowWidth, l.windowHeight, l.window)
-	go l.loginUser(l.localpart, l.password, l.server, mainUIs)
-
 	err = SetNewWindow(mainUIs, l.window, l.windowWidth, l.windowHeight)
 	if err != nil {
 		return err
 	}
+	l.loginUser(l.localpart, l.password, l.server, mainUIs)
 
 	return
 }
