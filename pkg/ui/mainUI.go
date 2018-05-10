@@ -103,7 +103,7 @@ func (m *MainUI) registerChangeRoomEvent() {
 func (m *MainUI) registerRoomListEvent() {
 	util.E.On("setupRoomList", func(_ interface{}) error {
 		roomScroll := widgets.NewQScrollAreaFromPointer(m.widget.FindChild("roomScroll", core.Qt__FindChildrenRecursively).Pointer())
-		log.Println("Setting up RoomList")
+		log.Infoln("Setting up RoomList")
 		rooms, err := util.DB.GetRooms()
 		if err != nil {
 			return err
@@ -112,6 +112,7 @@ func (m *MainUI) registerRoomListEvent() {
 		roomScroll.Widget().SetLayout(layout)
 		m.roomCount = 0
 		for _, v := range rooms {
+			log.Debugln(v)
 			room, err := NewRoom(v, roomScroll)
 			if err != nil {
 				return err
@@ -161,7 +162,7 @@ func (m *MainUI) setupLogout() {
 		loginUIs := NewLoginUI(m.windowWidth, m.windowHeight, m.window)
 		err := SetNewWindow(loginUIs, m.window, m.windowWidth, m.windowHeight)
 		if err != nil {
-			log.Panicln(err)
+			log.Errorln(err)
 		}
 	})
 	return
@@ -171,14 +172,14 @@ func (m *MainUI) logout() {
 	sync.Stop()
 	_, err := util.User.GetCli().Logout()
 	if err != nil {
-		log.Panicln(err)
+		log.Errorln(err)
 	}
 	util.User.GetCli().ClearCredentials()
 
 	go func() {
 		err = util.DB.RemoveAll()
 		if err != nil {
-			log.Panicln(err)
+			log.Errorln(err)
 		}
 	}()
 }

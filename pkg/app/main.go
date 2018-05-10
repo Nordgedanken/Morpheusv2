@@ -51,8 +51,6 @@ func Start(argsArg []string) error {
 		if err != nil {
 			return err
 		}
-
-		window.Show()
 	} else if err != nil {
 		return err
 	} else {
@@ -62,13 +60,12 @@ func Start(argsArg []string) error {
 		if err != nil {
 			return err
 		}
-
-		window.Show()
-
 		util.E.Raise("setAvatar", nil)
 		util.E.Raise("startSync", nil)
 		util.E.RaiseBlocking("setupRoomList", nil)
 	}
+
+	window.Show()
 
 	app.Exec()
 

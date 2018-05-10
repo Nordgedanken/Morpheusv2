@@ -41,7 +41,7 @@ func NewSync() error {
 	util.User.GetCli().Store.SaveFilterID(util.User.GetCli().UserID, filterID)
 
 	syncer.OnEventType("m.room.message", func(ev *gomatrix.Event) {
-		log.Println("New Message")
+		log.Debugln("New Message")
 		msg := &messages.Message{}
 		msg.SetEvent(ev)
 		msg.SetTimestamp(parseEventTimestamp(ev.Timestamp))
@@ -54,7 +54,7 @@ func NewSync() error {
 			room = &rooms.Room{}
 			room.SetRoomID(ev.RoomID)
 		} else if err != nil && err != sql.ErrNoRows {
-			log.Panicln(err)
+			log.Errorln(err)
 		}
 		messages := room.GetMessages()
 		messages = append(messages, msg)
@@ -85,7 +85,7 @@ func NewSync() error {
 	})
 
 	go func() {
-		log.Println("Start Sync...")
+		log.Infoln("Start Sync...")
 		for {
 			if err := util.User.GetCli().Sync(); err != nil && err.(gomatrix.HTTPError).WrappedError.(gomatrix.RespError).ErrCode != "M_UNRECOGNIZED" {
 				log.Errorln("Sync err:", err)
@@ -96,6 +96,6 @@ func NewSync() error {
 }
 
 func Stop() {
-	log.Println("Stop Sync...")
+	log.Infoln("Stop Sync...")
 	util.User.GetCli().StopSync()
 }

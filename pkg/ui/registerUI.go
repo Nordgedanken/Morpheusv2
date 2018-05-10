@@ -288,7 +288,7 @@ func (r *RegisterUI) setupLoginButton() (err error) {
 		loginUIs := NewLoginUI(r.windowWidth, r.windowHeight, r.window)
 		err := SetNewWindow(loginUIs, r.window, r.windowWidth, r.windowHeight)
 		if err != nil {
-			log.Panicln(err)
+			log.Errorln(err)
 		}
 	})
 	return
@@ -307,7 +307,6 @@ func (r *RegisterUI) setupDropdown() (err error) {
 	if helloMatrixRespV == nil {
 		helloMatrixRespV, helloMatrixRespErr = getHelloMatrixList()
 		if helloMatrixRespErr != nil {
-			log.Println(helloMatrixRespErr)
 			err = helloMatrixRespErr
 			return
 		}

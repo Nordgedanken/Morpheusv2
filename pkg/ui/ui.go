@@ -29,13 +29,13 @@ type ui interface {
 
 // SetNewWindow loads the new UI into the QMainWindow
 func SetNewWindow(ui ui, window *widgets.QMainWindow, windowWidth, windowHeight int) error {
-	log.Println("Start changing UI")
+	log.Debugln("Start changing UI")
 	uiErr := ui.NewUI()
 	if uiErr != nil {
 		return uiErr
 	}
 	ui.GetWidget().Resize2(windowWidth, windowHeight)
 	window.SetCentralWidget(ui.GetWidget())
-	log.Println("Finished changing UI")
+	log.Debugln("Finished changing UI")
 	return nil
 }

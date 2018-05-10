@@ -74,7 +74,7 @@ var rootCmd = &cobra.Command{
 			return err
 		}
 
-		log.Println("DB Set Up")
+		log.Infoln("DB Set Up")
 		return nil
 	},
 	// TODO add descriptions

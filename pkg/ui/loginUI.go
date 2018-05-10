@@ -182,7 +182,7 @@ func getClient(homeserverURL string) (client *gomatrix.Client, err error) {
 func (l *LoginUI) loginUser(localpart, password, homeserverURL string) {
 	var cli *gomatrix.Client
 	var cliErr error
-	log.Println(homeserverURL)
+	log.Debugln(homeserverURL)
 	if strings.HasPrefix(homeserverURL, "https://") {
 		cli, cliErr = getClient(homeserverURL)
 	} else if strings.HasPrefix(homeserverURL, "http://") {
@@ -191,7 +191,7 @@ func (l *LoginUI) loginUser(localpart, password, homeserverURL string) {
 		cli, cliErr = getClient("https://" + homeserverURL)
 	}
 	if cliErr != nil {
-		log.Panicln(cliErr)
+		log.Errorln(cliErr)
 	}
 
 	localpart = strings.Replace(localpart, "@", "", -1)
@@ -203,7 +203,7 @@ func (l *LoginUI) loginUser(localpart, password, homeserverURL string) {
 		InitialDeviceDisplayName: "Morpheusv2 0.1.0-Alpha",
 	})
 	if err != nil {
-		log.Panicln(err)
+		log.Errorln(err)
 	}
 
 	cli.SetCredentials(resp.UserID, resp.AccessToken)
@@ -217,7 +217,7 @@ func (l *LoginUI) loginUser(localpart, password, homeserverURL string) {
 	go func() {
 		err = util.DB.SaveCurrentUser(user)
 		if err != nil {
-			log.Panicln(err)
+			log.Errorln(err)
 		}
 	}()
 
@@ -236,7 +236,7 @@ func (l *LoginUI) setupDropdown() (err error) {
 	if helloMatrixRespV == nil {
 		helloMatrixRespV, helloMatrixRespErr = getHelloMatrixList()
 		if helloMatrixRespErr != nil {
-			log.Println(helloMatrixRespErr)
+			log.Errorln(helloMatrixRespErr)
 			err = helloMatrixRespErr
 			return
 		}

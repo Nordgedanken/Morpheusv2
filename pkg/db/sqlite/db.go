@@ -25,21 +25,21 @@ import (
 
 // Init prepares the DB by opening it and creating the required tables if needed
 func (s *SQLite) Init() (err error) {
-	log.Println("Start setting up DB")
+	log.Infoln("Start setting up DB")
 	var openErr error
 
 	// Open the data.db file. It will be created if it doesn't exist.
 	configDirs := configdir.New("Nordgedanken", "Morpheusv2")
 	filePath := filepath.ToSlash(configDirs.QueryFolders(configdir.Global)[0].Path)
 
-	log.Println("DBFilePath: ", filePath+"/data.db")
+	log.Debugln("DBFilePath: ", filePath+"/data.db")
 	s.db, openErr = sql.Open("sqlite3", filePath+"/data.db")
 	if openErr != nil {
 		err = openErr
 		return
 	}
 
-	log.Println("Creating DB Tables if needed")
+	log.Debugln("Creating DB Tables if needed")
 	createTables := `CREATE TABLE IF NOT EXISTS users (id varchar not null primary key, display_name text, avatar text, access_token text, own integer);
 					CREATE TABLE IF NOT EXISTS messages (id varchar not null primary key, author_id varchar, message text, timestamp datetime, pure_event text);
 					CREATE TABLE IF NOT EXISTS rooms (id varchar not null primary key, room_aliases text, room_name text, room_avatar text, room_topic text, room_messages text);
@@ -49,7 +49,7 @@ func (s *SQLite) Init() (err error) {
 		err = fmt.Errorf("DB EXEC ERR: %s", execErr)
 		return
 	}
-	log.Println("Finished setting DB Setup")
+	log.Infoln("Finished DB Setup")
 	return
 }
 
