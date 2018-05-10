@@ -80,6 +80,8 @@ func (m *MainUI) NewUI() error {
 
 	m.window.SetWindowTitle("Morpheus")
 
+	util.E.Raise("setupRoomList", nil)
+
 	return nil
 }
 
