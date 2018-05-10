@@ -31,6 +31,12 @@ import (
 	"time"
 )
 
+var debug *bool
+
+func init() {
+	debug = rootCmd.Flags().Bool("debug", false, "Activate Debug logs")
+}
+
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use: "Morpheusv2",
@@ -66,6 +72,10 @@ var rootCmd = &cobra.Command{
 			},
 			&logrus.TextFormatter{},
 		))
+
+		if *debug {
+			log.SetLevel(log.DebugLevel)
+		}
 
 		// dbImpl.Init() generates the needed tables if needed before the app starts
 		util.DB = &sqlite.SQLite{}
