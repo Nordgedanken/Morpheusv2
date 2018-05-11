@@ -176,6 +176,7 @@ func (m *MainUI) registerSetAvatarEvent() {
 
 		scene.AddItem(item)
 		avatarLogo.SetScene(scene)
+		avatarLogo.Show()
 		return nil
 	})
 }
