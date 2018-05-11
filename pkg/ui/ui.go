@@ -20,6 +20,7 @@ import (
 )
 
 var helloMatrixRespV helloMatrixResp
+var CurrentUI UI
 
 type UI interface {
 	GetWidget() (widget *widgets.QWidget)

@@ -208,6 +208,7 @@ func (m *MainUI) setupLogout() {
 
 		m.Close()
 		loginUIs := NewLoginUI(m.windowWidth, m.windowHeight, m.window)
+		CurrentUI = loginUIs
 		err := SetNewWindow(loginUIs, m.window, m.windowWidth, m.windowHeight)
 		if err != nil {
 			log.Errorln(err)
