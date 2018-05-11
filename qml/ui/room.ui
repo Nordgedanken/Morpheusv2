@@ -86,7 +86,7 @@
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap>../../../../../../../Downloads/avatar512.png</pixmap>
+          <pixmap>E:/2018/downloads/avatar512.png</pixmap>
          </property>
          <property name="scaledContents">
           <bool>true</bool>

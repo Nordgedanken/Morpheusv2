@@ -171,8 +171,10 @@ func (m *MainUI) registerSetAvatarEvent() {
 		}
 
 		scene := widgets.NewQGraphicsScene(nil)
+		pixmap := matrix.ImageToPixmap(image)
+		scaledPixmap := pixmap.Scaled2(50, 50, core.Qt__KeepAspectRatio, core.Qt__SmoothTransformation)
 
-		item := widgets.NewQGraphicsPixmapItem2(matrix.ImageToPixmap(image), nil)
+		item := widgets.NewQGraphicsPixmapItem2(scaledPixmap, nil)
 
 		scene.AddItem(item)
 		avatarLogo.SetScene(scene)
