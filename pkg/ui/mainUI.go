@@ -169,8 +169,10 @@ func (m *MainUI) registerSetAvatarEvent() {
 		if err != nil {
 			return err
 		}
-		avatarLogo.Scene().AddPixmap(matrix.ImageToPixmap(image))
 
+		item := widgets.NewQGraphicsPixmapItem2(matrix.ImageToPixmap(image), nil)
+
+		avatarLogo.Scene().AddItem(item)
 		return nil
 	})
 }
