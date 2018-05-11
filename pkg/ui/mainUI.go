@@ -170,14 +170,15 @@ func (m *MainUI) registerSetAvatarEvent() {
 			return err
 		}
 
-		scene := widgets.NewQGraphicsScene(nil)
-		pixmap := matrix.ImageToPixmap(image)
-		scaledPixmap := pixmap.Scaled2(50, 50, core.Qt__KeepAspectRatio, core.Qt__SmoothTransformation)
+		qimage := matrix.ImageToQImage(image)
+		painter := gui.NewQPainter()
+		brush := gui.NewQBrush8(qimage)
+		painter.FillRect2(0, 0, 50, 50, brush)
+		avatarLogo.DrawBackground(painter, core.NewQRectF4(0, 0, 50, 50))
 
-		item := widgets.NewQGraphicsPixmapItem2(scaledPixmap, nil)
+		avatarLogo.SetHorizontalScrollBarPolicy(core.Qt__ScrollBarAlwaysOff)
+		avatarLogo.SetVerticalScrollBarPolicy(core.Qt__ScrollBarAlwaysOff)
 
-		scene.AddItem(item)
-		avatarLogo.SetScene(scene)
 		avatarLogo.Show()
 		return nil
 	})

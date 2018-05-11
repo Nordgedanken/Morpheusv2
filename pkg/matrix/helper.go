@@ -18,6 +18,13 @@ import (
 	"github.com/therecipe/qt/gui"
 )
 
+func ImageToQImage(image []byte) *gui.QImage {
+	imageS := string(image[:])
+	qimage := gui.QImage_FromData(string(imageS[:]), len(imageS), "")
+
+	return qimage
+}
+
 func ImageToPixmap(image []byte) *gui.QPixmap {
 	pixmap := gui.NewQPixmap()
 
