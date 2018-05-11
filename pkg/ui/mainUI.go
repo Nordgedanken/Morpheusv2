@@ -163,14 +163,14 @@ func (m *MainUI) setupRoomList() error {
 
 func (m *MainUI) registerSetAvatarEvent() {
 	// userAvatar
-	avatarLogo := widgets.NewQLabelFromPointer(m.widget.FindChild("UserAvatar", core.Qt__FindChildrenRecursively).Pointer())
+	avatarLogo := widgets.NewQGraphicsViewFromPointer(m.widget.FindChild("UserAvatar", core.Qt__FindChildrenRecursively).Pointer())
 	util.E.On("setAvatar", func(_ interface{}) error {
 		image, err := util.User.GetAvatar("")
 		if err != nil {
 			return err
 		}
+		avatarLogo.Scene().AddPixmap(matrix.ImageToPixmap(image))
 
-		avatarLogo.SetPixmap(matrix.ImageToPixmap(image))
 		return nil
 	})
 }
