@@ -1,5 +1,6 @@
 # Morpheus v2
 [![CircleCI branch](https://img.shields.io/circleci/project/github/Nordgedanken/Morpheusv2/master.svg)](https://circleci.com/gh/Nordgedanken/Morpheusv2)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FNordgedanken%2FMorpheusv2.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FNordgedanken%2FMorpheusv2?ref=badge_shield)
 
 [![Github All Releases](https://img.shields.io/github/downloads/Nordgedanken/Morpheusv2/total.svg)]()
 
@@ -34,6 +35,9 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## License
 This project is licensed under the Apache 2.0 License - see the [LICENSE](LICENSE) file for details
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FNordgedanken%2FMorpheusv2.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FNordgedanken%2FMorpheusv2?ref=badge_large)
 
 ## Acknowledgments
 * Inspired by [nheko](http://github.com/mujx/nheko)
